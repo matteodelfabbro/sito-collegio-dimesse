@@ -13,7 +13,7 @@ Versione pronta per Firebase Hosting, aggiornata il 22 luglio 2026 a partire dal
 - aggiunta una sezione locale “Avvisi” nell'Area famiglie con l'avviso “Inizio scuola — anno scolastico 2026/27”, disponibile per apertura e download;
 - aggiornati i collegamenti “Avvisi” di Primaria e Secondaria verso la nuova sezione locale;
 - verificata la presenza dei 19 documenti PDF dell'archivio e del PDF dell'avviso;
-- aggiornato il foglio di stile attivo a `styles-v26.css` per evitare il recupero della versione precedente dalla cache.
+- aggiornato il foglio di stile attivo a `styles-v27.css` per evitare il recupero della versione precedente dalla cache.
 
 ## Collegamenti e contenuti da aggiornare nel tempo
 
