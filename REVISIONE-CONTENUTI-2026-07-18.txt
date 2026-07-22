@@ -1,0 +1,18 @@
+SITO DIMESSE — REVISIONE CONTENUTI E AMBIENTI
+
+Base:
+- ultima versione fornita dall'utente;
+- header dinamico e struttura di navigazione mantenuti.
+
+Interventi:
+- confronto aggiornato con il sito originale;
+- biblioteca rimossa dagli spazi scolastici condivisi e mantenuta solo nel Convitto;
+- aggiunta nel Convitto la fotografia dello spazio interno presente nel sito originale, senza attribuzione di servizio;
+- integrate fotografie di aula di scienze, aula di tecnologia, auditorium, sala conferenze, palestra e campi esterni;
+- pagina Spazi completamente riorganizzata;
+- testi mantenuti completi ma resi più leggibili con indice rapido, gerarchie e blocchi visivi;
+- storia resa più scorrevole con una linea del tempo;
+- percorsi e risorse locali verificati;
+- CSS e JavaScript versionati come v13.
+
+I documenti dell'Area famiglie non sono ancora inclusi in questa revisione.

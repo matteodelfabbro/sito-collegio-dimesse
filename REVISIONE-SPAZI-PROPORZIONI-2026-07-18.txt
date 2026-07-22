@@ -1,0 +1,10 @@
+REVISIONE SPAZI — PROPORZIONI DESKTOP
+
+- mantenute tutte le modifiche precedenti;
+- aula informatica non più sovradimensionata;
+- quattro laboratori presentati con pari dignità visiva;
+- griglia desktop a quattro colonne sui monitor larghi;
+- griglia a due colonne su desktop e tablet più stretti;
+- immagini uniformate per altezza e rapporto;
+- testi e padding delle card riequilibrati;
+- corretto un attributo HTML non valido nella foto del cortile.

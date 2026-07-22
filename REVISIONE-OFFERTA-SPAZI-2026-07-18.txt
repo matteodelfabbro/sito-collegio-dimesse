@@ -1,0 +1,8 @@
+REVISIONE OFFERTA E SPAZI
+
+- Home: novità Primaria e Secondaria presentate in modo parallelo e completo.
+- Secondaria: cinque novità esplicite (recupero, studente atleta, Cambridge, potenziamento STEM/lingue, latino).
+- Primaria: nuova scuola, inglese/certificazioni, digitale/logica, musica/sport/creatività, matematica/progetti.
+- Primaria: corretta la didascalia del cortile con l’ulivo senza attribuirlo al cortile dei bambini.
+- Secondaria: galleria ampia con aula, informatica, scienze, tecnologia e spazi comuni.
+- Asset versionati v14 per evitare cache precedente.

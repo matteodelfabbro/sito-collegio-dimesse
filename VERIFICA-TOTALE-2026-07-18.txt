@@ -1,0 +1,29 @@
+VERIFICA TOTALE DEL SITO
+
+Contenuti
+- confrontate Home, Chi siamo, Primaria, Secondaria, Convitto e Contatti con il sito Google Sites;
+- mantenuti modello educativo cattolico, identità delle Suore Dimesse e status di scuola paritaria;
+- completati i passaggi storici del 1579, 1656, 1812, 1842, 1947 e 1974-1975;
+- verificati orari, mensa, doposcuola, permanenza, attività, ambienti e recapiti;
+- mantenuti docenti e coordinamenti forniti nei documenti aggiornati;
+- aula informatica aggiornata a 24 postazioni e collocata tra gli spazi condivisi;
+- foto della Secondaria mantenuta su una vera aula, non sul laboratorio informatico.
+
+Grafica e usabilità
+- mantenuto header approvato: 148 px iniziali, 68 px nello stato compatto;
+- controllata la resa a 1440, 1024, 900, 850 e 390 px;
+- nessuno scorrimento orizzontale della pagina;
+- menu mobile verificato con apertura, chiusura ed ESC;
+- tabelle docenti rese più comprensibili su smartphone;
+- badge di anteprima nascosto su mobile per non coprire i contenuti;
+- gallerie utilizzabili anche con i tasti freccia.
+
+Tecnica
+- nessun file locale o collegamento interno mancante;
+- un solo H1 per pagina, ID univoci e testi alternativi presenti;
+- CSS e JavaScript versionati come v12;
+- HTML non memorizzato in cache, immagini con cache breve e rivalidazione;
+- aggiunti redirect dai principali indirizzi del vecchio Google Sites;
+- sitemap, metadati Open Graph e dati strutturati verificati.
+
+I documenti caricati successivamente NON sono ancora stati integrati in questa versione: saranno il prossimo intervento sull'Area famiglie.

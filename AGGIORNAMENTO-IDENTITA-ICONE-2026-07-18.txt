@@ -1,0 +1,6 @@
+Aggiornamento identità visiva delle icone
+
+- Il logo ordinario del sito resta invariato.
+- Favicon, icona Apple e icone PWA: fondo blu istituzionale #18345F e simbolo bianco centrato.
+- Anteprima social: immagine 1200x630 coordinata, fondo blu e simbolo bianco.
+- Aggiornati manifest, Open Graph, Twitter Card e versionamento cache a v3.

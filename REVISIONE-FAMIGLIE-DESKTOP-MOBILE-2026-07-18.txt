@@ -1,0 +1,16 @@
+REVISIONE GENERALE — OTTICA FAMIGLIE, DESKTOP E MOBILE
+
+Interventi applicati:
+- mantenuta e valorizzata la mensa in Home, Primaria, Secondaria e Spazi;
+- spostati i servizi pratici prima delle novità 2026–2027 nella Home, per renderli visibili prima soprattutto su smartphone;
+- aggiunto un collegamento diretto dalla Home alla scheda Cucina e mensa interne;
+- aggiunto un indice rapido nella pagina Spazi;
+- corrette le ancore interne non funzionanti della pagina Secondaria;
+- corretto il collegamento dalla Secondaria alla sezione didattica della pagina Spazi;
+- resa più chiara la formulazione su menu, commissione mensa e servizio ai tavoli;
+- eliminata la cronologia duplicata nella pagina Chi siamo;
+- corretti due tag immagine non validi nella Home;
+- introdotta una piccola protezione tipografica per il titolo della Home sugli smartphone più stretti;
+- mantenuti distinti gli orari di accoglienza: Primaria dalle 7:30, Secondaria dalle 7:15.
+
+CSS attivo: styles-v25.css

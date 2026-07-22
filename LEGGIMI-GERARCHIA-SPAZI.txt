@@ -1,0 +1,10 @@
+SITO DIMESSE — GERARCHIA SPAZI
+
+- Prima: aule e ambienti didattici (informatica, scienze, Arte e Tecnologia).
+- Poi: sport e vita all’aperto.
+- Poi: approfondimento Robotica e stampa 3D.
+- Infine: auditorium, sala conferenze e spazi di comunità.
+- Aula di tecnologia rinominata “Aula di Arte e Tecnologia” in tutte le pagine.
+- CSS versionato come styles-v22.css.
+
+Pubblicazione: dimesse-deploy

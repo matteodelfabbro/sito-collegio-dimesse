@@ -1,0 +1,11 @@
+REVISIONE TIPOGRAFIA E RESPONSIVE
+
+- mantenute le immagini responsive e nitide della hero;
+- hero mobile trasformata in una sequenza verticale pulita;
+- slogan mantenuto su due righe sui telefoni comuni;
+- eliminati vuoti e sovrapposizioni tra testo e fotografia;
+- pulsanti mobile a larghezza piena e senza ritorni a capo casuali;
+- misura di lettura ridotta su desktop;
+- capoversi, titoli, elenchi e didascalie uniformati;
+- spaziature riviste su home e pagine interne;
+- fallback dedicato per telefoni molto stretti.

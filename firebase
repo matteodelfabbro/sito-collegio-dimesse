@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+if [ -x "$HOME/Documents/Codex/.tools/firebase-cli/firebase" ]; then
+  exec "$HOME/Documents/Codex/.tools/firebase-cli/firebase" "$@"
+fi
+if command -v firebase >/dev/null 2>&1; then
+  exec "$(command -v firebase)" "$@"
+fi
+if command -v npx >/dev/null 2>&1; then
+  exec npx --yes firebase-tools "$@"
+fi
+echo "Firebase CLI non trovata. Installa Node.js e poi esegui: npm install -g firebase-tools" >&2
+exit 1

@@ -1,0 +1,13 @@
+SITO DIMESSE — PAGINA SPAZI ORGANIZZATA PER FUNZIONE
+
+Modifiche principali:
+- eliminata la sezione autonoma “Le aule della scuola”;
+- riunite aule ordinarie, aula informatica e aula di scienze nella sezione “Spazi per la didattica”;
+- mantenuta l’apertura con “Spazi esterni e sport”;
+- aggiunta la mensa nella sezione “Vita scolastica e comunità” insieme ad auditorium e sala conferenze;
+- robotica e stampa 3D restano integrate nell’aula informatica;
+- l’Aula di Arte e Tecnologia non compare nella pagina Spazi e resta specifica della Secondaria;
+- aggiornati testo introduttivo, descrizione SEO e gerarchia della pagina.
+
+Pubblicazione:
+dimesse-deploy

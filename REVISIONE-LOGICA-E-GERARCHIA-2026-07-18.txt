@@ -1,0 +1,22 @@
+REVISIONE COMPLESSIVA DEL SITO — 18/07/2026
+
+Interventi applicati
+- Pagina Spazi organizzata per funzione: esterni e sport, didattica, vita scolastica e comunità.
+- Rimossa la parola “condivisi” dal titolo principale: le aule di Primaria e Secondaria sono mostrate nella stessa pagina, ma non sono necessariamente gli stessi locali.
+- Hero della pagina Spazi dedicata al vero elemento distintivo: impianti sportivi e verde nel cuore di Udine.
+- Immagine social della pagina Spazi resa coerente con il contenuto principale.
+- Preload corretto: ora carica l’immagine effettivamente usata nel hero.
+- Unite le due schede ridondanti “Impianti sportivi” e “Campo da basket e pallavolo”.
+- Robotica e stampa 3D mantenute come attività e dotazioni dell’aula informatica, non come spazi autonomi.
+- Aula di Arte e Tecnologia mantenuta esclusivamente nella pagina Secondaria.
+- Verificati collegamenti e risorse locali: nessun file mancante.
+- Conservati navigazione principale semplice, CTA Prenota una visita, immagini autentiche e struttura mobile.
+
+Gerarchia finale della pagina Spazi
+1. Spazi esterni e sport
+2. Spazi per la didattica
+3. Vita scolastica e comunità
+4. Invito alla visita
+
+Nota
+La revisione evita un catalogo di locali e costruisce un racconto: prima il punto di forza distintivo, poi la didattica quotidiana, infine la vita comunitaria.

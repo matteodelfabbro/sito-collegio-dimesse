@@ -1,0 +1,16 @@
+SITO DIMESSE — SPAZI CONDIVISI
+
+Modifiche principali:
+- la pagina Spazi contiene soltanto ambienti condivisi da Primaria e Secondaria;
+- Aula di Arte e Tecnologia rimossa da Spazi e mantenuta nella pagina Secondaria;
+- apertura della pagina con spazi esterni e sport;
+- palestra interna inserita nello stesso racconto sportivo, dopo gli spazi esterni;
+- aggiunte le aule ordinarie di Primaria e Secondaria;
+- aula informatica e aula di scienze presentate come ambienti didattici condivisi;
+- robotica LEGO SPIKE e stampa 3D integrate nella scheda dell’aula informatica;
+- eliminata la sezione autonoma che faceva sembrare robotica e stampa 3D degli spazi;
+- auditorium e sala conferenze raccolti nella sezione dedicata alla comunità;
+- CSS aggiornato a styles-v23.css.
+
+Pubblicazione:
+dimesse-deploy

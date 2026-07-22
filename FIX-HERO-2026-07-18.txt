@@ -1,0 +1,5 @@
+Correzione immagine principale:
+- tre risoluzioni responsive 1200/1800/2800 px
+- srcset e sizes per evitare ingrandimenti eccessivi
+- rendering CSS stabilizzato
+- foglio stile versionato v16

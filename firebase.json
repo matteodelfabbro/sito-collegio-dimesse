@@ -1,0 +1,86 @@
+{
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "headers": [
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(css|js)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=31536000,immutable"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(webp|jpg|jpeg|png|svg)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=3600,must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.pdf",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=86400,must-revalidate"
+          },
+          {
+            "key": "Content-Disposition",
+            "value": "inline"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/scuola/primaria",
+        "destination": "/primaria",
+        "type": 301
+      },
+      {
+        "source": "/scuola/sec-1-grado",
+        "destination": "/secondaria",
+        "type": 301
+      },
+      {
+        "source": "/scuola",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/scuola/avvisi",
+        "destination": "/documenti#avvisi",
+        "type": 301
+      },
+      {
+        "source": "/scuola/documenti-primaria",
+        "destination": "/documenti",
+        "type": 301
+      },
+      {
+        "source": "/scuola/documenti-sec",
+        "destination": "/documenti",
+        "type": 301
+      }
+    ]
+  }
+}

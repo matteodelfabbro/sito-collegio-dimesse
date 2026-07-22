@@ -1,0 +1,14 @@
+SITO DIMESSE — ROBOTICA E STAMPA 3D
+
+Modifiche:
+- nuova sezione “Robotica e stampa 3D” nella pagina Spazi;
+- LEGO SPIKE e stampante 3D presentati come dotazioni scolastiche;
+- attività descritte come progressive, con particolare sviluppo nella Secondaria;
+- tre immagini: robotica, stampante 3D e progetto realizzato;
+- richiamo dedicato nella pagina Secondaria;
+- robotica e stampa 3D aggiunte anche alla galleria degli spazi della Secondaria;
+- mantenute tutte le modifiche precedenti;
+- CSS aggiornato a styles-v21.css.
+
+Pubblicazione:
+dimesse-deploy

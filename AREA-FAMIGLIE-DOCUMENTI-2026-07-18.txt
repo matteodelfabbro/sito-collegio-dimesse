@@ -1,0 +1,9 @@
+AREA FAMIGLIE — REVISIONE DOCUMENTI
+
+- 19 PDF unici inseriti nel sito.
+- Eliminati 11 duplicati identici tra gli archivi Primaria e Secondaria.
+- Documenti comuni pubblicati una sola volta.
+- Filtri Tutti / Primaria / Secondaria.
+- Ricerca testuale.
+- Pulsanti Apri PDF e Scarica.
+- Pagine Primaria e Secondaria aprono l’archivio già filtrato.

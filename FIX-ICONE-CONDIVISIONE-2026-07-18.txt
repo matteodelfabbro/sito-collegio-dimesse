@@ -1,0 +1,9 @@
+FIX ICONE E LOGO NELLE CONDIVISIONI
+
+- ricentrato il simbolo nei file logo-dimesse.png e logo-dimesse-bianco.png;
+- sostituito il favicon rettangolare con un'icona quadrata e centrata;
+- aggiunte icone 16, 32, 48, 180, 192 e 512 px;
+- aggiunti favicon.ico, apple-touch-icon e site.webmanifest;
+- riferimenti aggiornati in tutte le pagine con versione v2 per ridurre i problemi di cache.
+
+Nota: WhatsApp, iMessage, Facebook e alcuni browser possono conservare la vecchia anteprima per alcune ore o giorni. Un nuovo URL di anteprima Firebase tende a mostrare subito la versione aggiornata.
