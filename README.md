@@ -1,40 +1,89 @@
 # Sito Collegio Dimesse
 
-Versione pronta per Firebase Hosting, aggiornata il 22 luglio 2026 a partire dall'ultima cartella del progetto recuperata da Google Drive.
+Sito istituzionale statico del Collegio Dimesse di Udine, pubblicato tramite Firebase Hosting.
 
-## Modifiche di questa revisione
+**Sito online:** [https://sito-scuola-1e42f.web.app/](https://sito-scuola-1e42f.web.app/)
 
-- mantenute tutte le revisioni grafiche, informative e responsive già presenti;
-- mantenute le icone con sfondo blu e logo bianco, mentre il logo ordinario resta nel sito;
-- ampliata la pagina Primaria con una galleria dedicata agli spazi condivisi realmente pertinenti: aula informatica, aula di scienze, palestra, impianti esterni e auditorium;
-- mantenuta l'Aula di Arte e Tecnologia soltanto nella pagina Secondaria;
-- aggiornato il collegamento “Documenti e modulistica” della Primaria verso `/documenti?scuola=primaria`;
-- aggiornato il collegamento “Documenti e modulistica” della Secondaria verso `/documenti?scuola=secondaria`;
-- aggiunta una sezione locale “Avvisi” nell'Area famiglie con l'avviso “Inizio scuola — anno scolastico 2026/27”, disponibile per apertura e download;
-- aggiornati i collegamenti “Avvisi” di Primaria e Secondaria verso la nuova sezione locale;
-- verificata la presenza dei 19 documenti PDF dell'archivio e del PDF dell'avviso;
-- aggiornato il foglio di stile attivo a `styles-v27.css` per evitare il recupero della versione precedente dalla cache.
+## Contenuti principali
 
-## Collegamenti e contenuti da aggiornare nel tempo
+- presentazione del Collegio e dei suoi spazi;
+- pagine dedicate alla Scuola Primaria e alla Scuola Secondaria di primo grado;
+- informazioni sul convitto universitario;
+- Area famiglie con avvisi, modulistica e documenti scaricabili;
+- pagina dei contatti e pagina personalizzata per gli errori 404;
+- metadati SEO, Open Graph, sitemap, file `robots.txt` e icone per browser e dispositivi mobili.
 
-Non restano collegamenti di navigazione ad Avvisi o Documenti sul vecchio sito. Il redirect `/scuola/avvisi` presente in `firebase.json` ora raggiunge una sezione locale reale.
+## Tecnologie e funzionamento
 
-L'Area famiglie contiene attualmente un solo avviso. I nuovi avvisi dovranno essere aggiunti alla sezione `#avvisi` e i documenti legati agli anni scolastici dovranno essere sostituiti quando verranno pubblicate le versioni aggiornate.
+Il progetto usa HTML, CSS e JavaScript senza un processo di compilazione. Firebase Hosting pubblica direttamente il contenuto della cartella `public/` e gestisce URL puliti, redirect e intestazioni di cache tramite `firebase.json`.
 
-I collegamenti canonici e le immagini Open Graph che usano `https://www.collegiodimesse.org/...` non sono residui di navigazione: descrivono gli indirizzi definitivi previsti per i motori di ricerca e le condivisioni social.
+## Struttura del progetto
+
+| Percorso | Contenuto |
+| --- | --- |
+| `public/` | Pagine HTML, fogli di stile, JavaScript, icone e file SEO pubblicati online |
+| `public/assets/collegio/` | Immagini e loghi del sito |
+| `public/documenti-files/` | Avvisi, modulistica e documenti PDF dell'Area famiglie |
+| `docs/storico/` | Note storiche sulle revisioni effettuate |
+| `firebase.json` | Configurazione di Hosting, cache e redirect |
+| `.firebaserc` | Associazione al progetto Firebase `sito-scuola-1e42f` |
+
+## Anteprima locale
+
+### Prerequisiti
+
+- [Node.js](https://nodejs.org/) 18 o successivo;
+- [Firebase CLI](https://firebase.google.com/docs/cli).
+
+Se Firebase CLI non è già disponibile:
+
+```bash
+npm install -g firebase-tools
+firebase login
+```
+
+Dalla cartella principale del progetto, avviare l'emulatore di Hosting:
+
+```bash
+firebase serve --only hosting
+```
+
+Firebase mostrerà nel terminale l'indirizzo locale da aprire nel browser. L'emulatore è preferibile a un server statico generico perché rispetta gli URL puliti e i redirect definiti in `firebase.json`.
 
 ## Pubblicazione
 
-Sito online: [https://sito-scuola-1e42f.web.app/](https://sito-scuola-1e42f.web.app/)
-
-Anteprima:
+Prima di pubblicare, verificare di aver selezionato il progetto corretto:
 
 ```bash
-firebase hosting:channel:deploy bozza --account delfabbro@collegiodimesse.org
+firebase use sito-scuola-1e42f
 ```
 
-Sito stabile Firebase:
+Per creare un canale temporaneo di anteprima:
 
 ```bash
-firebase deploy --only hosting --account delfabbro@collegiodimesse.org
+firebase hosting:channel:deploy bozza --project sito-scuola-1e42f
 ```
+
+Per pubblicare sul sito stabile:
+
+```bash
+firebase deploy --only hosting --project sito-scuola-1e42f
+```
+
+Se sul computer sono configurati più account Firebase, aggiungere `--account indirizzo@example.com` al comando scelto.
+
+## Manutenzione dei contenuti
+
+Quando si aggiornano pagine, documenti o immagini:
+
+1. verificare i collegamenti interni e i pulsanti di apertura o download;
+2. controllare il risultato su desktop e dispositivi mobili;
+3. aggiornare avvisi e documenti relativi agli anni scolastici;
+4. mantenere coerenti i riferimenti ai file versionati, come `styles-v27.css` e `script-v15.js`;
+5. usare prima un canale di anteprima e pubblicare sul sito stabile solo dopo la verifica.
+
+L'avviso attualmente presente nell'Area famiglie si trova nella sezione `#avvisi` di `public/documenti.html`. I file associati sono conservati in `public/documenti-files/`.
+
+## Dominio e indicizzazione
+
+I collegamenti canonici, le immagini Open Graph, `robots.txt` e `sitemap.xml` usano il dominio definitivo previsto `https://www.collegiodimesse.org/`. Il dominio Firebase indicato sopra resta l'indirizzo operativo della distribuzione corrente.
