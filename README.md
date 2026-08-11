@@ -25,6 +25,8 @@ I collegamenti canonici e le immagini Open Graph che usano `https://www.collegio
 
 ## Pubblicazione
 
+Sito online: [https://sito-scuola-1e42f.web.app/](https://sito-scuola-1e42f.web.app/)
+
 Anteprima:
 
 ```bash
