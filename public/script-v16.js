@@ -21,12 +21,14 @@ function requestHeaderUpdate() {
 applyHeaderSize();
 window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
 
-function closeMenu() {
+function closeMenu(restoreFocus = false) {
   if (!header || !toggle) return;
+  const wasOpen = header.classList.contains('menu-open');
   header.classList.remove('menu-open');
   document.body.classList.remove('menu-open');
   toggle.setAttribute('aria-expanded', 'false');
   toggle.setAttribute('aria-label', 'Apri il menu');
+  if (restoreFocus && wasOpen) toggle.focus();
 }
 
 if (header && toggle && nav) {
@@ -38,8 +40,13 @@ if (header && toggle && nav) {
     toggle.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
     if (open) nav.querySelector('a')?.focus();
   });
-  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu()));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && header.classList.contains('menu-open')) {
+      event.preventDefault();
+      closeMenu(true);
+    }
+  });
   window.addEventListener('resize', () => { if (window.innerWidth > 850) closeMenu(); });
 }
 
@@ -49,7 +56,8 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
   const next = shell.querySelector('.carousel-next');
   if (!track || !prev || !next) return;
   const step = () => Math.max(280, track.clientWidth * 0.72);
-  const move = direction => track.scrollBy({ left: direction * step(), behavior: 'smooth' });
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const move = direction => track.scrollBy({ left: direction * step(), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
   prev.addEventListener('click', () => move(-1));
   next.addEventListener('click', () => move(1));
   track.addEventListener('keydown', event => {
@@ -95,7 +103,11 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
     sections.forEach(section => {
       section.hidden = !section.querySelector('[data-document]:not([hidden])');
     });
-    buttons.forEach(button => button.classList.toggle('is-active', button.dataset.audienceFilter === audience));
+    buttons.forEach(button => {
+      const active = button.dataset.audienceFilter === audience;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
     if (result) result.textContent = `${visible} ${visible === 1 ? 'documento disponibile' : 'documenti disponibili'}`;
     if (empty) empty.hidden = visible !== 0;
   }

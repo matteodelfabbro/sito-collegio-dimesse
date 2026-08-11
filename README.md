@@ -81,7 +81,7 @@ Quando si aggiornano pagine, documenti o immagini:
 1. verificare i collegamenti interni e i pulsanti di apertura o download;
 2. controllare il risultato su desktop e dispositivi mobili;
 3. aggiornare avvisi e documenti relativi agli anni scolastici;
-4. mantenere coerenti i riferimenti ai file versionati, come `styles-v27.css` e `script-v15.js`;
+4. mantenere coerenti i riferimenti ai file versionati, come `styles-v28.css` e `script-v16.js`;
 5. usare prima un canale di anteprima e pubblicare sul sito stabile solo dopo la verifica.
 
 L'avviso attualmente presente nell'Area famiglie si trova nella sezione `#avvisi` di `public/documenti.html`. I file associati sono conservati in `public/documenti-files/`.
