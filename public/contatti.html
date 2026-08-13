@@ -21,8 +21,7 @@
 <link href="/favicon-v3.png?v=3" rel="icon" sizes="512x512" type="image/png"/>
 <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180"/>
 <link href="/site.webmanifest?v=3" rel="manifest"/>
-<link as="image" href="/assets/collegio/cortile-hero-1800.webp" imagesrcset="/assets/collegio/cortile-hero-1200.webp 1200w, /assets/collegio/cortile-hero-1800.webp 1800w, /assets/collegio/cortile-hero-2800.webp 2800w" imagesizes="(max-width: 850px) 100vw, 50vw" rel="preload"/>
-<link href="/styles-v28.css" rel="stylesheet"/>
+<link href="/styles-v28.css?v=50" rel="stylesheet"/>
 <meta content="it_IT" property="og:locale"/>
 <meta content="Collegio Dimesse" property="og:site_name"/>
 <meta content="summary_large_image" name="twitter:card"/>
@@ -61,22 +60,12 @@
 </div>
 </header>
 <main id="main">
-<section class="page-hero compact">
-<div class="container page-hero-grid">
-<div>
-<span class="eyebrow">Contatti</span>
-<h1>Scrivici o vieni a trovarci</h1>
-<p>Il Collegio si trova in Via Treppo 11, nel centro di Udine. Contatta direttamente la realtà che ti interessa.</p>
-</div>
-<img alt="Cortile del Collegio Dimesse" decoding="async" fetchpriority="high" height="1200"  width="1800" src="/assets/collegio/cortile-hero-1800.webp" srcset="/assets/collegio/cortile-hero-1200.webp 1200w, /assets/collegio/cortile-hero-1800.webp 1800w, /assets/collegio/cortile-hero-2800.webp 2800w" sizes="(max-width: 850px) calc(100vw - 38px), 50vw">
-</div>
-</section>
-<section class="section" id="visita">
+<section class="section contact-main-section" id="visita">
 <div class="container">
 <div class="visit-intro">
-<span class="eyebrow">Informazioni e visite</span>
-<h2>Parla direttamente con la scuola</h2>
-<p>Per conoscere gli ambienti, l’organizzazione e la proposta educativa è possibile contattare la Primaria, la Secondaria o il Convitto.</p>
+<span class="eyebrow">Contatti · Via Treppo 11, Udine</span>
+<h1>Scegli chi contattare</h1>
+<p>Per informazioni o per concordare una visita, rivolgiti direttamente alla Primaria, alla Secondaria o al Convitto.</p>
 </div>
 <div class="contact-grid large">
 <article class="contact-card" id="primaria">
@@ -107,6 +96,55 @@
 </p>
 </article>
 </div>
+<section class="contact-form-panel" aria-labelledby="contact-form-title">
+<div class="contact-form-intro">
+<span class="eyebrow">Scrivici</span>
+<h2 id="contact-form-title">Richiedi informazioni</h2>
+<p>Compila i campi essenziali: prepareremo un’email indirizzata direttamente alla realtà scelta.</p>
+<ul>
+<li>Primaria</li>
+<li>Secondaria di primo grado</li>
+<li>Convitto universitario</li>
+</ul>
+</div>
+<form action="mailto:segreteria@dimesse.org" class="contact-request-form" data-contact-form enctype="text/plain" method="post">
+<div class="form-field form-field-wide">
+<label for="contact-name">Nome e cognome</label>
+<input autocomplete="name" id="contact-name" name="nome" placeholder="Come possiamo chiamarti?" required type="text"/>
+</div>
+<div class="form-field">
+<label for="contact-email">Email</label>
+<input autocomplete="email" id="contact-email" name="email" placeholder="nome@email.it" required type="email"/>
+</div>
+<div class="form-field">
+<label for="contact-phone">Telefono <span>(facoltativo)</span></label>
+<input autocomplete="tel" id="contact-phone" inputmode="tel" name="telefono" placeholder="Es. 333 1234567" type="tel"/>
+</div>
+<div class="form-field form-field-wide">
+<label for="contact-interest">A chi è rivolta la richiesta?</label>
+<select id="contact-interest" name="interesse" required>
+<option disabled selected value="">Scegli un’opzione</option>
+<option value="primaria">Scuola Primaria</option>
+<option value="secondaria">Scuola Secondaria di primo grado</option>
+<option value="convitto">Convitto universitario</option>
+<option value="generale">Informazioni generali</option>
+</select>
+</div>
+<div class="form-field form-field-wide">
+<label for="contact-message">Messaggio</label>
+<textarea id="contact-message" name="messaggio" placeholder="Scrivi qui la tua richiesta…" required rows="5"></textarea>
+</div>
+<label class="form-consent form-field-wide" for="contact-consent">
+<input id="contact-consent" name="consenso" required type="checkbox"/>
+<span>Acconsento al trattamento dei dati inseriti esclusivamente per ricevere una risposta alla mia richiesta.</span>
+</label>
+<div class="form-submit form-field-wide">
+<button class="btn btn-primary" type="submit">Continua nell’app Email</button>
+<p>Troverai destinatario, oggetto e messaggio già compilati: dovrai solo confermare l’invio.</p>
+</div>
+<p aria-live="polite" class="form-status form-field-wide" data-contact-status></p>
+</form>
+</section>
 <div class="address-panel">
 <div>
 <span class="eyebrow">Dove siamo</span>
@@ -121,7 +159,7 @@
 <p>Attività, vita scolastica e novità dal Collegio.</p>
 </div>
 <div class="social-buttons">
-<a class="social-pill" href="https://www.instagram.com/collegiodimesseudine/" rel="noopener" target="_blank">
+<a class="social-pill social-instagram" href="https://www.instagram.com/collegiodimesseudine/" rel="noopener" target="_blank">
 <svg aria-hidden="true" viewbox="0 0 24 24">
 <rect height="18" rx="5" width="18" x="3" y="3">
 </rect>
@@ -129,12 +167,12 @@
 </circle>
 <circle cx="17.5" cy="6.5" fill="currentColor" r=".7" stroke="none">
 </circle>
-</svg> Instagram</a>
-<a class="social-pill" href="https://www.facebook.com/collegiodimesseudine/" rel="noopener" target="_blank">
+</svg> Seguici su Instagram</a>
+<a class="social-pill social-facebook" href="https://www.facebook.com/collegiodimesseudine/" rel="noopener" target="_blank">
 <svg aria-hidden="true" viewbox="0 0 24 24">
 <path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v6h4v-6h3l1-4h-4V9c0-.7.3-1 1-1z">
 </path>
-</svg> Facebook</a>
+</svg> Seguici su Facebook</a>
 </div>
 </div>
 <p class="privacy-note">Per informazioni relative alla privacy: <a href="mailto:dpo@dimesse.org">dpo@dimesse.org</a>.</p>
@@ -180,7 +218,7 @@
 </div>
 </div>
 </footer>
-<script src="/script-v16.js">
+<script src="/script-v16.js?v=20">
 </script>
 </body>
 </html>

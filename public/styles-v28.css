@@ -21,7 +21,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+body{margin:0;overflow-x:clip;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
 body.menu-open{overflow:hidden}
 a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font:inherit}p{margin:0}
 :focus-visible{outline:3px solid #f0bd62;outline-offset:4px}
@@ -122,11 +122,11 @@ h3{font-size:1.34rem}
 @media(max-width:620px){.container{width:min(calc(100% - 30px),var(--max))}h1{font-size:2.56rem;line-height:1.04}h2{font-size:2rem}.hero{padding:42px 0 51px}.hero-grid{gap:30px}.hero-copy .lead{margin-top:21px;font-size:.94rem}.school-levels{margin-top:19px}.hero-copy::after{width:102px;height:6px;margin-top:21px}.hero-figure{min-height:310px}.hero-figure img{height:286px}.hero-caption{max-width:205px;padding:12px 14px}.section{padding:62px 0}.section-head{margin-bottom:33px}.path-card img{height:218px}.path-body{padding:23px}.news-card{padding:22px}.identity-photo img{height:285px}.convitto-teaser img{height:275px}.page-hero{padding:43px 0 50px}.page-hero img{height:235px}.lab-highlight{padding:20px}.lab-gallery img{height:205px}.footer-grid{gap:30px}}
 
 /* v6 — gerarchia della home e area famiglie */
-.nav-links a[href="/documenti"]{color:#f0c97b}
-.nav-links a[href="/documenti"]::after{background:#f0c97b}
+.nav-links a[href^="/documenti"]{color:#f0c97b}
+.nav-links a[href^="/documenti"]::after{background:#f0c97b}
 .family-note{margin-top:20px;padding:18px 20px;border-left:3px solid var(--gold);background:rgba(255,255,255,.58);border-radius:0 12px 12px 0;color:var(--text-soft)}
 .family-note strong{display:block;color:var(--blue-dark);margin-bottom:3px}
-@media(max-width:850px){.nav-links a[href="/documenti"]{color:#f4d58e}}
+@media(max-width:850px){.nav-links a[href^="/documenti"]{color:#f4d58e}}
 
 
 /* v8 — docenti e completezza delle pagine scuola */
@@ -680,3 +680,280 @@ html{color-scheme:light}
   .hero::after{display:none}
   .hero-figure::before{inset:4px 10px 12px -5px;border-radius:24px;transform:rotate(-2deg)}
 }
+
+/* v34 — scala tipografica coerente */
+:root{
+  --type-label:.75rem;
+  --type-small:.8125rem;
+  --type-secondary:.9375rem;
+  --type-body:1rem;
+  --type-card-title:1.2rem;
+}
+.eyebrow,
+.tag,
+.chip,
+.offer-kicker,
+.fact small,
+.fact-strip-item small,
+.leadership-card small,
+.doc-audience,
+.doc-status,
+.family-tool-index,
+.document-filter-group>span,
+.document-search>span{font-size:var(--type-label)}
+.nav-links a,
+.header-cta,
+.btn,
+.text-link,
+.social-pill,
+.page-quick-nav a,
+.filter-button,
+.document-category-nav a,
+.doc-actions a{font-size:var(--type-small)}
+.path-body p,
+.news-card p,
+.fact p,
+.spaces-note,
+.identity-point span,
+.contact-card p,
+.principle p,
+.timeline-item p,
+.venue-card p,
+.offer-panel-head p,
+.offer-card small,
+.environment-card figcaption span,
+.space-slide figcaption span,
+.model-pillars span,
+.today-grid span,
+.doc-copy p,
+.document-section-head p,
+.archive-note p{font-size:var(--type-secondary)}
+.feature span,
+.schedule-table span,
+.update-grid span,
+.space-stats span,
+.history-timeline-item span,
+.equipment-gallery figcaption,
+.family-tool small,
+.aside-contact p,
+.aside-note{font-size:var(--type-secondary)}
+.teacher-table{font-size:.875rem}
+.teacher-note{font-size:var(--type-small);line-height:1.55}
+.footer-brand p,
+.footer-col a{font-size:var(--type-small)}
+.footer-bottom{font-size:var(--type-label)}
+.path-body h3,
+.news-card h3,
+.fact strong,
+.identity-point strong,
+.principle strong,
+.contact-card h2,
+.contact-card h3,
+.environment-card figcaption strong,
+.space-slide figcaption strong,
+.family-tool strong{font-size:var(--type-card-title)}
+.hero-copy .lead,
+.page-hero p,
+.section-head p,
+.prose{font-size:var(--type-body)}
+
+@media(max-width:620px){
+  .hero-copy .lead,
+  .page-hero p,
+  .section-head p,
+  .prose{font-size:.95rem}
+  .path-body p,
+  .news-card p,
+  .fact p,
+  .contact-card p,
+  .principle p,
+  .offer-card small,
+  .doc-copy p{font-size:var(--type-secondary)}
+  .hero-caption,
+  .preview-badge{font-size:var(--type-label)}
+}
+
+@media(max-width:850px){
+  .services-layout{grid-template-columns:minmax(0,1fr);gap:34px}
+}
+
+/* v35 — interruzioni di riga intenzionali nei titoli */
+h1,h2{text-wrap:balance}
+@media(min-width:621px){
+  .hero-copy h1{font-size:clamp(2.7rem,5.15vw,4.6rem)}
+  .page-hero h1{font-size:clamp(2.7rem,4.5vw,4rem)}
+  .hero-copy h1 .slogan-line,
+  .hero-copy h1 .slogan-second{white-space:nowrap}
+}
+
+/* v37 — scansione della giornata e gallerie scolastiche */
+.day-schedule{grid-template-columns:1fr;gap:10px;margin-top:24px}
+.day-schedule>div{
+  display:grid;
+  grid-template-columns:130px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+  padding:18px 20px;
+  border-left:4px solid var(--blue);
+  background:linear-gradient(135deg,var(--cream),#fff)
+}
+.day-schedule strong{font-size:1.05rem;line-height:1.45}
+.day-schedule span{margin-top:0;line-height:1.6}
+.shared-spaces-showcase .spaces-carousel{grid-auto-columns:minmax(320px,35%)}
+.shared-spaces-showcase .space-slide img{height:260px}
+@media(max-width:900px){
+  .shared-spaces-showcase .spaces-carousel{grid-auto-columns:minmax(300px,52%)}
+}
+@media(max-width:620px){
+  .day-schedule>div{grid-template-columns:1fr;gap:5px;padding:17px 18px}
+  .shared-spaces-showcase .spaces-carousel{grid-auto-columns:88%}
+  .shared-spaces-showcase .space-slide img{height:225px}
+}
+
+/* v38 — collegamenti social più riconoscibili */
+.social-pill{
+  min-height:52px;
+  padding:0 20px;
+  border:0;
+  color:#fff;
+  font-size:.875rem;
+  box-shadow:0 10px 24px rgba(16,39,70,.16);
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease
+}
+.social-pill:hover{
+  border-color:transparent;
+  transform:translateY(-2px);
+  box-shadow:0 15px 30px rgba(16,39,70,.22);
+  filter:saturate(1.08)
+}
+.social-pill svg{width:21px;height:21px;stroke-width:1.9}
+.social-instagram{background:linear-gradient(135deg,#f09433 0%,#dc2743 35%,#bc1888 70%,#833ab4 100%)}
+.social-facebook{background:#1877f2}
+@media(max-width:620px){
+  .home-contact-actions,
+  .social-buttons{width:100%}
+  .home-contact-actions .btn,
+  .home-contact-actions .social-pill,
+  .social-buttons .social-pill{width:100%}
+}
+
+/* v39 — modulo contatti essenziale */
+.contact-form-panel{
+  display:grid;
+  grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);
+  gap:46px;
+  margin-top:34px;
+  padding:38px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:linear-gradient(135deg,#f5f8fc,#fff 72%);
+  box-shadow:0 16px 42px rgba(16,39,70,.07)
+}
+.contact-form-intro h2{color:var(--blue-dark)}
+.contact-form-intro p{margin-top:14px;color:var(--muted);font-size:var(--type-secondary)}
+.contact-form-intro ul{display:grid;gap:9px;margin:24px 0 0;padding:0;list-style:none;color:var(--blue-dark);font-size:var(--type-small);font-weight:700}
+.contact-form-intro li{display:flex;align-items:center;gap:9px}
+.contact-form-intro li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 4px rgba(234,183,61,.14)}
+.contact-request-form{display:grid;grid-template-columns:1fr 1fr;gap:19px 16px}
+.form-field{display:grid;gap:8px;min-width:0}
+.form-field-wide{grid-column:1/-1}
+.form-field label{color:var(--blue-dark);font-size:var(--type-small);font-weight:750}
+.form-field label span{color:var(--muted);font-weight:500}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;
+  min-height:49px;
+  padding:12px 14px;
+  border:1px solid rgba(24,52,95,.18);
+  border-radius:12px;
+  background:#fff;
+  color:var(--text);
+  font:inherit;
+  font-size:var(--type-secondary);
+  outline:0;
+  transition:border-color .18s,box-shadow .18s
+}
+.form-field textarea{min-height:132px;resize:vertical;line-height:1.55}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(43,95,159,.11)}
+.form-consent{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;color:var(--muted);font-size:var(--type-small);line-height:1.5;cursor:pointer}
+.form-consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--blue)}
+.form-submit{display:flex;align-items:center;gap:16px;margin-top:2px}
+.form-submit .btn{border:0;cursor:pointer;white-space:nowrap}
+.form-submit p{color:var(--muted);font-size:var(--type-small);line-height:1.45}
+.form-status{min-height:0;color:var(--blue);font-size:var(--type-small);font-weight:700}
+.form-status:empty{display:none}
+@media(max-width:850px){
+  .contact-form-panel{grid-template-columns:1fr;gap:30px;padding:32px}
+  .contact-form-intro ul{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:620px){
+  .contact-form-panel{margin-top:28px;padding:24px 20px;border-radius:19px}
+  .contact-form-intro ul{grid-template-columns:1fr}
+  .contact-request-form{grid-template-columns:1fr}
+  .form-field-wide{grid-column:auto}
+  .form-submit{align-items:stretch;flex-direction:column}
+  .form-submit .btn{width:100%}
+}
+
+/* v41 — pagina Contatti senza banner introduttivo */
+.contact-main-section{padding-top:62px}
+.contact-main-section .visit-intro{max-width:760px}
+.contact-main-section .visit-intro h1{font-size:clamp(2.45rem,4vw,3.35rem)}
+@media(max-width:620px){
+  .contact-main-section{padding-top:42px}
+  .contact-main-section .visit-intro h1{font-size:2.25rem}
+}
+
+/* v42 — CTA brevi sempre su una riga */
+.header-cta,.cta-panel .btn{white-space:nowrap}
+.cta-panel .btn{flex:0 0 auto}
+
+/* v43 — cinque novità della Secondaria */
+.secondary-news-grid>div:last-child:nth-child(odd){grid-column:1/-1}
+@media(max-width:620px){
+  .secondary-news-grid>div:last-child:nth-child(odd){grid-column:auto}
+}
+
+/* v44 — stato attivo pulito nel menu mobile */
+@media(max-width:850px){
+  .site-header.menu-open .nav-links a::after{display:none}
+  .site-header.menu-open .nav-links a[aria-current="page"]{color:#f0c575}
+}
+
+/* v46 — nel menu mobile il dorato identifica solo la pagina corrente */
+@media(max-width:850px){
+  .site-header.menu-open .nav-links a[href^="/documenti"]{color:#e7edf5}
+  .site-header.menu-open .nav-links a[aria-current="page"]{color:#f0c575}
+}
+
+/* v47 — livelli scolastici come etichette, non come pulsanti */
+.school-levels{gap:22px;font-size:.8rem}
+.school-levels span{
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  cursor:default
+}
+.school-levels i{width:8px;height:8px;border-radius:50%;transform:none;box-shadow:0 0 0 4px rgba(242,200,111,.16)}
+.school-levels span:nth-child(2) i{box-shadow:0 0 0 4px rgba(237,179,162,.16)}
+@media(max-width:620px){.school-levels{gap:14px 19px}}
+
+/* v48 — i due percorsi evidenziati nella frase introduttiva */
+.school-inline{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+  font-weight:750
+}
+.school-inline::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%}
+.school-inline-primary{color:#765715}
+.school-inline-primary::before{background:var(--sun);box-shadow:0 0 0 3px rgba(242,200,111,.15)}
+.school-inline-secondary{color:#8a493b}
+.school-inline-secondary::before{background:var(--coral);box-shadow:0 0 0 3px rgba(237,179,162,.15)}
+.school-inline{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent)}
+.school-inline:hover{text-decoration-thickness:2px;text-decoration-color:currentColor}
+.school-inline-list{display:grid;gap:5px;margin-top:7px}
+.school-inline-list .school-inline{width:fit-content}
+@media(max-width:390px){.school-inline{white-space:normal}}
