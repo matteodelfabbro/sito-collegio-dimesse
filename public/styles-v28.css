@@ -787,16 +787,24 @@ h1,h2{text-wrap:balance}
 }
 
 /* v37 — scansione della giornata e gallerie scolastiche */
+.section-title-feature{
+  margin-top:48px;
+  scroll-margin-top:92px
+}
+.section-title-feature h2{margin-top:3px}
+.section-title-feature p{margin-top:10px}
 .day-schedule{grid-template-columns:1fr;gap:10px;margin-top:24px}
 .day-schedule>div{
   display:grid;
-  grid-template-columns:130px minmax(0,1fr);
-  gap:18px;
-  align-items:start;
+  grid-template-columns:36px 130px minmax(0,1fr);
+  gap:16px;
+  align-items:center;
   padding:18px 20px;
   border-left:4px solid var(--blue);
   background:linear-gradient(135deg,var(--cream),#fff)
 }
+.schedule-icon{display:grid;place-items:center;width:32px;height:32px;color:var(--blue)}
+.schedule-icon svg{width:27px;height:27px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .day-schedule strong{font-size:1.05rem;line-height:1.45}
 .day-schedule span{margin-top:0;line-height:1.6}
 .shared-spaces-showcase .spaces-carousel{grid-auto-columns:minmax(320px,35%)}
@@ -805,9 +813,37 @@ h1,h2{text-wrap:balance}
   .shared-spaces-showcase .spaces-carousel{grid-auto-columns:minmax(300px,52%)}
 }
 @media(max-width:620px){
-  .day-schedule>div{grid-template-columns:1fr;gap:5px;padding:17px 18px}
+  .section-title-feature{margin-top:38px}
+  .day-schedule>div{grid-template-columns:32px minmax(0,1fr);gap:5px 12px;padding:17px 18px}
+  .day-schedule strong{align-self:center}
+  .day-schedule>div>span:not(.schedule-icon){grid-column:2}
   .shared-spaces-showcase .spaces-carousel{grid-auto-columns:88%}
   .shared-spaces-showcase .space-slide img{height:225px}
+}
+
+/* v51 — attività riunite e titoli di sezione illustrati */
+.activities-showcase{
+  margin:3.5rem 0 3.75rem;
+  padding:clamp(1.5rem,3vw,2.65rem);
+  border:1px solid rgba(31,72,128,.15);
+  border-radius:28px;
+  background:linear-gradient(145deg,#f1f6fc 0%,#fffaf0 100%);
+  box-shadow:0 20px 50px rgba(24,55,96,.08)
+}
+.activities-heading{display:block}
+.activities-heading h2{max-width:20ch;margin:.2rem 0 .75rem}
+.activities-heading p{max-width:65ch;margin-top:0}
+.activities-group{margin-top:2rem;padding-top:1.65rem;border-top:1px solid rgba(31,72,128,.14)}
+.activities-group h3{color:var(--blue-dark);font-size:1.35rem}
+.activities-group>p{margin-top:.6rem}
+.activities-group>ul{margin-top:1rem}
+.activities-established{padding:1.5rem;border:1px solid rgba(31,72,128,.12);border-radius:18px;background:rgba(255,255,255,.78)}
+.activities-established h3{font-family:var(--serif)}
+.activities-showcase .primary-news-grid,.activities-showcase .update-grid{margin-top:1rem}
+@media(max-width:720px){
+  .activities-showcase{margin:2.5rem 0 3rem;padding:1.25rem;border-radius:22px}
+  .activities-heading h2{max-width:none;font-size:clamp(1.7rem,7.4vw,2.2rem)}
+  .activities-established{padding:1.15rem}
 }
 
 /* v38 — collegamenti social più riconoscibili */

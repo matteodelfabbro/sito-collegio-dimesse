@@ -72,6 +72,11 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
     convitto: 'Convitto universitario',
     generale: 'Informazioni generali'
   };
+  const requestedInterest = new URLSearchParams(location.search).get('interesse');
+  const interestSelect = form.querySelector('[name="interesse"]');
+  if (interestSelect && Object.hasOwn(recipients, requestedInterest)) {
+    interestSelect.value = requestedInterest;
+  }
 
   form.addEventListener('submit', event => {
     event.preventDefault();
