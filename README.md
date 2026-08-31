@@ -4,7 +4,7 @@ Sito istituzionale statico del Collegio Dimesse di Udine, pubblicato tramite Fir
 
 **Sito online:** [https://sito-scuola-1e42f.web.app/](https://sito-scuola-1e42f.web.app/)
 
-> **Stato:** anteprima non ufficiale. Firebase invia l'intestazione `X-Robots-Tag: noindex, nofollow, noarchive` su tutti i contenuti per impedirne l'indicizzazione. Prima del lancio ufficiale, rimuovere questa intestazione da `firebase.json` e pubblicare nuovamente il sito.
+> **Stato:** versione pronta per la pubblicazione sul dominio ufficiale.
 
 ## Contenuti principali
 
