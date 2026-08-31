@@ -1,6 +1,27 @@
 const header = document.querySelector('.site-header');
 const toggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.nav-links');
+let headerCompact = false;
+let headerFrame = null;
+
+function applyHeaderSize() {
+  headerFrame = null;
+  if (!header) return;
+  if (!headerCompact && window.scrollY > 72) {
+    headerCompact = true;
+    header.classList.add('is-compact');
+  } else if (headerCompact && window.scrollY < 28) {
+    headerCompact = false;
+    header.classList.remove('is-compact');
+  }
+}
+
+function requestHeaderUpdate() {
+  if (headerFrame === null) headerFrame = requestAnimationFrame(applyHeaderSize);
+}
+
+applyHeaderSize();
+window.addEventListener('scroll', requestHeaderUpdate, { passive: true });
 
 function closeMenu(restoreFocus = false) {
   if (!header || !toggle) return;
