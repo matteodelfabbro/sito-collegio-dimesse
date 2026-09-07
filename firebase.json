@@ -95,6 +95,16 @@
         "source": "/scuola/documenti",
         "destination": "/documenti",
         "type": 301
+      },
+      {
+        "source": "/scuola/documeni-primaria",
+        "destination": "/documenti",
+        "type": 301
+      },
+      {
+        "source": "/home-page",
+        "destination": "/",
+        "type": 301
       }
     ]
   }
