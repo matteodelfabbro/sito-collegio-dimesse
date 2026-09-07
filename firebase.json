@@ -80,6 +80,21 @@
         "source": "/scuola/documenti-sec",
         "destination": "/documenti",
         "type": 301
+      },
+      {
+        "source": "/novita",
+        "destination": "/documenti#avvisi",
+        "type": 301
+      },
+      {
+        "source": "/scuola/secondaria",
+        "destination": "/secondaria",
+        "type": 301
+      },
+      {
+        "source": "/scuola/documenti",
+        "destination": "/documenti",
+        "type": 301
       }
     ]
   }
