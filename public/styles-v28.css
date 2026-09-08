@@ -140,6 +140,7 @@ h3{font-size:1.34rem}
 .teacher-table{width:100%;border-collapse:collapse;min-width:720px;font-size:.82rem}.teacher-table caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .teacher-table th,.teacher-table td{padding:16px 18px;border-bottom:1px solid rgba(24,52,95,.1);text-align:left;vertical-align:top}.teacher-table thead th{background:var(--blue-dark);color:#fff;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}.teacher-table tbody th{width:25%;color:var(--blue-dark);font-family:var(--serif);font-size:.9rem;background:rgba(234,240,248,.45)}.teacher-table td:nth-child(2){width:50%;color:var(--text)}.teacher-table td:last-child{width:25%;color:var(--muted);font-weight:600}.teacher-table tbody tr:last-child>*{border-bottom:0}.teacher-table tbody tr:hover td{background:#fbfaf6}
 .teacher-note{margin-top:14px;color:var(--muted);font-size:.7rem}
+.teacher-substitute{display:block;margin-top:4px;color:var(--muted);font-size:.7rem;font-weight:500}
 @media(max-width:620px){.teachers-section{padding:62px 0}.leadership-grid{grid-template-columns:1fr}.teacher-table{min-width:640px}.teacher-table th,.teacher-table td{padding:14px}.teacher-table-wrap{border-radius:14px}}
 
 
