@@ -127,7 +127,6 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
   const cards = [...document.querySelectorAll('[data-document]')];
   if (!cards.length) return;
   const buttons = [...document.querySelectorAll('[data-audience-filter]')];
-  const noticeCards = [...document.querySelectorAll('[data-notice]')];
   const search = document.querySelector('[data-document-search]');
   const sections = [...document.querySelectorAll('[data-document-section]')];
   const result = document.querySelector('[data-document-results]');
@@ -147,7 +146,7 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       card.hidden = !(audienceMatch && searchMatch);
       if (!card.hidden) visible++;
     });
-    noticeCards.forEach(card => {
+    document.querySelectorAll('[data-notice]').forEach(card => {
       const cardAudience = card.dataset.audience;
       card.hidden = !(audience === 'all' || cardAudience === audience || cardAudience === 'comune');
     });
@@ -170,5 +169,49 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
     update();
   }));
   search?.addEventListener('input', update);
+  window.addEventListener('notices:updated', update);
   update();
+})();
+
+// v16 — avvisi alimentati dall'archivio condiviso con il pannello di gestione
+(() => {
+  const list = document.querySelector('[data-public-notice-list]');
+  if (!list) return;
+
+  const escapeHtml = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const dateParts = value => {
+    const date = new Date(`${value}T12:00:00`);
+    return {
+      day: new Intl.DateTimeFormat('it-IT', { day: '2-digit' }).format(date),
+      month: new Intl.DateTimeFormat('it-IT', { month: 'short', year: 'numeric' }).format(date).replace('.', '')
+    };
+  };
+  const labels = audience => audience === 'primaria'
+    ? '<span class="doc-audience doc-audience-primaria">Primaria</span>'
+    : audience === 'secondaria'
+      ? '<span class="doc-audience doc-audience-secondaria">Secondaria</span>'
+      : '<span class="doc-audience doc-audience-primaria">Primaria</span><span class="doc-audience doc-audience-secondaria">Secondaria</span>';
+
+  fetch('/data/avvisi.json', { cache: 'no-store' })
+    .then(response => {
+      if (!response.ok) throw new Error('Elenco avvisi non disponibile');
+      return response.json();
+    })
+    .then(data => {
+      const notices = (Array.isArray(data.items) ? data.items : [])
+        .filter(notice => notice.active)
+        .sort((a, b) => b.date.localeCompare(a.date));
+      list.innerHTML = notices.map(notice => {
+        const date = dateParts(notice.date);
+        return `<article class="notice-card" data-notice data-audience="${escapeHtml(notice.audience)}">
+          <div class="notice-date" aria-label="Pubblicato il ${escapeHtml(notice.date)}"><strong>${date.day}</strong><span>${date.month}</span></div>
+          <div class="notice-copy"><div class="doc-labels">${labels(notice.audience)}</div><h3>${escapeHtml(notice.title)}</h3><p>${escapeHtml(notice.description || '')}</p></div>
+          <div class="doc-actions"><a class="doc-open" href="${escapeHtml(notice.file)}" target="_blank" rel="noopener">Apri PDF <span aria-hidden="true">↗</span></a><a class="doc-download" href="${escapeHtml(notice.file)}" download>Scarica <span aria-hidden="true">↓</span></a></div>
+        </article>`;
+      }).join('');
+      window.dispatchEvent(new CustomEvent('notices:updated'));
+    })
+    .catch(() => {
+      // Mantiene l'avviso presente nell'HTML come ripiego in caso di rete assente.
+    });
 })();

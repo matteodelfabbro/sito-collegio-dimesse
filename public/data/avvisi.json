@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-09T00:00:00+02:00",
+  "items": [
+    {
+      "id": "inizio-scuola-2026-2027",
+      "title": "Inizio scuola — anno scolastico 2026/27",
+      "description": "Orari dei primi giorni di scuola: mercoledì 9 settembre, periodo dal 10 al 18 settembre e avvio dell’orario normale da lunedì 21 settembre.",
+      "date": "2026-07-20",
+      "audience": "comune",
+      "file": "/documenti-files/inizio-scuola-2026-2027.pdf",
+      "active": true
+    }
+  ]
+}
