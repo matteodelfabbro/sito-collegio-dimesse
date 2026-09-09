@@ -21,9 +21,9 @@ function doPost(event) {
     .replace(/</g, '\\u003c')
     .replace(/-->/g, '--\\u003e');
   return HtmlService.createHtmlOutput(`<script>
-    const receiver = window.opener && !window.opener.closed ? window.opener : window.parent;
+    const receiver = window.top.opener && !window.top.opener.closed ? window.top.opener : window.parent;
     receiver.postMessage(${message}, '*');
-    window.setTimeout(() => window.close(), 300);
+    window.setTimeout(() => window.top.close(), 300);
   </script><p>Operazione completata. Questa finestra si chiuderà automaticamente.</p>`);
 }
 
@@ -83,7 +83,7 @@ function handleRequest_(request) {
   data.version = Number(data.version || 0) + 1;
   data.updatedAt = new Date().toISOString();
   data.items = items;
-  changes.push({ path: DATA_PATH, content: Utilities.base64Encode(JSON.stringify(data, null, 2) + '\n'), encoding: 'base64' });
+  changes.push({ path: DATA_PATH, content: Utilities.base64Encode(JSON.stringify(data, null, 2) + '\n', Utilities.Charset.UTF_8), encoding: 'base64' });
 
   commitChanges_(state, changes, commitMessage_(action, payload, items));
   return { ok: true, items: items, url: publicUrl };
