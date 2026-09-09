@@ -1008,6 +1008,7 @@ h1,h2{text-wrap:balance}
 .school-inline-secondary::before{background:var(--coral);box-shadow:0 0 0 3px rgba(237,179,162,.15)}
 .school-inline{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent)}
 .school-inline:hover{text-decoration-thickness:2px;text-decoration-color:currentColor}
+.school-inline-intro{white-space:nowrap}
 .school-inline-list{display:grid;gap:5px;margin-top:7px}
 .school-inline-list .school-inline{width:fit-content}
 @media(max-width:390px){.school-inline{white-space:normal}}
