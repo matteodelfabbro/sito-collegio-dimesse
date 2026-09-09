@@ -1,6 +1,6 @@
 {
-  "version": 5,
-  "updatedAt": "2026-09-09T17:59:15.603Z",
+  "version": 6,
+  "updatedAt": "2026-09-09T18:15:38.054Z",
   "items": [
     {
       "id": "inizio-scuola-2026-2027",
@@ -9,6 +9,15 @@
       "date": "2026-07-20",
       "audience": "comune",
       "file": "/documenti-files/inizio-scuola-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "2026-09-09-prova",
+      "title": "prova",
+      "description": "prova",
+      "date": "2026-09-09",
+      "audience": "comune",
+      "file": "/documenti-files/avvisi/2026-09-09-prova.pdf",
       "active": true
     }
   ]
