@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "updatedAt": "2026-09-09T17:52:00.000Z",
+  "version": 4,
+  "updatedAt": "2026-09-09T17:57:48.103Z",
   "items": [
     {
       "id": "inizio-scuola-2026-2027",
@@ -9,6 +9,15 @@
       "date": "2026-07-20",
       "audience": "comune",
       "file": "/documenti-files/inizio-scuola-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "2026-09-09-verifica-tecnica-perche-citta-piu",
+      "title": "Verifica tecnica: perché, città, più.",
+      "description": "",
+      "date": "2026-09-09",
+      "audience": "comune",
+      "file": "/documenti-files/avvisi/2026-09-09-verifica-tecnica-perche-citta-piu.pdf",
       "active": true
     }
   ]
