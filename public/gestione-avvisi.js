@@ -118,17 +118,22 @@
     });
   }
 
-  function callPublisher(action, payload) {
+  function openPublisherWindow() {
+    const publisherWindow = window.open('', 'dimesse-avvisi-publisher', 'popup=yes,width=620,height=420');
+    if (!publisherWindow) throw new Error('Safari ha bloccato la finestra protetta. Consenti i popup per questa pagina e riprova.');
+    publisherWindow.document.title = 'Pubblicazione avviso';
+    publisherWindow.document.body.innerHTML = '<p style="font:16px system-ui;padding:32px">Preparazione della pubblicazione…</p>';
+    return publisherWindow;
+  }
+
+  function callPublisher(action, payload, publisherWindow) {
     if (!config.endpoint) return Promise.reject(new Error('Il collegamento protetto non è ancora configurato.'));
     return new Promise((resolve, reject) => {
       const requestId = `avviso-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-      const frame = document.createElement('iframe');
       const transport = document.createElement('form');
       const timeout = window.setTimeout(() => finish(new Error('Il servizio non ha risposto. Verifica di aver effettuato l’accesso con l’account Google autorizzato.')), 90000);
 
-      frame.name = requestId;
-      frame.hidden = true;
-      frame.title = 'Invio protetto dell’avviso';
+      publisherWindow.name = requestId;
       transport.method = 'post';
       transport.action = config.endpoint;
       transport.target = requestId;
@@ -145,8 +150,8 @@
       function finish(error, result) {
         window.clearTimeout(timeout);
         window.removeEventListener('message', receive);
-        frame.remove();
         transport.remove();
+        if (!publisherWindow.closed) publisherWindow.close();
         if (error) reject(error); else resolve(result);
       }
 
@@ -160,7 +165,7 @@
       window.addEventListener('message', receive);
       addField('requestId', requestId);
       addField('request', JSON.stringify({ action, payload }));
-      document.body.append(frame, transport);
+      document.body.append(transport);
       transport.submit();
     });
   }
@@ -181,7 +186,9 @@
     const file = input.files[0];
     if (!file) { showStatus('Prima scegli il PDF da pubblicare.', true); dropzone.focus(); return; }
     const data = new FormData(form);
+    let publisherWindow;
     try {
+      publisherWindow = openPublisherWindow();
       setBusy(true);
       const result = await callPublisher(replacingId ? 'replace' : 'publish', {
         id: replacingId || undefined,
@@ -191,12 +198,13 @@
         date: String(data.get('date')),
         fileName: file.name,
         pdfBase64: await fileAsBase64(file)
-      });
+      }, publisherWindow);
       notices = result.items;
       render();
       resetForm();
       showStatus(`Avviso pubblicato. Link diretto: ${result.url}`);
     } catch (error) {
+      if (publisherWindow && !publisherWindow.closed) publisherWindow.close();
       showStatus(error.message, true);
     } finally {
       setBusy(false);
@@ -227,13 +235,16 @@
       return;
     }
     if (action === 'delete' && !confirm(`Eliminare definitivamente “${notice.title}”?`)) return;
+    let publisherWindow;
     try {
+      publisherWindow = openPublisherWindow();
       button.disabled = true;
-      const result = await callPublisher(action, { id: notice.id });
+      const result = await callPublisher(action, { id: notice.id }, publisherWindow);
       notices = result.items;
       render();
       showStatus(action === 'delete' ? 'Avviso eliminato.' : (notice.active ? 'Avviso nascosto.' : 'Avviso ripubblicato.'));
     } catch (error) {
+      if (publisherWindow && !publisherWindow.closed) publisherWindow.close();
       showStatus(error.message, true);
       button.disabled = false;
     }

@@ -20,7 +20,11 @@ function doPost(event) {
   const message = JSON.stringify({ source: 'dimesse-avvisi', requestId: requestId, result: result })
     .replace(/</g, '\\u003c')
     .replace(/-->/g, '--\\u003e');
-  return HtmlService.createHtmlOutput(`<script>window.parent.postMessage(${message}, '*');</script><p>Operazione completata. Puoi chiudere questa pagina.</p>`);
+  return HtmlService.createHtmlOutput(`<script>
+    const receiver = window.opener && !window.opener.closed ? window.opener : window.parent;
+    receiver.postMessage(${message}, '*');
+    window.setTimeout(() => window.close(), 300);
+  </script><p>Operazione completata. Questa finestra si chiuderà automaticamente.</p>`);
 }
 
 function handleRequest_(request) {
