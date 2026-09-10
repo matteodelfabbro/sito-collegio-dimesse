@@ -1,0 +1,42 @@
+name: Pubblica il sito su Firebase
+
+on:
+  push:
+    branches:
+      - main
+      - refactor
+    paths:
+      - public/**
+      - firebase.json
+      - .github/workflows/deploy-firebase.yml
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Scarica il sito
+        uses: actions/checkout@v4
+
+      - name: Installa Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Pubblica il sito ufficiale
+        if: github.ref == 'refs/heads/main'
+        run: npx --yes firebase-tools@latest deploy --only hosting --project sito-scuola-1e42f --non-interactive --token "$FIREBASE_TOKEN"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Pubblica l'anteprima refactor
+        if: github.ref == 'refs/heads/refactor'
+        run: npx --yes firebase-tools@latest hosting:channel:deploy refactor --expires 30d --project sito-scuola-1e42f --non-interactive --token "$FIREBASE_TOKEN"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#102746">
+  <title>Gestione Area famiglie | Collegio Dimesse</title>
+  <link href="/favicon.ico?v=3" rel="icon" sizes="any">
+  <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180">
+  <link href="/styles-v28.css?v=65" rel="stylesheet">
+  <link href="/gestione-avvisi.css?v=2" rel="stylesheet">
+</head>
+<body class="notice-admin-page">
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+  <header class="admin-header">
+    <div class="container admin-header-inner">
+      <a class="brand" href="/" aria-label="Collegio Dimesse, home">
+        <img class="brand-logo" src="/assets/collegio/logo-dimesse-bianco.png" width="512" height="436" alt="">
+        <span><strong>Collegio Dimesse</strong><small>Gestione Area famiglie</small></span>
+      </a>
+      <div class="admin-user" aria-label="Utente collegato">
+        <span class="admin-user-avatar" aria-hidden="true">S</span>
+        <span><strong>Segreteria</strong><small>Accesso istituzionale</small></span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="admin-main">
+    <div class="container">
+      <div class="admin-intro">
+        <div>
+          <span class="eyebrow">Area riservata</span>
+          <h1>Gestione Area famiglie</h1>
+          <p>Pubblica e aggiorna avvisi e documenti. Le modifiche compariranno automaticamente nella pagina pubblica.</p>
+        </div>
+        <span class="admin-demo-badge">Accesso istituzionale</span>
+      </div>
+
+      <div class="admin-kind-switch" role="group" aria-label="Contenuto da gestire">
+        <button class="is-active" type="button" data-admin-kind="notice" aria-pressed="true">Avvisi</button>
+        <button type="button" data-admin-kind="document" aria-pressed="false">Documenti</button>
+      </div>
+
+      <div class="admin-layout">
+        <section class="admin-panel admin-compose" aria-labelledby="new-content-title">
+          <div class="admin-panel-head">
+            <span class="admin-step">01</span>
+            <div><h2 id="new-content-title" data-compose-title>Nuovo avviso</h2><p data-compose-help>Trascina il PDF e completa le informazioni.</p></div>
+          </div>
+
+          <form data-content-form>
+            <div class="admin-dropzone" data-dropzone tabindex="0" role="button" aria-describedby="file-help">
+              <input type="file" name="pdf" id="notice-pdf" accept="application/pdf,.pdf" hidden required>
+              <span class="admin-upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="30" height="30"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <strong data-file-title>Trascina qui il PDF</strong>
+              <span data-file-detail>oppure premi per sceglierlo dal dispositivo</span>
+              <small id="file-help">Solo PDF · massimo 20 MB</small>
+            </div>
+
+            <div class="admin-fields">
+              <label class="admin-field admin-field-wide">
+                <span data-title-label>Titolo dell’avviso</span>
+                <input type="text" name="title" maxlength="120" placeholder="Es. Orario primi giorni di scuola" required>
+              </label>
+
+              <label class="admin-field">
+                <span>Destinatari</span>
+                <select name="audience" required>
+                  <option value="comune">Primaria e Secondaria</option>
+                  <option value="primaria">Solo Primaria</option>
+                  <option value="secondaria">Solo Secondaria</option>
+                </select>
+              </label>
+
+              <label class="admin-field" data-notice-field>
+                <span>Data di pubblicazione</span>
+                <input type="date" name="date" required>
+              </label>
+
+              <label class="admin-field" data-document-field hidden>
+                <span>Categoria</span>
+                <select name="category">
+                  <option value="libri">Libri di testo</option>
+                  <option value="regolamenti">Regolamenti e documenti</option>
+                  <option value="benessere">Benessere e inclusione</option>
+                  <option value="privacy">Privacy e segnalazioni</option>
+                </select>
+              </label>
+
+              <label class="admin-field admin-field-wide">
+                <span>Breve descrizione <small>facoltativa</small></span>
+                <textarea name="description" rows="3" maxlength="240" placeholder="Una frase che aiuti le famiglie a capire il contenuto."></textarea>
+              </label>
+
+              <label class="admin-field admin-field-wide" data-document-field hidden>
+                <span>Dettagli <small>facoltativi</small></span>
+                <input type="text" name="meta" maxlength="120" placeholder="Es. 3 pagine · 250 KB">
+              </label>
+            </div>
+
+            <div class="admin-form-footer">
+              <p><span aria-hidden="true">●</span> Il PDF sarà visibile pubblicamente solo dopo la conferma.</p>
+              <button class="admin-publish" type="submit"><span data-submit-label>Pubblica avviso</span> <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="admin-status" data-form-status role="status" aria-live="polite" hidden></div>
+          </form>
+        </section>
+
+        <aside class="admin-help" aria-label="Come funziona">
+          <span class="admin-step">02</span>
+          <h2>Prima di salvare</h2>
+          <ol>
+            <li><strong>Controlla il titolo</strong><span>Deve essere breve e comprensibile.</span></li>
+            <li><strong>Scegli destinazione e categoria</strong><span>Il contenuto apparirà nella sezione corretta.</span></li>
+            <li><strong>Conferma</strong><span>Il sito si aggiornerà automaticamente.</span></li>
+          </ol>
+          <div class="admin-help-note"><strong>Il collegamento viene mostrato dopo la pubblicazione.</strong><span>Potrai copiarlo subito e inviarlo alle famiglie o ai colleghi.</span></div>
+        </aside>
+      </div>
+
+      <section class="admin-notices" aria-labelledby="published-title">
+        <div class="admin-list-head">
+          <div><span class="eyebrow">Area famiglie</span><h2 id="published-title" data-list-title>Avvisi pubblicati</h2></div>
+          <label class="admin-search"><span class="sr-only">Cerca nei contenuti</span><input type="search" placeholder="Cerca un avviso…" data-admin-search></label>
+        </div>
+
+        <div class="admin-notice-list" data-admin-list aria-live="polite"></div>
+        <p class="admin-empty" data-admin-empty hidden>Nessun contenuto corrisponde alla ricerca.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="admin-footer"><div class="container"><span>Collegio Dimesse · Area riservata</span><a href="/documenti">Vedi l’Area famiglie sul sito <span aria-hidden="true">↗</span></a></div></footer>
+  <script src="/avvisi-config.js?v=4"></script>
+  <script src="/gestione-avvisi.js?v=4"></script>
+</body>
+</html>

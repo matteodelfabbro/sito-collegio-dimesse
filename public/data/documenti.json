@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-09T18:30:00.000Z",
+  "items": [
+    {
+      "id": "libri-testo-prime-2026-2027",
+      "title": "Libri di testo — classi prime 2026–2027",
+      "description": "Elenco dei libri adottati per le classi prime.",
+      "audience": "secondaria",
+      "category": "libri",
+      "meta": "Secondaria • 1 pagina • 695 KB",
+      "file": "/documenti-files/libri-testo-prime-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "libri-testo-seconde-2026-2027",
+      "title": "Libri di testo — classi seconde 2026–2027",
+      "description": "Elenco dei libri adottati per le classi seconde.",
+      "audience": "secondaria",
+      "category": "libri",
+      "meta": "Secondaria • 1 pagina • 690 KB",
+      "file": "/documenti-files/libri-testo-seconde-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "libri-testo-terze-2026-2027",
+      "title": "Libri di testo — classi terze 2026–2027",
+      "description": "Elenco dei libri adottati per le classi terze.",
+      "audience": "secondaria",
+      "category": "libri",
+      "meta": "Secondaria • 1 pagina • 653 KB",
+      "file": "/documenti-files/libri-testo-terze-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "ptof-piano-miglioramento-2025-2028",
+      "title": "PTOF e Piano di Miglioramento 2025–2028",
+      "description": "Piano triennale dell’offerta formativa e Piano di Miglioramento della scuola.",
+      "audience": "comune",
+      "category": "regolamenti",
+      "meta": "Primaria e Secondaria • 12 pagine • 177 KB",
+      "file": "/documenti-files/ptof-piano-miglioramento-2025-2028.pdf",
+      "active": true
+    },
+    {
+      "id": "patto-educativo-corresponsabilita",
+      "title": "Patto educativo di corresponsabilità",
+      "description": "Impegni condivisi tra scuola, famiglie e studenti.",
+      "audience": "comune",
+      "category": "regolamenti",
+      "meta": "Primaria e Secondaria • 1 pagina • 31 KB",
+      "file": "/documenti-files/patto-educativo-corresponsabilita.pdf",
+      "active": true
+    },
+    {
+      "id": "codice-etico-genitori",
+      "title": "Codice etico per i genitori",
+      "description": "Principi e comportamenti che orientano la collaborazione educativa.",
+      "audience": "comune",
+      "category": "regolamenti",
+      "meta": "Primaria e Secondaria • 2 pagine • 25 KB",
+      "file": "/documenti-files/codice-etico-genitori.pdf",
+      "active": true
+    },
+    {
+      "id": "regolamento-interno-scuole",
+      "title": "Regolamento interno delle scuole",
+      "description": "Norme organizzative comuni alla Primaria e alla Secondaria.",
+      "audience": "comune",
+      "category": "regolamenti",
+      "meta": "Primaria e Secondaria • 4 pagine • 2.9 MB",
+      "file": "/documenti-files/regolamento-interno-scuole.pdf",
+      "active": true
+    },
+    {
+      "id": "regolamento-dipendenti-docenti-norme-disciplinari",
+      "title": "Regolamento dipendenti e docenti – norme disciplinari",
+      "description": "Regolamento interno, doveri e norme disciplinari per il personale dipendente e docente.",
+      "audience": "comune",
+      "category": "regolamenti",
+      "meta": "Personale • 2 pagine • 272 KB",
+      "file": "/documenti-files/regolamento-dipendenti-docenti-norme-disciplinari.pdf",
+      "active": true
+    },
+    {
+      "id": "protocollo-antibullismo-fidae-fvg",
+      "title": "Protocollo antibullismo FIDAE FVG",
+      "description": "Protocollo condiviso per la prevenzione e la gestione del bullismo.",
+      "audience": "comune",
+      "category": "benessere",
+      "meta": "Primaria e Secondaria • 3 pagine • 35 KB",
+      "file": "/documenti-files/protocollo-antibullismo-fidae-fvg.pdf",
+      "active": true
+    },
+    {
+      "id": "codice-etico-cyberbullismo-fidae-fvg",
+      "title": "Codice etico sul cyberbullismo",
+      "description": "Indicazioni educative per un uso responsabile degli strumenti digitali.",
+      "audience": "comune",
+      "category": "benessere",
+      "meta": "Primaria e Secondaria • 2 pagine • 36 KB",
+      "file": "/documenti-files/codice-etico-cyberbullismo-fidae-fvg.pdf",
+      "active": true
+    },
+    {
+      "id": "piano-annuale-antibullismo",
+      "title": "Piano annuale antibullismo",
+      "description": "Azioni annuali previste dalla scuola per prevenzione, ascolto e intervento.",
+      "audience": "comune",
+      "category": "benessere",
+      "meta": "Primaria e Secondaria • 2 pagine • 32 KB",
+      "file": "/documenti-files/piano-annuale-antibullismo.pdf",
+      "active": true
+    },
+    {
+      "id": "codice-etico-antibullismo-primaria",
+      "title": "Codice etico antibullismo — Primaria",
+      "description": "Documento specifico per la Scuola Primaria.",
+      "audience": "primaria",
+      "category": "benessere",
+      "meta": "Primaria • 3 pagine • 46 KB",
+      "file": "/documenti-files/codice-etico-antibullismo-primaria.pdf",
+      "active": true
+    },
+    {
+      "id": "codice-etico-antibullismo-secondaria",
+      "title": "Codice etico antibullismo — Secondaria",
+      "description": "Documento specifico per la Scuola Secondaria di primo grado.",
+      "audience": "secondaria",
+      "category": "benessere",
+      "meta": "Secondaria • 3 pagine • 42 KB",
+      "file": "/documenti-files/codice-etico-antibullismo-secondaria.pdf",
+      "active": true
+    },
+    {
+      "id": "informativa-privacy-alunni",
+      "title": "Informativa privacy per alunni e famiglie",
+      "description": "Informativa sul trattamento dei dati personali.",
+      "audience": "comune",
+      "category": "privacy",
+      "meta": "Primaria e Secondaria • 2 pagine • 74 KB",
+      "file": "/documenti-files/informativa-privacy-alunni.pdf",
+      "active": true
+    },
+    {
+      "id": "whistleblowing-informativa",
+      "title": "Whistleblowing — Informativa",
+      "description": "Informazioni sul canale interno di segnalazione.",
+      "audience": "comune",
+      "category": "privacy",
+      "meta": "Primaria e Secondaria • 3 pagine • 5.7 MB",
+      "file": "/documenti-files/whistleblowing-informativa.pdf",
+      "active": true
+    },
+    {
+      "id": "whistleblowing-procedura",
+      "title": "Whistleblowing — Procedura",
+      "description": "Procedura per l’invio e la gestione delle segnalazioni.",
+      "audience": "comune",
+      "category": "privacy",
+      "meta": "Primaria e Secondaria • 10 pagine • 1.9 MB",
+      "file": "/documenti-files/whistleblowing-procedura.pdf",
+      "active": true
+    }
+  ]
+}
