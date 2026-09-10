@@ -1,6 +1,6 @@
 (() => {
   const config = window.AVVISI_ADMIN_CONFIG || { endpoint: '', mode: 'draft' };
-  const form = document.querySelector('[data-notice-form]');
+  const form = document.querySelector('[data-content-form]');
   const dropzone = document.querySelector('[data-dropzone]');
   const input = document.querySelector('#notice-pdf');
   const fileTitle = document.querySelector('[data-file-title]');
@@ -9,9 +9,24 @@
   const list = document.querySelector('[data-admin-list]');
   const search = document.querySelector('[data-admin-search]');
   const empty = document.querySelector('[data-admin-empty]');
+  const kindButtons = [...document.querySelectorAll('[data-admin-kind]')];
   const maxSize = 20 * 1024 * 1024;
-  let notices = [];
-  let replacingId = '';
+  const collections = { notice: [], document: [] };
+  let kind = 'notice';
+  let mode = 'publish';
+  let editingId = '';
+
+  const labels = {
+    notice: { singular: 'avviso', plural: 'Avvisi', title: 'Titolo dell’avviso', placeholder: 'Es. Orario primi giorni di scuola' },
+    document: { singular: 'documento', plural: 'Documenti', title: 'Titolo del documento', placeholder: 'Es. Regolamento interno' }
+  };
+  const categoryLabels = {
+    libri: 'Libri di testo',
+    regolamenti: 'Regolamenti e documenti',
+    benessere: 'Benessere e inclusione',
+    privacy: 'Privacy e segnalazioni'
+  };
+  const publicOrigin = config.publicOrigin || 'https://www.collegiodimesse.org';
 
   const dateField = form?.querySelector('[name="date"]');
   if (dateField) dateField.value = new Date().toISOString().slice(0, 10);
@@ -23,10 +38,18 @@
     status.classList.toggle('is-error', isError);
   }
 
+  function setSubmitLabel() {
+    const submitLabel = form?.querySelector('[data-submit-label]');
+    if (!submitLabel) return;
+    if (mode === 'update') submitLabel.textContent = 'Salva modifiche';
+    else if (mode === 'replace') submitLabel.textContent = 'Sostituisci PDF';
+    else submitLabel.textContent = `Pubblica ${labels[kind].singular}`;
+  }
+
   function setBusy(busy) {
     form?.querySelectorAll('button,input,select,textarea').forEach(control => { control.disabled = busy; });
-    const publish = form?.querySelector('.admin-publish');
-    if (publish) publish.firstChild.textContent = busy ? 'Pubblicazione… ' : (replacingId ? 'Sostituisci PDF ' : 'Pubblica avviso ');
+    if (busy) form.querySelector('[data-submit-label]').textContent = 'Salvataggio…';
+    else setSubmitLabel();
   }
 
   function setFile(file) {
@@ -43,7 +66,7 @@
     }
     dropzone.classList.add('has-file');
     fileTitle.textContent = file.name;
-    fileDetail.textContent = `${(file.size / 1024 / 1024).toFixed(1)} MB · pronto per la pubblicazione`;
+    fileDetail.textContent = `${(file.size / 1024 / 1024).toFixed(1)} MB · pronto per il salvataggio`;
     status.hidden = true;
   }
 
@@ -82,30 +105,62 @@
   function render() {
     if (!list) return;
     const term = (search?.value || '').trim().toLocaleLowerCase('it');
-    const filtered = notices.filter(notice => !term || `${notice.title} ${notice.description || ''} ${audienceLabel(notice.audience)}`.toLocaleLowerCase('it').includes(term));
+    const filtered = collections[kind].filter(item => !term || `${item.title} ${item.description || ''} ${audienceLabel(item.audience)} ${categoryLabels[item.category] || ''}`.toLocaleLowerCase('it').includes(term));
+    const ordered = [...filtered].sort(kind === 'notice'
+      ? (a, b) => b.date.localeCompare(a.date)
+      : (a, b) => `${a.category}-${a.title}`.localeCompare(`${b.category}-${b.title}`, 'it'));
     list.innerHTML = '';
-    filtered.sort((a, b) => b.date.localeCompare(a.date)).forEach(notice => {
+    ordered.forEach(item => {
       const article = document.createElement('article');
       article.className = 'admin-notice';
-      article.dataset.adminNotice = '';
-      article.dataset.id = notice.id;
+      article.dataset.adminContent = '';
+      article.dataset.id = item.id;
+      const detail = kind === 'notice'
+        ? `Pubblicato il ${formatDate(item.date)}`
+        : `${categoryLabels[item.category] || 'Documenti'}${item.meta ? ` · ${item.meta}` : ''}`;
       article.innerHTML = `<div class="admin-notice-pdf" aria-hidden="true">PDF</div>
-        <div class="admin-notice-copy"><div><span class="admin-state ${notice.active ? 'is-live' : 'is-hidden'}">${notice.active ? 'Pubblicato' : 'Nascosto'}</span><span class="admin-audience">${escapeHtml(audienceLabel(notice.audience))}</span></div><h3>${escapeHtml(notice.title)}</h3><p>Pubblicato il ${formatDate(notice.date)}</p></div>
-        <div class="admin-notice-actions"><button type="button" data-action="copy">Copia link</button><button type="button" data-action="replace">Sostituisci</button><button type="button" data-action="hide">${notice.active ? 'Nascondi' : 'Ripubblica'}</button><button class="is-danger" type="button" data-action="delete">Elimina</button></div>`;
+        <div class="admin-notice-copy"><div><span class="admin-state ${item.active ? 'is-live' : 'is-hidden'}">${item.active ? 'Pubblicato' : 'Nascosto'}</span><span class="admin-audience">${escapeHtml(audienceLabel(item.audience))}</span></div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(detail)}</p></div>
+        <div class="admin-notice-actions"><button type="button" data-action="copy">Copia link</button><button type="button" data-action="edit">Modifica</button><button type="button" data-action="replace">Sostituisci PDF</button><button type="button" data-action="hide">${item.active ? 'Nascondi' : 'Ripubblica'}</button><button class="is-danger" type="button" data-action="delete">Elimina</button></div>`;
       list.append(article);
     });
-    if (empty) empty.hidden = filtered.length !== 0;
+    if (empty) empty.hidden = ordered.length !== 0;
   }
 
-  async function loadNotices() {
+  function updateKindUi() {
+    const current = labels[kind];
+    kindButtons.forEach(button => {
+      const active = button.dataset.adminKind === kind;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelector('[data-compose-title]').textContent = mode === 'publish' ? `Nuovo ${current.singular}` : `${mode === 'replace' ? 'Sostituisci' : 'Modifica'} ${current.singular}`;
+    document.querySelector('[data-title-label]').textContent = current.title;
+    form.elements.title.placeholder = current.placeholder;
+    document.querySelector('[data-list-title]').textContent = `${current.plural} pubblicati`;
+    search.placeholder = `Cerca ${kind === 'notice' ? 'un avviso' : 'un documento'}…`;
+    document.querySelectorAll('[data-document-field]').forEach(field => { field.hidden = kind !== 'document'; });
+    document.querySelectorAll('[data-notice-field]').forEach(field => { field.hidden = kind !== 'notice'; });
+    form.elements.category.required = kind === 'document';
+    form.elements.date.required = kind === 'notice';
+    input.required = mode !== 'update';
+    dropzone.hidden = mode === 'update';
+    setSubmitLabel();
+    render();
+  }
+
+  async function loadCollections() {
     try {
-      const response = await fetch('/data/avvisi.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error('Elenco non disponibile');
-      const data = await response.json();
-      notices = Array.isArray(data.items) ? data.items : [];
+      const [noticesResponse, documentsResponse] = await Promise.all([
+        fetch('/data/avvisi.json', { cache: 'no-store' }),
+        fetch('/data/documenti.json', { cache: 'no-store' })
+      ]);
+      if (!noticesResponse.ok || !documentsResponse.ok) throw new Error('Elenco non disponibile');
+      const [noticesData, documentsData] = await Promise.all([noticesResponse.json(), documentsResponse.json()]);
+      collections.notice = Array.isArray(noticesData.items) ? noticesData.items : [];
+      collections.document = Array.isArray(documentsData.items) ? documentsData.items : [];
       render();
     } catch (error) {
-      showStatus('Non riesco a caricare gli avvisi attuali. Riprova tra poco.', true);
+      showStatus('Non riesco a caricare i contenuti attuali. Riprova tra poco.', true);
     }
   }
 
@@ -121,18 +176,17 @@
   function openPublisherWindow() {
     const publisherWindow = window.open('', 'dimesse-avvisi-publisher', 'popup=yes,width=620,height=420');
     if (!publisherWindow) throw new Error('Safari ha bloccato la finestra protetta. Consenti i popup per questa pagina e riprova.');
-    publisherWindow.document.title = 'Pubblicazione avviso';
-    publisherWindow.document.body.innerHTML = '<p style="font:16px system-ui;padding:32px">Preparazione della pubblicazione…</p>';
+    publisherWindow.document.title = 'Salvataggio Area famiglie';
+    publisherWindow.document.body.innerHTML = '<p style="font:16px system-ui;padding:32px">Preparazione del salvataggio…</p>';
     return publisherWindow;
   }
 
   function callPublisher(action, payload, publisherWindow) {
     if (!config.endpoint) return Promise.reject(new Error('Il collegamento protetto non è ancora configurato.'));
     return new Promise((resolve, reject) => {
-      const requestId = `avviso-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const requestId = `contenuto-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       const transport = document.createElement('form');
       const timeout = window.setTimeout(() => finish(new Error('Il servizio non ha risposto. Verifica di aver effettuato l’accesso con l’account Google autorizzato.')), 90000);
-
       publisherWindow.name = requestId;
       transport.method = 'post';
       transport.action = config.endpoint;
@@ -158,13 +212,13 @@
       function receive(event) {
         const message = event.data;
         if (!message || message.source !== 'dimesse-avvisi' || message.requestId !== requestId) return;
-        if (!message.result?.ok) finish(new Error(message.result?.error || 'Pubblicazione non riuscita'));
+        if (!message.result?.ok) finish(new Error(message.result?.error || 'Salvataggio non riuscito'));
         else finish(null, message.result);
       }
 
       window.addEventListener('message', receive);
       addField('requestId', requestId);
-      addField('request', JSON.stringify({ action, payload }));
+      addField('request', JSON.stringify({ kind, action, payload }));
       document.body.append(transport);
       transport.submit();
     });
@@ -172,37 +226,63 @@
 
   function resetForm() {
     form.reset();
-    dateField.value = new Date().toISOString().slice(0, 10);
-    replacingId = '';
+    if (dateField) dateField.value = new Date().toISOString().slice(0, 10);
+    mode = 'publish';
+    editingId = '';
     dropzone.classList.remove('has-file');
+    dropzone.hidden = false;
     fileTitle.textContent = 'Trascina qui il PDF';
     fileDetail.textContent = 'oppure premi per sceglierlo dal dispositivo';
-    form.querySelector('.admin-publish').firstChild.textContent = 'Pubblica avviso ';
+    updateKindUi();
   }
+
+  function fillForm(item) {
+    form.elements.title.value = item.title;
+    form.elements.description.value = item.description || '';
+    form.elements.audience.value = item.audience;
+    if (kind === 'notice') form.elements.date.value = item.date;
+    if (kind === 'document') {
+      form.elements.category.value = item.category;
+      form.elements.meta.value = item.meta || '';
+    }
+  }
+
+  kindButtons.forEach(button => button.addEventListener('click', () => {
+    kind = button.dataset.adminKind;
+    if (search) search.value = '';
+    resetForm();
+    status.hidden = true;
+  }));
 
   form?.addEventListener('submit', async event => {
     event.preventDefault();
     if (!form.reportValidity()) return;
     const file = input.files[0];
-    if (!file) { showStatus('Prima scegli il PDF da pubblicare.', true); dropzone.focus(); return; }
+    const needsPdf = mode === 'publish' || mode === 'replace';
+    if (needsPdf && !file) { showStatus('Prima scegli il PDF da pubblicare.', true); dropzone.focus(); return; }
     const data = new FormData(form);
     let publisherWindow;
     try {
       publisherWindow = openPublisherWindow();
       setBusy(true);
-      const result = await callPublisher(replacingId ? 'replace' : 'publish', {
-        id: replacingId || undefined,
+      const payload = {
+        id: editingId || undefined,
         title: String(data.get('title')).trim(),
         description: String(data.get('description')).trim(),
         audience: String(data.get('audience')),
-        date: String(data.get('date')),
-        fileName: file.name,
-        pdfBase64: await fileAsBase64(file)
-      }, publisherWindow);
-      notices = result.items;
-      render();
+        date: String(data.get('date') || ''),
+        category: String(data.get('category') || ''),
+        meta: String(data.get('meta') || ''),
+        fileName: file?.name || ''
+      };
+      if (needsPdf) payload.pdfBase64 = await fileAsBase64(file);
+      const result = await callPublisher(mode, payload, publisherWindow);
+      collections[kind] = result.items;
+      const completedMode = mode;
       resetForm();
-      showStatus(`Avviso pubblicato. Link diretto: ${result.url}`);
+      showStatus(completedMode === 'publish'
+        ? `${labels[kind].singular[0].toUpperCase()}${labels[kind].singular.slice(1)} pubblicato. Link diretto: ${result.url}`
+        : 'Modifiche salvate.');
     } catch (error) {
       if (publisherWindow && !publisherWindow.closed) publisherWindow.close();
       showStatus(error.message, true);
@@ -214,35 +294,34 @@
   list?.addEventListener('click', async event => {
     const button = event.target.closest('button[data-action]');
     if (!button) return;
-    const notice = notices.find(item => item.id === button.closest('[data-admin-notice]').dataset.id);
-    if (!notice) return;
+    const item = collections[kind].find(entry => entry.id === button.closest('[data-admin-content]').dataset.id);
+    if (!item) return;
     const action = button.dataset.action;
     if (action === 'copy') {
-      await navigator.clipboard.writeText(new URL(notice.file, location.origin).href);
-      showStatus(`Link copiato: ${new URL(notice.file, location.origin).href}`);
+      const publicUrl = new URL(item.file, publicOrigin).href;
+      await navigator.clipboard.writeText(publicUrl);
+      showStatus(`Link copiato: ${publicUrl}`);
       return;
     }
-    if (action === 'replace') {
-      replacingId = notice.id;
-      form.elements.title.value = notice.title;
-      form.elements.description.value = notice.description || '';
-      form.elements.audience.value = notice.audience;
-      form.elements.date.value = notice.date;
-      form.querySelector('.admin-publish').firstChild.textContent = 'Sostituisci PDF ';
-      showStatus(`Scegli il nuovo PDF per “${notice.title}”.`);
-      dropzone.focus();
+    if (action === 'edit' || action === 'replace') {
+      editingId = item.id;
+      mode = action === 'edit' ? 'update' : 'replace';
+      fillForm(item);
+      updateKindUi();
+      showStatus(action === 'edit' ? `Modifica i dati di “${item.title}”.` : `Scegli il nuovo PDF per “${item.title}”.`);
+      if (action === 'replace') dropzone.focus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    if (action === 'delete' && !confirm(`Eliminare definitivamente “${notice.title}”?`)) return;
+    if (action === 'delete' && !confirm(`Eliminare definitivamente “${item.title}”?`)) return;
     let publisherWindow;
     try {
       publisherWindow = openPublisherWindow();
       button.disabled = true;
-      const result = await callPublisher(action, { id: notice.id }, publisherWindow);
-      notices = result.items;
+      const result = await callPublisher(action, { id: item.id }, publisherWindow);
+      collections[kind] = result.items;
       render();
-      showStatus(action === 'delete' ? 'Avviso eliminato.' : (notice.active ? 'Avviso nascosto.' : 'Avviso ripubblicato.'));
+      showStatus(action === 'delete' ? `${labels[kind].singular[0].toUpperCase()}${labels[kind].singular.slice(1)} eliminato.` : (item.active ? 'Contenuto nascosto.' : 'Contenuto ripubblicato.'));
     } catch (error) {
       if (publisherWindow && !publisherWindow.closed) publisherWindow.close();
       showStatus(error.message, true);
@@ -251,5 +330,6 @@
   });
 
   search?.addEventListener('input', render);
-  loadNotices();
+  updateKindUi();
+  loadCollections();
 })();

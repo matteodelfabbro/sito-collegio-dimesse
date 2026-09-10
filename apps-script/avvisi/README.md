@@ -1,6 +1,6 @@
-# Motore di pubblicazione degli avvisi
+# Motore di gestione dell’Area famiglie
 
-Questo progetto Google Apps Script riceve le operazioni dalla pagina Gestione avvisi e crea un unico commit su GitHub contenente il PDF e l'elenco aggiornato.
+Questo progetto Google Apps Script riceve le operazioni dalla pagina Gestione Area famiglie e crea un unico commit su GitHub contenente il PDF e l’elenco aggiornato. Gestisce sia gli avvisi sia i documenti: pubblicazione, modifica dei dati, sostituzione del PDF, sospensione e cancellazione.
 
 Proprietà riservate richieste:
 

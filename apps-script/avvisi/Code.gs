@@ -1,10 +1,12 @@
-const DATA_PATH = 'public/data/avvisi.json';
-const PDF_DIRECTORY = 'public/documenti-files/avvisi';
 const PUBLIC_ORIGIN = 'https://www.collegiodimesse.org';
+const CONTENT_TYPES = {
+  notice: { label: 'avviso', dataPath: 'public/data/avvisi.json', pdfDirectory: 'public/documenti-files/avvisi' },
+  document: { label: 'documento', dataPath: 'public/data/documenti.json', pdfDirectory: 'public/documenti-files' }
+};
 
 function doGet() {
   assertAuthorized_();
-  return HtmlService.createHtmlOutput('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Gestione avvisi</title></head><body><p>Collegamento attivo. Puoi tornare alla pagina Gestione avvisi del sito.</p></body></html>');
+  return HtmlService.createHtmlOutput('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Gestione Area famiglie</title></head><body><p>Collegamento attivo. Puoi tornare alla pagina Gestione Area famiglie del sito.</p></body></html>');
 }
 
 function doPost(event) {
@@ -12,14 +14,12 @@ function doPost(event) {
   let result;
   try {
     assertAuthorized_();
-    const request = JSON.parse(event.parameter.request || '{}');
-    result = handleRequest_(request);
+    result = handleRequest_(JSON.parse(event.parameter.request || '{}'));
   } catch (error) {
     result = { ok: false, error: error.message || String(error) };
   }
   const message = JSON.stringify({ source: 'dimesse-avvisi', requestId: requestId, result: result })
-    .replace(/</g, '\\u003c')
-    .replace(/-->/g, '--\\u003e');
+    .replace(/</g, '\\u003c').replace(/-->/g, '--\\u003e');
   return HtmlService.createHtmlOutput(`<script>
     const receiver = window.top.opener && !window.top.opener.closed ? window.top.opener : window.parent;
     receiver.postMessage(${message}, '*');
@@ -28,65 +28,86 @@ function doPost(event) {
 }
 
 function handleRequest_(request) {
+  const kind = String(request.kind || 'notice');
+  const content = CONTENT_TYPES[kind];
   const action = String(request.action || '');
   const payload = request.payload || {};
-  if (!['publish', 'replace', 'hide', 'delete'].includes(action)) throw new Error('Operazione non riconosciuta.');
+  if (!content) throw new Error('Tipo di contenuto non riconosciuto.');
+  if (!['publish', 'update', 'replace', 'hide', 'delete'].includes(action)) throw new Error('Operazione non riconosciuta.');
 
-  const state = readRepositoryState_();
+  const state = readRepositoryState_(content);
   const data = state.data;
   const items = Array.isArray(data.items) ? data.items : [];
   const changes = [];
   let publicUrl = '';
+  let changedItem = null;
 
   if (action === 'publish') {
-    validateNotice_(payload, true);
-    const id = uniqueId_(slugify_(`${payload.date}-${payload.title}`), items);
-    const filePath = `${PDF_DIRECTORY}/${id}.pdf`;
+    validatePayload_(kind, payload, true);
+    const idSource = kind === 'notice' ? `${payload.date}-${payload.title}` : payload.title;
+    const id = uniqueId_(slugify_(idSource), items);
+    const filePath = `${content.pdfDirectory}/${id}.pdf`;
+    changedItem = buildItem_(kind, payload, id, `/${filePath.replace(/^public\//, '')}`);
     changes.push({ path: filePath, content: payload.pdfBase64, encoding: 'base64' });
-    items.push({
-      id: id,
-      title: cleanText_(payload.title, 120),
-      description: cleanText_(payload.description || '', 240),
-      date: payload.date,
-      audience: payload.audience,
-      file: `/${filePath.replace(/^public\//, '')}`,
-      active: true
-    });
-    publicUrl = PUBLIC_ORIGIN + `/${filePath.replace(/^public\//, '')}`;
+    items.push(changedItem);
+    publicUrl = PUBLIC_ORIGIN + changedItem.file;
   }
 
-  if (action === 'replace') {
-    validateNotice_(payload, true);
-    const notice = findNotice_(items, payload.id);
-    notice.title = cleanText_(payload.title, 120);
-    notice.description = cleanText_(payload.description || '', 240);
-    notice.date = payload.date;
-    notice.audience = payload.audience;
-    notice.active = true;
-    changes.push({ path: `public${notice.file}`, content: payload.pdfBase64, encoding: 'base64' });
-    publicUrl = PUBLIC_ORIGIN + notice.file;
+  if (action === 'update' || action === 'replace') {
+    validatePayload_(kind, payload, action === 'replace');
+    changedItem = findItem_(items, payload.id, content.label);
+    updateItem_(kind, changedItem, payload);
+    changedItem.active = true;
+    if (action === 'replace') changes.push({ path: repositoryPdfPath_(changedItem.file), content: payload.pdfBase64, encoding: 'base64' });
+    publicUrl = PUBLIC_ORIGIN + changedItem.file;
   }
 
   if (action === 'hide') {
-    const notice = findNotice_(items, payload.id);
-    notice.active = !notice.active;
-    publicUrl = PUBLIC_ORIGIN + notice.file;
+    changedItem = findItem_(items, payload.id, content.label);
+    changedItem.active = !changedItem.active;
+    publicUrl = PUBLIC_ORIGIN + changedItem.file;
   }
 
   if (action === 'delete') {
     const index = items.findIndex(item => item.id === payload.id);
-    if (index < 0) throw new Error('Avviso non trovato.');
-    changes.push({ path: `public${items[index].file}`, delete: true });
+    if (index < 0) throw new Error(`${capitalize_(content.label)} non trovato.`);
+    changedItem = items[index];
+    changes.push({ path: repositoryPdfPath_(changedItem.file), delete: true });
     items.splice(index, 1);
   }
 
   data.version = Number(data.version || 0) + 1;
   data.updatedAt = new Date().toISOString();
   data.items = items;
-  changes.push({ path: DATA_PATH, content: Utilities.base64Encode(JSON.stringify(data, null, 2) + '\n', Utilities.Charset.UTF_8), encoding: 'base64' });
-
-  commitChanges_(state, changes, commitMessage_(action, payload, items));
+  changes.push({ path: content.dataPath, content: Utilities.base64Encode(JSON.stringify(data, null, 2) + '\n', Utilities.Charset.UTF_8), encoding: 'base64' });
+  commitChanges_(state, changes, commitMessage_(content.label, action, payload, changedItem));
   return { ok: true, items: items, url: publicUrl };
+}
+
+function buildItem_(kind, payload, id, file) {
+  const item = { id: id, title: '', description: '', audience: '', file: file, active: true };
+  updateItem_(kind, item, payload);
+  return item;
+}
+
+function updateItem_(kind, item, payload) {
+  item.title = cleanText_(payload.title, 120);
+  item.description = cleanText_(payload.description || '', 240);
+  item.audience = payload.audience;
+  if (kind === 'notice') item.date = payload.date;
+  else {
+    item.category = payload.category;
+    item.meta = cleanText_(payload.meta || '', 120);
+  }
+}
+
+function validatePayload_(kind, payload, requirePdf) {
+  if (!cleanText_(payload.title || '', 120)) throw new Error('Inserisci il titolo.');
+  if (!['comune', 'primaria', 'secondaria'].includes(payload.audience)) throw new Error('Destinatari non validi.');
+  if (kind === 'notice' && !/^\d{4}-\d{2}-\d{2}$/.test(String(payload.date || ''))) throw new Error('Data non valida.');
+  if (kind === 'document' && !['libri', 'regolamenti', 'benessere', 'privacy'].includes(payload.category)) throw new Error('Categoria non valida.');
+  if (requirePdf && !payload.pdfBase64) throw new Error('PDF mancante.');
+  if (requirePdf && Utilities.base64Decode(payload.pdfBase64).length > 20 * 1024 * 1024) throw new Error('Il PDF supera 20 MB.');
 }
 
 function assertAuthorized_() {
@@ -111,11 +132,7 @@ function github_(config, path, options) {
     method: options && options.method ? options.method : 'get',
     contentType: 'application/json',
     payload: options && options.payload ? JSON.stringify(options.payload) : undefined,
-    headers: {
-      Authorization: `Bearer ${config.token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28'
-    },
+    headers: { Authorization: `Bearer ${config.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
     muteHttpExceptions: true
   });
   const code = response.getResponseCode();
@@ -128,11 +145,11 @@ function github_(config, path, options) {
   return body ? JSON.parse(body) : {};
 }
 
-function readRepositoryState_() {
+function readRepositoryState_(content) {
   const config = repositoryConfig_();
   const ref = github_(config, `/git/ref/heads/${encodeURIComponent(config.branch)}`);
   const commit = github_(config, `/git/commits/${ref.object.sha}`);
-  const file = github_(config, `/contents/${DATA_PATH}?ref=${encodeURIComponent(config.branch)}`);
+  const file = github_(config, `/contents/${content.dataPath}?ref=${encodeURIComponent(config.branch)}`);
   const text = Utilities.newBlob(Utilities.base64Decode(String(file.content).replace(/\s/g, ''))).getDataAsString('UTF-8');
   return { config: config, headSha: ref.object.sha, treeSha: commit.tree.sha, data: JSON.parse(text) };
 }
@@ -148,18 +165,16 @@ function commitChanges_(state, changes, message) {
   github_(state.config, `/git/refs/heads/${encodeURIComponent(state.config.branch)}`, { method: 'patch', payload: { sha: commit.sha, force: false } });
 }
 
-function validateNotice_(payload, requirePdf) {
-  if (!cleanText_(payload.title || '', 120)) throw new Error('Inserisci il titolo.');
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(payload.date || ''))) throw new Error('Data non valida.');
-  if (!['comune', 'primaria', 'secondaria'].includes(payload.audience)) throw new Error('Destinatari non validi.');
-  if (requirePdf && !payload.pdfBase64) throw new Error('PDF mancante.');
-  if (requirePdf && Utilities.base64Decode(payload.pdfBase64).length > 20 * 1024 * 1024) throw new Error('Il PDF supera 20 MB.');
+function repositoryPdfPath_(publicPath) {
+  const path = `public${String(publicPath || '')}`;
+  if (!/^public\/documenti-files\/[a-zA-Z0-9_./-]+\.pdf$/.test(path)) throw new Error('Percorso del PDF non valido.');
+  return path;
 }
 
-function findNotice_(items, id) {
-  const notice = items.find(item => item.id === id);
-  if (!notice) throw new Error('Avviso non trovato.');
-  return notice;
+function findItem_(items, id, label) {
+  const item = items.find(entry => entry.id === id);
+  if (!item) throw new Error(`${capitalize_(label)} non trovato.`);
+  return item;
 }
 
 function cleanText_(value, maxLength) {
@@ -167,7 +182,7 @@ function cleanText_(value, maxLength) {
 }
 
 function slugify_(value) {
-  return String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 90) || 'avviso';
+  return String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 90) || 'contenuto';
 }
 
 function uniqueId_(base, items) {
@@ -177,10 +192,12 @@ function uniqueId_(base, items) {
   return id;
 }
 
-function commitMessage_(action, payload, items) {
-  if (action === 'publish') return `Pubblica avviso: ${cleanText_(payload.title, 70)}`;
-  if (action === 'replace') return `Aggiorna avviso: ${cleanText_(payload.title, 70)}`;
-  const notice = items.find(item => item.id === payload.id);
-  if (action === 'hide') return `${notice && notice.active ? 'Ripubblica' : 'Nascondi'} avviso: ${payload.id}`;
-  return `Elimina avviso: ${payload.id}`;
+function capitalize_(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function commitMessage_(label, action, payload, item) {
+  const verbs = { publish: 'Pubblica', update: 'Modifica', replace: 'Sostituisce PDF', hide: item && item.active ? 'Ripubblica' : 'Nasconde', delete: 'Elimina' };
+  const subject = cleanText_(payload.title || (item && item.title) || payload.id || '', 70);
+  return `${verbs[action]} ${label}: ${subject}`;
 }
