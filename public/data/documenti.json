@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-09T18:30:00.000Z",
+  "updatedAt": "2026-09-14T12:09:09.000Z",
   "items": [
     {
       "id": "libri-testo-prime-2026-2027",
@@ -40,6 +40,16 @@
       "category": "regolamenti",
       "meta": "Primaria e Secondaria • 12 pagine • 177 KB",
       "file": "/documenti-files/ptof-piano-miglioramento-2025-2028.pdf",
+      "active": true
+    },
+    {
+      "id": "menu-scuole-2026-2027",
+      "title": "Menù scuole — anno scolastico 2026–2027",
+      "description": "Menù delle scuole per l’anno scolastico 2026–2027, con le proposte stagionali organizzate su cinque settimane.",
+      "audience": "comune",
+      "category": "regolamenti",
+      "meta": "Primaria e Secondaria • 2 pagine • 147 KB",
+      "file": "/documenti-files/menu-scuole-2026-2027.pdf",
       "active": true
     },
     {
