@@ -9,6 +9,7 @@
   const list = document.querySelector('[data-admin-list]');
   const search = document.querySelector('[data-admin-search]');
   const empty = document.querySelector('[data-admin-empty]');
+  const cancelEdit = document.querySelector('[data-cancel-edit]');
   const kindButtons = [...document.querySelectorAll('[data-admin-kind]')];
   const maxSize = 20 * 1024 * 1024;
   const collections = { notice: [], document: [] };
@@ -29,7 +30,14 @@
   const publicOrigin = config.publicOrigin || 'https://www.collegiodimesse.org';
 
   const dateField = form?.querySelector('[name="date"]');
-  if (dateField) dateField.value = new Date().toISOString().slice(0, 10);
+
+  function localDateValue() {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000;
+    return new Date(now.getTime() - offset).toISOString().slice(0, 10);
+  }
+
+  if (dateField) dateField.value = localDateValue();
 
   function showStatus(message, isError = false) {
     if (!status) return;
@@ -211,6 +219,8 @@
 
       function receive(event) {
         const message = event.data;
+        const trustedOrigin = event.origin === 'https://script.google.com' || event.origin === 'https://script.googleusercontent.com';
+        if (!trustedOrigin) return;
         if (!message || message.source !== 'dimesse-avvisi' || message.requestId !== requestId) return;
         if (!message.result?.ok) finish(new Error(message.result?.error || 'Salvataggio non riuscito'));
         else finish(null, message.result);
@@ -226,14 +236,36 @@
 
   function resetForm() {
     form.reset();
-    if (dateField) dateField.value = new Date().toISOString().slice(0, 10);
+    if (dateField) dateField.value = localDateValue();
     mode = 'publish';
     editingId = '';
     dropzone.classList.remove('has-file');
     dropzone.hidden = false;
     fileTitle.textContent = 'Trascina qui il PDF';
     fileDetail.textContent = 'oppure premi per sceglierlo dal dispositivo';
+    if (cancelEdit) cancelEdit.hidden = true;
     updateKindUi();
+  }
+
+  cancelEdit?.addEventListener('click', () => {
+    resetForm();
+    status.hidden = true;
+  });
+
+  async function waitForPublication(expectedVersion, expectedKind) {
+    const path = expectedKind === 'notice' ? '/data/avvisi.json' : '/data/documenti.json';
+    const deadline = Date.now() + 180000;
+    while (Date.now() < deadline) {
+      try {
+        const response = await fetch(`${path}?verify=${Date.now()}`, { cache: 'no-store' });
+        if (response.ok) {
+          const data = await response.json();
+          if (Number(data.version || 0) >= Number(expectedVersion || 0)) return data;
+        }
+      } catch (_) {}
+      await new Promise(resolve => window.setTimeout(resolve, 5000));
+    }
+    throw new Error('La modifica è stata salvata, ma non risulta ancora pubblicata sul sito. Avvisa il referente tecnico prima di ripetere l’operazione.');
   }
 
   function fillForm(item) {
@@ -261,6 +293,9 @@
     const needsPdf = mode === 'publish' || mode === 'replace';
     if (needsPdf && !file) { showStatus('Prima scegli il PDF da pubblicare.', true); dropzone.focus(); return; }
     const data = new FormData(form);
+    const operationKind = kind;
+    const verb = mode === 'publish' ? 'Pubblicare' : mode === 'replace' ? 'Sostituire il PDF di' : 'Salvare le modifiche a';
+    if (!confirm(`${verb} “${String(data.get('title')).trim()}” per ${audienceLabel(String(data.get('audience')))}?`)) return;
     let publisherWindow;
     try {
       publisherWindow = openPublisherWindow();
@@ -279,6 +314,8 @@
       const result = await callPublisher(mode, payload, publisherWindow);
       collections[kind] = result.items;
       const completedMode = mode;
+      showStatus('Modifica salvata. Pubblicazione sul sito in corso…');
+      await waitForPublication(result.version, operationKind);
       resetForm();
       showStatus(completedMode === 'publish'
         ? `${labels[kind].singular[0].toUpperCase()}${labels[kind].singular.slice(1)} pubblicato. Link diretto: ${result.url}`
@@ -299,8 +336,12 @@
     const action = button.dataset.action;
     if (action === 'copy') {
       const publicUrl = new URL(item.file, publicOrigin).href;
-      await navigator.clipboard.writeText(publicUrl);
-      showStatus(`Link copiato: ${publicUrl}`);
+      try {
+        await navigator.clipboard.writeText(publicUrl);
+        showStatus(`Link copiato: ${publicUrl}`);
+      } catch (_) {
+        showStatus(`Copia manualmente questo link: ${publicUrl}`, true);
+      }
       return;
     }
     if (action === 'edit' || action === 'replace') {
@@ -308,12 +349,15 @@
       mode = action === 'edit' ? 'update' : 'replace';
       fillForm(item);
       updateKindUi();
+      if (cancelEdit) cancelEdit.hidden = false;
       showStatus(action === 'edit' ? `Modifica i dati di “${item.title}”.` : `Scegli il nuovo PDF per “${item.title}”.`);
       if (action === 'replace') dropzone.focus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     if (action === 'delete' && !confirm(`Eliminare definitivamente “${item.title}”?`)) return;
+    if (action === 'hide' && item.active && !confirm(`Nascondere “${item.title}”? Non sarà più visibile alle famiglie.`)) return;
+    const operationKind = kind;
     let publisherWindow;
     try {
       publisherWindow = openPublisherWindow();
@@ -321,6 +365,8 @@
       const result = await callPublisher(action, { id: item.id }, publisherWindow);
       collections[kind] = result.items;
       render();
+      showStatus('Modifica salvata. Pubblicazione sul sito in corso…');
+      await waitForPublication(result.version, operationKind);
       showStatus(action === 'delete' ? `${labels[kind].singular[0].toUpperCase()}${labels[kind].singular.slice(1)} eliminato.` : (item.active ? 'Contenuto nascosto.' : 'Contenuto ripubblicato.'));
     } catch (error) {
       if (publisherWindow && !publisherWindow.closed) publisherWindow.close();

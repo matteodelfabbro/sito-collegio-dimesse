@@ -14,7 +14,13 @@ function doPost(event) {
   let result;
   try {
     assertAuthorized_();
-    result = handleRequest_(JSON.parse(event.parameter.request || '{}'));
+    const lock = LockService.getScriptLock();
+    if (!lock.tryLock(30000)) throw new Error('Un altro salvataggio è in corso. Attendi qualche secondo e riprova.');
+    try {
+      result = handleRequest_(JSON.parse(event.parameter.request || '{}'));
+    } finally {
+      lock.releaseLock();
+    }
   } catch (error) {
     result = { ok: false, error: error.message || String(error) };
   }
@@ -22,7 +28,7 @@ function doPost(event) {
     .replace(/</g, '\\u003c').replace(/-->/g, '--\\u003e');
   return HtmlService.createHtmlOutput(`<script>
     const receiver = window.top.opener && !window.top.opener.closed ? window.top.opener : window.parent;
-    receiver.postMessage(${message}, '*');
+    receiver.postMessage(${message}, '${PUBLIC_ORIGIN}');
     window.setTimeout(() => window.top.close(), 300);
   </script><p>Operazione completata. Questa finestra si chiuderà automaticamente.</p>`);
 }
@@ -57,7 +63,6 @@ function handleRequest_(request) {
     validatePayload_(kind, payload, action === 'replace');
     changedItem = findItem_(items, payload.id, content.label);
     updateItem_(kind, changedItem, payload);
-    changedItem.active = true;
     if (action === 'replace') changes.push({ path: repositoryPdfPath_(changedItem.file), content: payload.pdfBase64, encoding: 'base64' });
     publicUrl = PUBLIC_ORIGIN + changedItem.file;
   }
@@ -81,7 +86,7 @@ function handleRequest_(request) {
   data.items = items;
   changes.push({ path: content.dataPath, content: Utilities.base64Encode(JSON.stringify(data, null, 2) + '\n', Utilities.Charset.UTF_8), encoding: 'base64' });
   commitChanges_(state, changes, commitMessage_(content.label, action, payload, changedItem));
-  return { ok: true, items: items, url: publicUrl };
+  return { ok: true, items: items, url: publicUrl, version: data.version };
 }
 
 function buildItem_(kind, payload, id, file) {
@@ -104,10 +109,26 @@ function updateItem_(kind, item, payload) {
 function validatePayload_(kind, payload, requirePdf) {
   if (!cleanText_(payload.title || '', 120)) throw new Error('Inserisci il titolo.');
   if (!['comune', 'primaria', 'secondaria'].includes(payload.audience)) throw new Error('Destinatari non validi.');
-  if (kind === 'notice' && !/^\d{4}-\d{2}-\d{2}$/.test(String(payload.date || ''))) throw new Error('Data non valida.');
+  if (kind === 'notice' && !isValidDate_(payload.date)) throw new Error('Data non valida.');
   if (kind === 'document' && !['libri', 'regolamenti', 'benessere', 'privacy'].includes(payload.category)) throw new Error('Categoria non valida.');
   if (requirePdf && !payload.pdfBase64) throw new Error('PDF mancante.');
-  if (requirePdf && Utilities.base64Decode(payload.pdfBase64).length > 20 * 1024 * 1024) throw new Error('Il PDF supera 20 MB.');
+  if (requirePdf) {
+    let bytes;
+    try { bytes = Utilities.base64Decode(payload.pdfBase64); }
+    catch (_) { throw new Error('Il PDF non può essere letto.'); }
+    if (!bytes.length || bytes.length > 20 * 1024 * 1024) throw new Error(bytes.length ? 'Il PDF supera 20 MB.' : 'Il PDF è vuoto.');
+    if (bytes.length < 5 || bytes[0] !== 37 || bytes[1] !== 80 || bytes[2] !== 68 || bytes[3] !== 70 || bytes[4] !== 45) throw new Error('Il file caricato non è un PDF valido.');
+  }
+}
+
+function isValidDate_(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ''));
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 }
 
 function assertAuthorized_() {
@@ -122,7 +143,7 @@ function repositoryConfig_() {
   const properties = PropertiesService.getScriptProperties();
   const token = properties.getProperty('GITHUB_TOKEN');
   const repository = properties.getProperty('GITHUB_REPOSITORY') || 'matteodelfabbro/sito-collegio-dimesse';
-  const branch = properties.getProperty('GITHUB_BRANCH') || 'refactor';
+  const branch = properties.getProperty('GITHUB_BRANCH') || 'main';
   if (!token) throw new Error('Credenziale GitHub non configurata.');
   return { token: token, repository: repository, branch: branch };
 }

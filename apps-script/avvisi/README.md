@@ -6,7 +6,7 @@ Proprietà riservate richieste:
 
 - `GITHUB_TOKEN`: credenziale fine-grained limitata al repository e ai Contents in scrittura.
 - `GITHUB_REPOSITORY`: `matteodelfabbro/sito-collegio-dimesse`.
-- `GITHUB_BRANCH`: inizialmente `refactor`.
+- `GITHUB_BRANCH`: `main` in produzione.
 - `ALLOWED_USERS`: indirizzi Google autorizzati separati da virgola.
 
 Il deployment deve essere una Web app, eseguita come proprietario e accessibile soltanto agli utenti del dominio `collegiodimesse.org`.

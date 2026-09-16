@@ -9,7 +9,7 @@
   <link href="/favicon.ico?v=3" rel="icon" sizes="any">
   <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180">
   <link href="/styles-v28.css?v=65" rel="stylesheet">
-  <link href="/gestione-avvisi.css?v=2" rel="stylesheet">
+  <link href="/gestione-avvisi.css?v=3" rel="stylesheet">
 </head>
 <body class="notice-admin-page">
   <a class="skip-link" href="#main">Vai al contenuto</a>
@@ -21,7 +21,7 @@
       </a>
       <div class="admin-user" aria-label="Utente collegato">
         <span class="admin-user-avatar" aria-hidden="true">S</span>
-        <span><strong>Segreteria</strong><small>Accesso istituzionale</small></span>
+        <span><strong>Area riservata</strong><small>Accesso Google richiesto al salvataggio</small></span>
       </div>
     </div>
   </header>
@@ -103,7 +103,10 @@
 
             <div class="admin-form-footer">
               <p><span aria-hidden="true">●</span> Il PDF sarà visibile pubblicamente solo dopo la conferma.</p>
-              <button class="admin-publish" type="submit"><span data-submit-label>Pubblica avviso</span> <span aria-hidden="true">→</span></button>
+              <div class="admin-submit-actions">
+                <button class="admin-cancel" type="button" data-cancel-edit hidden>Annulla modifica</button>
+                <button class="admin-publish" type="submit"><span data-submit-label>Pubblica avviso</span> <span aria-hidden="true">→</span></button>
+              </div>
             </div>
             <div class="admin-status" data-form-status role="status" aria-live="polite" hidden></div>
           </form>
@@ -135,6 +138,6 @@
 
   <footer class="admin-footer"><div class="container"><span>Collegio Dimesse · Area riservata</span><a href="/documenti">Vedi l’Area famiglie sul sito <span aria-hidden="true">↗</span></a></div></footer>
   <script src="/avvisi-config.js?v=4"></script>
-  <script src="/gestione-avvisi.js?v=4"></script>
+  <script src="/gestione-avvisi.js?v=5"></script>
 </body>
 </html>
