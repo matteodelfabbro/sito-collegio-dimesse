@@ -9,7 +9,7 @@
   <link href="/favicon.ico?v=3" rel="icon" sizes="any">
   <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180">
   <link href="/styles-v28.css?v=65" rel="stylesheet">
-  <link href="/gestione-avvisi.css?v=3" rel="stylesheet">
+  <link href="/gestione-avvisi.css?v=4" rel="stylesheet">
 </head>
 <body class="notice-admin-page">
   <a class="skip-link" href="#main">Vai al contenuto</a>
@@ -126,8 +126,14 @@
 
       <section class="admin-notices" aria-labelledby="published-title">
         <div class="admin-list-head">
-          <div><span class="eyebrow">Area famiglie</span><h2 id="published-title" data-list-title>Avvisi pubblicati</h2></div>
-          <label class="admin-search"><span class="sr-only">Cerca nei contenuti</span><input type="search" placeholder="Cerca un avviso…" data-admin-search></label>
+          <div><span class="eyebrow">Area famiglie</span><h2 id="published-title" data-list-title>Tutto l’archivio</h2></div>
+          <label class="admin-search"><span class="sr-only">Cerca nei contenuti</span><input type="search" placeholder="Cerca nell’archivio…" data-admin-search></label>
+        </div>
+
+        <div class="admin-archive-filters" role="group" aria-label="Filtra l’archivio">
+          <button class="is-active" type="button" data-archive-kind="all" aria-pressed="true">Tutto <span data-archive-count="all">0</span></button>
+          <button type="button" data-archive-kind="notice" aria-pressed="false">Avvisi <span data-archive-count="notice">0</span></button>
+          <button type="button" data-archive-kind="document" aria-pressed="false">Documenti <span data-archive-count="document">0</span></button>
         </div>
 
         <div class="admin-notice-list" data-admin-list aria-live="polite"></div>
@@ -138,6 +144,6 @@
 
   <footer class="admin-footer"><div class="container"><span>Collegio Dimesse · Area riservata</span><a href="/documenti">Vedi l’Area famiglie sul sito <span aria-hidden="true">↗</span></a></div></footer>
   <script src="/avvisi-config.js?v=4"></script>
-  <script src="/gestione-avvisi.js?v=5"></script>
+  <script src="/gestione-avvisi.js?v=6"></script>
 </body>
 </html>

@@ -11,9 +11,11 @@
   const empty = document.querySelector('[data-admin-empty]');
   const cancelEdit = document.querySelector('[data-cancel-edit]');
   const kindButtons = [...document.querySelectorAll('[data-admin-kind]')];
+  const archiveButtons = [...document.querySelectorAll('[data-archive-kind]')];
   const maxSize = 20 * 1024 * 1024;
   const collections = { notice: [], document: [] };
   let kind = 'notice';
+  let archiveKind = 'all';
   let mode = 'publish';
   let editingId = '';
 
@@ -113,23 +115,36 @@
   function render() {
     if (!list) return;
     const term = (search?.value || '').trim().toLocaleLowerCase('it');
-    const filtered = collections[kind].filter(item => !term || `${item.title} ${item.description || ''} ${audienceLabel(item.audience)} ${categoryLabels[item.category] || ''}`.toLocaleLowerCase('it').includes(term));
-    const ordered = [...filtered].sort(kind === 'notice'
-      ? (a, b) => b.date.localeCompare(a.date)
-      : (a, b) => `${a.category}-${a.title}`.localeCompare(`${b.category}-${b.title}`, 'it'));
+    const entries = Object.entries(collections).flatMap(([itemKind, items]) =>
+      items.map(item => ({ item, itemKind }))
+    );
+    const filtered = entries.filter(({ item, itemKind }) =>
+      (archiveKind === 'all' || archiveKind === itemKind) &&
+      (!term || `${item.title} ${item.description || ''} ${item.date || ''} ${audienceLabel(item.audience)} ${categoryLabels[item.category] || ''}`.toLocaleLowerCase('it').includes(term))
+    );
+    const ordered = [...filtered].sort((a, b) => {
+      const aKey = a.itemKind === 'notice' ? a.item.date : '';
+      const bKey = b.itemKind === 'notice' ? b.item.date : '';
+      return bKey.localeCompare(aKey) || a.item.title.localeCompare(b.item.title, 'it');
+    });
     list.innerHTML = '';
-    ordered.forEach(item => {
+    ordered.forEach(({ item, itemKind }) => {
       const article = document.createElement('article');
       article.className = 'admin-notice';
       article.dataset.adminContent = '';
       article.dataset.id = item.id;
-      const detail = kind === 'notice'
+      article.dataset.kind = itemKind;
+      const detail = itemKind === 'notice'
         ? `Pubblicato il ${formatDate(item.date)}`
         : `${categoryLabels[item.category] || 'Documenti'}${item.meta ? ` · ${item.meta}` : ''}`;
       article.innerHTML = `<div class="admin-notice-pdf" aria-hidden="true">PDF</div>
-        <div class="admin-notice-copy"><div><span class="admin-state ${item.active ? 'is-live' : 'is-hidden'}">${item.active ? 'Pubblicato' : 'Nascosto'}</span><span class="admin-audience">${escapeHtml(audienceLabel(item.audience))}</span></div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(detail)}</p></div>
+        <div class="admin-notice-copy"><div><span class="admin-state ${item.active ? 'is-live' : 'is-hidden'}">${item.active ? 'Pubblicato' : 'Nascosto'}</span><span class="admin-audience">${itemKind === 'notice' ? 'Avviso' : 'Documento'}</span><span class="admin-audience">${escapeHtml(audienceLabel(item.audience))}</span></div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(detail)}</p></div>
         <div class="admin-notice-actions"><button type="button" data-action="copy">Copia link</button><button type="button" data-action="edit">Modifica</button><button type="button" data-action="replace">Sostituisci PDF</button><button type="button" data-action="hide">${item.active ? 'Nascondi' : 'Ripubblica'}</button><button class="is-danger" type="button" data-action="delete">Elimina</button></div>`;
       list.append(article);
+    });
+    document.querySelectorAll('[data-archive-count]').forEach(counter => {
+      const counterKind = counter.dataset.archiveCount;
+      counter.textContent = counterKind === 'all' ? String(entries.length) : String(collections[counterKind].length);
     });
     if (empty) empty.hidden = ordered.length !== 0;
   }
@@ -144,8 +159,6 @@
     document.querySelector('[data-compose-title]').textContent = mode === 'publish' ? `Nuovo ${current.singular}` : `${mode === 'replace' ? 'Sostituisci' : 'Modifica'} ${current.singular}`;
     document.querySelector('[data-title-label]').textContent = current.title;
     form.elements.title.placeholder = current.placeholder;
-    document.querySelector('[data-list-title]').textContent = `${current.plural} pubblicati`;
-    search.placeholder = `Cerca ${kind === 'notice' ? 'un avviso' : 'un documento'}…`;
     document.querySelectorAll('[data-document-field]').forEach(field => { field.hidden = kind !== 'document'; });
     document.querySelectorAll('[data-notice-field]').forEach(field => { field.hidden = kind !== 'notice'; });
     form.elements.category.required = kind === 'document';
@@ -189,7 +202,7 @@
     return publisherWindow;
   }
 
-  function callPublisher(action, payload, publisherWindow) {
+  function callPublisher(action, payload, publisherWindow, requestKind = kind) {
     if (!config.endpoint) return Promise.reject(new Error('Il collegamento protetto non è ancora configurato.'));
     return new Promise((resolve, reject) => {
       const requestId = `contenuto-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -228,7 +241,7 @@
 
       window.addEventListener('message', receive);
       addField('requestId', requestId);
-      addField('request', JSON.stringify({ kind, action, payload }));
+      addField('request', JSON.stringify({ kind: requestKind, action, payload }));
       document.body.append(transport);
       transport.submit();
     });
@@ -286,6 +299,18 @@
     status.hidden = true;
   }));
 
+  archiveButtons.forEach(button => button.addEventListener('click', () => {
+    archiveKind = button.dataset.archiveKind;
+    archiveButtons.forEach(entry => {
+      const active = entry === button;
+      entry.classList.toggle('is-active', active);
+      entry.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelector('[data-list-title]').textContent = archiveKind === 'all' ? 'Tutto l’archivio' : (archiveKind === 'notice' ? 'Archivio avvisi' : 'Archivio documenti');
+    search.placeholder = archiveKind === 'all' ? 'Cerca nell’archivio…' : `Cerca ${archiveKind === 'notice' ? 'un avviso' : 'un documento'}…`;
+    render();
+  }));
+
   form?.addEventListener('submit', async event => {
     event.preventDefault();
     if (!form.reportValidity()) return;
@@ -311,7 +336,7 @@
         fileName: file?.name || ''
       };
       if (needsPdf) payload.pdfBase64 = await fileAsBase64(file);
-      const result = await callPublisher(mode, payload, publisherWindow);
+      const result = await callPublisher(mode, payload, publisherWindow, operationKind);
       collections[kind] = result.items;
       const completedMode = mode;
       showStatus('Modifica salvata. Pubblicazione sul sito in corso…');
@@ -331,7 +356,9 @@
   list?.addEventListener('click', async event => {
     const button = event.target.closest('button[data-action]');
     if (!button) return;
-    const item = collections[kind].find(entry => entry.id === button.closest('[data-admin-content]').dataset.id);
+    const card = button.closest('[data-admin-content]');
+    const itemKind = card.dataset.kind;
+    const item = collections[itemKind].find(entry => entry.id === card.dataset.id);
     if (!item) return;
     const action = button.dataset.action;
     if (action === 'copy') {
@@ -345,6 +372,7 @@
       return;
     }
     if (action === 'edit' || action === 'replace') {
+      kind = itemKind;
       editingId = item.id;
       mode = action === 'edit' ? 'update' : 'replace';
       fillForm(item);
@@ -357,17 +385,17 @@
     }
     if (action === 'delete' && !confirm(`Eliminare definitivamente “${item.title}”?`)) return;
     if (action === 'hide' && item.active && !confirm(`Nascondere “${item.title}”? Non sarà più visibile alle famiglie.`)) return;
-    const operationKind = kind;
+    const operationKind = itemKind;
     let publisherWindow;
     try {
       publisherWindow = openPublisherWindow();
       button.disabled = true;
-      const result = await callPublisher(action, { id: item.id }, publisherWindow);
-      collections[kind] = result.items;
+      const result = await callPublisher(action, { id: item.id }, publisherWindow, operationKind);
+      collections[operationKind] = result.items;
       render();
       showStatus('Modifica salvata. Pubblicazione sul sito in corso…');
       await waitForPublication(result.version, operationKind);
-      showStatus(action === 'delete' ? `${labels[kind].singular[0].toUpperCase()}${labels[kind].singular.slice(1)} eliminato.` : (item.active ? 'Contenuto nascosto.' : 'Contenuto ripubblicato.'));
+      showStatus(action === 'delete' ? `${labels[operationKind].singular[0].toUpperCase()}${labels[operationKind].singular.slice(1)} eliminato.` : (item.active ? 'Contenuto nascosto.' : 'Contenuto ripubblicato.'));
     } catch (error) {
       if (publisherWindow && !publisherWindow.closed) publisherWindow.close();
       showStatus(error.message, true);

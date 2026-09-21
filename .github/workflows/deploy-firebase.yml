@@ -20,9 +20,17 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       - name: Scarica il sito
         uses: actions/checkout@v4
+
+      - name: Autentica Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/377076163895/locations/global/workloadIdentityPools/github/providers/github-actions
+          service_account: github-firebase-hosting@sito-scuola-1e42f.iam.gserviceaccount.com
+          project_id: sito-scuola-1e42f
 
       - name: Installa Node.js
         uses: actions/setup-node@v4
@@ -31,12 +39,8 @@ jobs:
 
       - name: Pubblica il sito ufficiale
         if: github.ref == 'refs/heads/main'
-        run: npx --yes firebase-tools@latest deploy --only hosting --project sito-scuola-1e42f --non-interactive --token "$FIREBASE_TOKEN"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx --yes firebase-tools@latest deploy --only hosting --project sito-scuola-1e42f --non-interactive
 
       - name: Pubblica l'anteprima refactor
         if: github.ref == 'refs/heads/refactor'
-        run: npx --yes firebase-tools@latest hosting:channel:deploy refactor --expires 30d --project sito-scuola-1e42f --non-interactive --token "$FIREBASE_TOKEN"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx --yes firebase-tools@latest hosting:channel:deploy refactor --expires 30d --project sito-scuola-1e42f --non-interactive
