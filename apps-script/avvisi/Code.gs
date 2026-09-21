@@ -8,10 +8,8 @@ function doGet(event) {
   const email = assertAuthorized_();
   const requestId = event && event.parameter ? String(event.parameter.requestId || '') : '';
   if (!requestId) return HtmlService.createHtmlOutput('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Gestione Area famiglie</title></head><body><p>Accesso autorizzato. Puoi tornare alla pagina Gestione Area famiglie del sito.</p></body></html>');
-  const returnUrl = JSON.stringify(`${PUBLIC_ORIGIN}/gestione-avvisi?authorized=1&account=${encodeURIComponent(email)}`);
-  return HtmlService.createHtmlOutput(`<script>
-    window.top.location.replace(${returnUrl});
-  </script><p>Accesso autorizzato. Ritorno al pannello…</p>`);
+  const returnUrl = `${PUBLIC_ORIGIN}/gestione-avvisi?authorized=1&account=${encodeURIComponent(email)}`;
+  return HtmlService.createHtmlOutput(`<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Accesso autorizzato</title><style>body{display:grid;min-height:80vh;place-items:center;margin:0;background:#f3f6fa;color:#102746;font:16px system-ui}.card{max-width:440px;padding:36px;border:1px solid #d9e1ea;border-radius:20px;background:#fff;text-align:center;box-shadow:0 14px 40px #10274614}a{display:inline-block;margin-top:14px;padding:13px 22px;border-radius:999px;background:#2b5f9f;color:#fff;text-decoration:none;font-weight:800}</style></head><body><main class="card"><h1>Accesso autorizzato</h1><p>Account verificato. Puoi entrare nel pannello di gestione.</p><a href="${returnUrl}" target="_top">Continua al pannello</a></main></body></html>`);
 }
 
 function doPost(event) {
