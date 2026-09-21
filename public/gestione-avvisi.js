@@ -56,10 +56,24 @@
   function startLogin() {
     if (!config.endpoint) { showLoginStatus('Il collegamento protetto non è configurato.'); return; }
     const requestId = `accesso-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    const loginUrl = new URL(config.endpoint);
-    loginUrl.searchParams.set('requestId', requestId);
-    const popup = window.open(loginUrl.href, 'dimesse-avvisi-login', 'popup=yes,width=620,height=650');
+    const popupName = 'dimesse-avvisi-login';
+    const popup = window.open('', popupName, 'popup=yes,width=620,height=650');
     if (!popup) { showLoginStatus('Il browser ha bloccato la finestra di accesso. Consenti i popup e riprova.'); return; }
+    popup.document.title = 'Accesso Gestione Area famiglie';
+    popup.document.body.innerHTML = '<p style="font:16px system-ui;padding:32px">Apertura dell’accesso Google…</p>';
+    const transport = document.createElement('form');
+    const requestField = document.createElement('input');
+    transport.method = 'get';
+    transport.action = config.endpoint;
+    transport.target = popupName;
+    transport.hidden = true;
+    requestField.type = 'hidden';
+    requestField.name = 'requestId';
+    requestField.value = requestId;
+    transport.append(requestField);
+    document.body.append(transport);
+    transport.submit();
+    transport.remove();
     loginButton.disabled = true;
     loginStatus.hidden = true;
     const timeout = window.setTimeout(() => finish(new Error('Accesso non completato. Chiudi la finestra Google e riprova.')), 120000);
