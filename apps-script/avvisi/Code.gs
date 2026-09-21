@@ -8,12 +8,10 @@ function doGet(event) {
   const email = assertAuthorized_();
   const requestId = event && event.parameter ? String(event.parameter.requestId || '') : '';
   if (!requestId) return HtmlService.createHtmlOutput('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Gestione Area famiglie</title></head><body><p>Accesso autorizzato. Puoi tornare alla pagina Gestione Area famiglie del sito.</p></body></html>');
-  const message = JSON.stringify({ source: 'dimesse-avvisi-auth', requestId: requestId, result: { ok: true, email: email } })
-    .replace(/</g, '\\u003c').replace(/-->/g, '--\\u003e');
+  const returnUrl = JSON.stringify(`${PUBLIC_ORIGIN}/gestione-avvisi?authorized=1&account=${encodeURIComponent(email)}`);
   return HtmlService.createHtmlOutput(`<script>
-    if (window.opener && !window.opener.closed) window.opener.postMessage(${message}, '${PUBLIC_ORIGIN}');
-    window.setTimeout(() => window.close(), 300);
-  </script><p>Accesso autorizzato. Questa finestra si chiuderà automaticamente.</p>`);
+    window.top.location.replace(${returnUrl});
+  </script><p>Accesso autorizzato. Ritorno al pannello…</p>`);
 }
 
 function doPost(event) {

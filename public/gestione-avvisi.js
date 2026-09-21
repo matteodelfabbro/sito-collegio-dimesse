@@ -56,44 +56,11 @@
   function startLogin() {
     if (!config.endpoint) { showLoginStatus('Il collegamento protetto non è configurato.'); return; }
     const requestId = `accesso-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    const popupName = 'dimesse-avvisi-login';
-    const popup = window.open('', popupName, 'popup=yes,width=620,height=650');
-    if (!popup) { showLoginStatus('Il browser ha bloccato la finestra di accesso. Consenti i popup e riprova.'); return; }
-    popup.document.title = 'Accesso Gestione Area famiglie';
-    popup.document.body.innerHTML = '<p style="font:16px system-ui;padding:32px">Apertura dell’accesso Google…</p>';
-    const transport = document.createElement('form');
-    const requestField = document.createElement('input');
-    transport.method = 'get';
-    transport.action = config.endpoint;
-    transport.target = popupName;
-    transport.hidden = true;
-    requestField.type = 'hidden';
-    requestField.name = 'requestId';
-    requestField.value = requestId;
-    transport.append(requestField);
-    document.body.append(transport);
-    transport.submit();
-    transport.remove();
     loginButton.disabled = true;
     loginStatus.hidden = true;
-    const timeout = window.setTimeout(() => finish(new Error('Accesso non completato. Chiudi la finestra Google e riprova.')), 120000);
-
-    function finish(error, email) {
-      window.clearTimeout(timeout);
-      window.removeEventListener('message', receive);
-      loginButton.disabled = false;
-      if (error) showLoginStatus(error.message); else completeLogin(email);
-    }
-
-    function receive(event) {
-      const trustedOrigin = event.origin === 'https://script.google.com' || event.origin === 'https://script.googleusercontent.com';
-      const message = event.data;
-      if (!trustedOrigin || !message || message.source !== 'dimesse-avvisi-auth' || message.requestId !== requestId) return;
-      if (!message.result?.ok || !message.result.email) finish(new Error('Account Google non autorizzato.'));
-      else finish(null, message.result.email);
-    }
-
-    window.addEventListener('message', receive);
+    const loginUrl = new URL(config.endpoint);
+    loginUrl.searchParams.set('requestId', requestId);
+    window.location.assign(loginUrl.href);
   }
 
   loginButton?.addEventListener('click', startLogin);
@@ -470,4 +437,10 @@
 
   search?.addEventListener('input', render);
   updateKindUi();
+  const accessParams = new URLSearchParams(window.location.search);
+  if (accessParams.get('authorized') === '1' && accessParams.get('account')) {
+    const account = accessParams.get('account').toLowerCase();
+    window.history.replaceState({}, '', '/gestione-avvisi');
+    completeLogin(account);
+  }
 })();
