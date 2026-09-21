@@ -12,6 +12,10 @@
   const cancelEdit = document.querySelector('[data-cancel-edit]');
   const kindButtons = [...document.querySelectorAll('[data-admin-kind]')];
   const archiveButtons = [...document.querySelectorAll('[data-archive-kind]')];
+  const loginGate = document.querySelector('[data-login-gate]');
+  const loginButton = document.querySelector('[data-login-button]');
+  const loginStatus = document.querySelector('[data-login-status]');
+  const workspace = document.querySelector('[data-admin-workspace]');
   const maxSize = 20 * 1024 * 1024;
   const collections = { notice: [], document: [] };
   let kind = 'notice';
@@ -32,6 +36,53 @@
   const publicOrigin = config.publicOrigin || 'https://www.collegiodimesse.org';
 
   const dateField = form?.querySelector('[name="date"]');
+
+  function showLoginStatus(message) {
+    if (!loginStatus) return;
+    loginStatus.hidden = false;
+    loginStatus.textContent = message;
+  }
+
+  function completeLogin(email) {
+    loginGate.hidden = true;
+    workspace.hidden = false;
+    const userName = document.querySelector('[data-user-name]');
+    const userDetail = document.querySelector('[data-user-detail]');
+    if (userName) userName.textContent = email.split('@')[0];
+    if (userDetail) userDetail.textContent = email;
+    loadCollections();
+  }
+
+  function startLogin() {
+    if (!config.endpoint) { showLoginStatus('Il collegamento protetto non è configurato.'); return; }
+    const requestId = `accesso-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const loginUrl = new URL(config.endpoint);
+    loginUrl.searchParams.set('requestId', requestId);
+    const popup = window.open(loginUrl.href, 'dimesse-avvisi-login', 'popup=yes,width=620,height=650');
+    if (!popup) { showLoginStatus('Il browser ha bloccato la finestra di accesso. Consenti i popup e riprova.'); return; }
+    loginButton.disabled = true;
+    loginStatus.hidden = true;
+    const timeout = window.setTimeout(() => finish(new Error('Accesso non completato. Chiudi la finestra Google e riprova.')), 120000);
+
+    function finish(error, email) {
+      window.clearTimeout(timeout);
+      window.removeEventListener('message', receive);
+      loginButton.disabled = false;
+      if (error) showLoginStatus(error.message); else completeLogin(email);
+    }
+
+    function receive(event) {
+      const trustedOrigin = event.origin === 'https://script.google.com' || event.origin === 'https://script.googleusercontent.com';
+      const message = event.data;
+      if (!trustedOrigin || !message || message.source !== 'dimesse-avvisi-auth' || message.requestId !== requestId) return;
+      if (!message.result?.ok || !message.result.email) finish(new Error('Account Google non autorizzato.'));
+      else finish(null, message.result.email);
+    }
+
+    window.addEventListener('message', receive);
+  }
+
+  loginButton?.addEventListener('click', startLogin);
 
   function localDateValue() {
     const now = new Date();
@@ -405,5 +456,4 @@
 
   search?.addEventListener('input', render);
   updateKindUi();
-  loadCollections();
 })();

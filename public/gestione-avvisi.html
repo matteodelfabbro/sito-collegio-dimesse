@@ -9,7 +9,7 @@
   <link href="/favicon.ico?v=3" rel="icon" sizes="any">
   <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180">
   <link href="/styles-v28.css?v=65" rel="stylesheet">
-  <link href="/gestione-avvisi.css?v=4" rel="stylesheet">
+  <link href="/gestione-avvisi.css?v=5" rel="stylesheet">
 </head>
 <body class="notice-admin-page">
   <a class="skip-link" href="#main">Vai al contenuto</a>
@@ -21,13 +21,22 @@
       </a>
       <div class="admin-user" aria-label="Utente collegato">
         <span class="admin-user-avatar" aria-hidden="true">S</span>
-        <span><strong>Area riservata</strong><small>Accesso Google richiesto al salvataggio</small></span>
+        <span><strong data-user-name>Area riservata</strong><small data-user-detail>Accesso Google necessario</small></span>
       </div>
     </div>
   </header>
 
   <main id="main" class="admin-main">
-    <div class="container">
+    <section class="container admin-login" data-login-gate aria-labelledby="login-title">
+      <span class="admin-login-icon" aria-hidden="true">D</span>
+      <span class="eyebrow">Area riservata</span>
+      <h1 id="login-title">Accedi per gestire avvisi e documenti</h1>
+      <p>Il pannello è disponibile esclusivamente agli account istituzionali autorizzati.</p>
+      <button type="button" data-login-button>Accedi con Google <span aria-hidden="true">→</span></button>
+      <div class="admin-login-status" data-login-status role="status" aria-live="polite" hidden></div>
+    </section>
+
+    <div class="container" data-admin-workspace hidden>
       <div class="admin-intro">
         <div>
           <span class="eyebrow">Area riservata</span>
@@ -144,6 +153,6 @@
 
   <footer class="admin-footer"><div class="container"><span>Collegio Dimesse · Area riservata</span><a href="/documenti">Vedi l’Area famiglie sul sito <span aria-hidden="true">↗</span></a></div></footer>
   <script src="/avvisi-config.js?v=4"></script>
-  <script src="/gestione-avvisi.js?v=6"></script>
+  <script src="/gestione-avvisi.js?v=7"></script>
 </body>
 </html>

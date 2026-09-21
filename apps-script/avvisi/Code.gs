@@ -4,9 +4,16 @@ const CONTENT_TYPES = {
   document: { label: 'documento', dataPath: 'public/data/documenti.json', pdfDirectory: 'public/documenti-files' }
 };
 
-function doGet() {
-  assertAuthorized_();
-  return HtmlService.createHtmlOutput('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Gestione Area famiglie</title></head><body><p>Collegamento attivo. Puoi tornare alla pagina Gestione Area famiglie del sito.</p></body></html>');
+function doGet(event) {
+  const email = assertAuthorized_();
+  const requestId = event && event.parameter ? String(event.parameter.requestId || '') : '';
+  if (!requestId) return HtmlService.createHtmlOutput('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Gestione Area famiglie</title></head><body><p>Accesso autorizzato. Puoi tornare alla pagina Gestione Area famiglie del sito.</p></body></html>');
+  const message = JSON.stringify({ source: 'dimesse-avvisi-auth', requestId: requestId, result: { ok: true, email: email } })
+    .replace(/</g, '\\u003c').replace(/-->/g, '--\\u003e');
+  return HtmlService.createHtmlOutput(`<script>
+    if (window.opener && !window.opener.closed) window.opener.postMessage(${message}, '${PUBLIC_ORIGIN}');
+    window.setTimeout(() => window.close(), 300);
+  </script><p>Accesso autorizzato. Questa finestra si chiuderà automaticamente.</p>`);
 }
 
 function doPost(event) {
@@ -137,6 +144,7 @@ function assertAuthorized_() {
     .split(',').map(value => value.trim().toLowerCase()).filter(Boolean);
   const email = String(Session.getActiveUser().getEmail() || '').toLowerCase();
   if (!email || !allowed.includes(email)) throw new Error('Account Google non autorizzato.');
+  return email;
 }
 
 function repositoryConfig_() {
