@@ -133,6 +133,14 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       ? '<span class="doc-audience doc-audience-secondaria">Secondaria</span>'
       : '<span class="doc-audience doc-audience-primaria">Primaria</span><span class="doc-audience doc-audience-secondaria">Secondaria</span>';
   const metaHtml = value => String(value || '').split('•').map(part => escapeHtml(part.trim())).filter(Boolean).join('<span>•</span>');
+  const documentSearchText = document => [
+    document.id,
+    document.title,
+    document.description,
+    document.meta,
+    document.category,
+    document.audience
+  ].filter(Boolean).join(' ');
 
   fetch('/data/documenti.json', { cache: 'no-store' })
     .then(response => {
@@ -151,7 +159,7 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
         if (count) count.textContent = `${items.length} ${items.length === 1 ? 'documento' : 'documenti'}`;
         const list = section.querySelector('.document-list');
         if (!list) return;
-        list.innerHTML = items.map(document => `<article class="doc-item" data-document data-audience="${escapeHtml(document.audience)}" data-category="${escapeHtml(document.category)}" data-search="${escapeHtml(`${document.title} ${document.description || ''}`.toLocaleLowerCase('it'))}">
+        list.innerHTML = items.map(document => `<article class="doc-item" data-document data-audience="${escapeHtml(document.audience)}" data-category="${escapeHtml(document.category)}" data-search="${escapeHtml(documentSearchText(document))}">
           <div class="doc-icon" aria-hidden="true"><span>PDF</span></div>
           <div class="doc-copy"><div class="doc-labels">${audienceLabels(document.audience)}</div><h3>${escapeHtml(document.title)}</h3><p>${escapeHtml(document.description || '')}</p>${document.meta ? `<div class="doc-meta">${metaHtml(document.meta)}</div>` : ''}</div>
           <div class="doc-actions"><a class="doc-open" href="${escapeHtml(document.file)}" target="_blank" rel="noopener">Apri PDF <span aria-hidden="true">↗</span></a><a class="doc-download" href="${escapeHtml(document.file)}" download>Scarica <span aria-hidden="true">↓</span></a></div>
@@ -175,6 +183,42 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
   const sections = [...document.querySelectorAll('[data-document-section]')];
   const result = document.querySelector('[data-document-results]');
   const empty = document.querySelector('[data-document-empty]');
+  const relatedTerms = [
+    ['menu', 'mensa', 'cibo', 'pasto', 'pasti', 'pranzo', 'pranzi', 'refezione', 'alimentazione'],
+    ['libro', 'libri', 'testo', 'testi', 'manuale', 'manuali', 'adozione', 'adozioni'],
+    ['ptof', 'offerta', 'formativa', 'triennale'],
+    ['regolamento', 'regolamenti', 'regola', 'regole', 'norma', 'norme'],
+    ['patto', 'corresponsabilita', 'accordo', 'alleanza'],
+    ['bullismo', 'antibullismo', 'cyberbullismo', 'prepotenze'],
+    ['privacy', 'dati', 'trattamento', 'riservatezza'],
+    ['whistleblowing', 'segnalazione', 'segnalazioni', 'illecito', 'illeciti'],
+    ['genitore', 'genitori', 'famiglia', 'famiglie'],
+    ['insegnante', 'insegnanti', 'docente', 'docenti', 'personale', 'dipendente', 'dipendenti']
+  ];
+  const normalizeSearch = value => String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('it')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  const synonymIndex = new Map();
+  relatedTerms.forEach(group => {
+    const terms = group.map(normalizeSearch).filter(Boolean);
+    terms.forEach(term => synonymIndex.set(term, terms));
+  });
+  const searchStem = word => word.length >= 5 ? word.replace(/[aeiou]$/, '') : word;
+  const wordMatches = (candidate, indexedWord) => candidate === indexedWord
+    || searchStem(candidate) === searchStem(indexedWord)
+    || (candidate.length >= 4 && indexedWord.length >= 4
+      && (candidate.startsWith(indexedWord) || indexedWord.startsWith(candidate)));
+  const matchesSearch = (searchText, query) => {
+    const indexedWords = normalizeSearch(searchText).split(' ').filter(Boolean);
+    const queryWords = normalizeSearch(query).split(' ').filter(Boolean);
+    return queryWords.every(queryWord => {
+      const candidates = synonymIndex.get(queryWord) || [queryWord];
+      return candidates.some(candidate => indexedWords.some(indexedWord => wordMatches(candidate, indexedWord)));
+    });
+  };
   let audience = 'all';
   const params = new URLSearchParams(location.search);
   const requested = params.get('scuola');
@@ -182,12 +226,12 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
 
   function update() {
     const cards = [...document.querySelectorAll('[data-document]')];
-    const term = (search?.value || '').trim().toLocaleLowerCase('it');
+    const term = (search?.value || '').trim();
     let visible = 0;
     cards.forEach(card => {
       const cardAudience = card.dataset.audience;
       const audienceMatch = audience === 'all' || cardAudience === audience || cardAudience === 'comune';
-      const searchMatch = !term || card.dataset.search.includes(term);
+      const searchMatch = !term || matchesSearch(card.dataset.search, term);
       card.hidden = !(audienceMatch && searchMatch);
       if (!card.hidden) visible++;
     });
