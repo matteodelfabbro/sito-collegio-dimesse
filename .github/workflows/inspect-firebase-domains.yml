@@ -1,4 +1,4 @@
-name: Controlla domini Firebase
+name: Reindirizza dominio Firebase
 
 on:
   workflow_dispatch:
@@ -27,3 +27,35 @@ jobs:
             -H "Authorization: Bearer $ACCESS_TOKEN" \
             'https://firebasehosting.googleapis.com/v1beta1/projects/sito-scuola-1e42f/sites/sito-scuola-1e42f/customDomains' \
             | jq '{customDomains: [.customDomains[]? | {name, redirectTarget, hostState, ownershipState, etag}]}'
+
+      - name: Reindirizza il dominio senza www
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: |
+          set -euo pipefail
+          api='https://firebasehosting.googleapis.com/v1beta1/projects/sito-scuola-1e42f/sites/sito-scuola-1e42f/customDomains'
+          current=$(curl --fail-with-body --silent --show-error -H "Authorization: Bearer $ACCESS_TOKEN" "$api")
+          apex=$(jq -c '.customDomains[] | select(.name | endswith("/collegiodimesse.org"))' <<< "$current")
+          www=$(jq -c '.customDomains[] | select(.name | endswith("/www.collegiodimesse.org"))' <<< "$current")
+          test "$(jq -r '.hostState' <<< "$apex")" = HOST_ACTIVE
+          test "$(jq -r '.hostState' <<< "$www")" = HOST_ACTIVE
+          test "$(jq -r '.redirectTarget // empty' <<< "$www")" = ''
+          current_target=$(jq -r '.redirectTarget // empty' <<< "$apex")
+          if [[ "$current_target" == 'www.collegiodimesse.org' ]]; then
+            echo 'Il reindirizzamento è già configurato.'
+            exit 0
+          fi
+          test -z "$current_target"
+          body=$(jq -cn --arg etag "$(jq -r '.etag' <<< "$apex")" \
+            '{redirectTarget:"www.collegiodimesse.org",etag:$etag}')
+          endpoint="$api/collegiodimesse.org?updateMask=redirectTarget"
+          validation=$(curl --fail-with-body --silent --show-error -X PATCH \
+            -H "Authorization: Bearer $ACCESS_TOKEN" -H 'Content-Type: application/json' \
+            --data "$body" "${endpoint}&validateOnly=true")
+          jq -e '(.error // null) == null' <<< "$validation" >/dev/null
+          jq '{name, done, error}' <<< "$validation"
+          updated=$(curl --fail-with-body --silent --show-error -X PATCH \
+            -H "Authorization: Bearer $ACCESS_TOKEN" -H 'Content-Type: application/json' \
+            --data "$body" "$endpoint")
+          jq -e '(.error // null) == null' <<< "$updated" >/dev/null
+          jq '{name, done, error}' <<< "$updated"
