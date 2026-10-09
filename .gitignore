@@ -2,3 +2,8 @@
 .DS_Store
 node_modules/
 archivio-codex-2026-07-22/
+
+# Lavori locali: non devono mai finire nel repository pubblico.
+# output/ contiene PDF con gli account Google di alunni e docenti.
+output/
+tmp/
