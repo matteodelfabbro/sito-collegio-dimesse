@@ -2,9 +2,11 @@
 
 Sito istituzionale statico del Collegio Dimesse di Udine, pubblicato tramite Firebase Hosting.
 
-**Sito online:** [https://sito-scuola-1e42f.web.app/](https://sito-scuola-1e42f.web.app/)
+**Sito online:** [https://www.collegiodimesse.org/](https://www.collegiodimesse.org/)
 
-> **Stato:** versione pronta per la pubblicazione sul dominio ufficiale.
+Il dominio senza `www` reindirizza al dominio ufficiale. L'indirizzo tecnico `sito-scuola-1e42f.web.app` mostra lo stesso sito; i link canonici indicano ai motori di ricerca il dominio ufficiale.
+
+> **Attenzione:** questo repository è pubblico. Non salvare qui password, token, elenchi di account o dati personali di alunni e famiglie. Le cartelle di lavoro locali `output/` e `tmp/` sono escluse da Git.
 
 ## Contenuti principali
 
@@ -26,6 +28,10 @@ Il progetto usa HTML, CSS e JavaScript senza un processo di compilazione. Fireba
 | `public/` | Pagine HTML, fogli di stile, JavaScript, icone e file SEO pubblicati online |
 | `public/assets/collegio/` | Immagini e loghi del sito |
 | `public/documenti-files/` | Avvisi, modulistica e documenti PDF dell'Area famiglie |
+| `public/data/avvisi.json`, `public/data/documenti.json` | Elenchi di avvisi e documenti dell'Area famiglie, letti dalle pagine |
+| `public/gestione-avvisi.*`, `public/avvisi-config.js` | Pannello riservato con cui la segreteria gestisce avvisi e documenti |
+| `apps-script/avvisi/` | Google Apps Script che verifica l'account e salva le modifiche su GitHub |
+| `.github/workflows/deploy-firebase.yml` | Pubblicazione automatica su Firebase a ogni modifica di `main` |
 | `docs/storico/` | Note storiche sulle revisioni effettuate |
 | `firebase.json` | Configurazione di Hosting, cache e redirect |
 | `.firebaserc` | Associazione al progetto Firebase `sito-scuola-1e42f` |
@@ -53,6 +59,8 @@ firebase serve --only hosting
 Firebase mostrerà nel terminale l'indirizzo locale da aprire nel browser. L'emulatore è preferibile a un server statico generico perché rispetta gli URL puliti e i redirect definiti in `firebase.json`.
 
 ## Pubblicazione
+
+La pubblicazione avviene in automatico: ogni modifica unita al ramo `main` su GitHub viene pubblicata su Firebase dal workflow `deploy-firebase.yml`, mentre il ramo `refactor` pubblica un'anteprima temporanea. I comandi seguenti servono solo per pubblicazioni manuali.
 
 Prima di pubblicare, verificare di aver selezionato il progetto corretto:
 
@@ -84,8 +92,8 @@ Quando si aggiornano pagine, documenti o immagini:
 4. mantenere coerenti i riferimenti ai file versionati, come `styles-v28.css` e `script-v16.js`;
 5. usare prima un canale di anteprima e pubblicare sul sito stabile solo dopo la verifica.
 
-L'avviso attualmente presente nell'Area famiglie si trova nella sezione `#avvisi` di `public/documenti.html`. I file associati sono conservati in `public/documenti-files/`.
+Avvisi e documenti dell'Area famiglie non si modificano a mano: la segreteria li pubblica, modifica, nasconde o elimina dal pannello `/gestione-avvisi`, accedendo con un account Google autorizzato di `collegiodimesse.org`. Il pannello passa dallo script in `apps-script/avvisi/`, che salva il PDF in `public/documenti-files/` e aggiorna il file JSON corrispondente con un commit su `main`; da lì parte la pubblicazione automatica.
 
 ## Dominio e indicizzazione
 
-I collegamenti canonici, le immagini Open Graph, `robots.txt` e `sitemap.xml` usano il dominio definitivo previsto `https://www.collegiodimesse.org/`. Il dominio Firebase indicato sopra resta l'indirizzo operativo della distribuzione corrente.
+I collegamenti canonici, le immagini Open Graph, `robots.txt` e `sitemap.xml` usano il dominio ufficiale `https://www.collegiodimesse.org/`.
