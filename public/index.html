@@ -71,6 +71,40 @@
 </div>
 </header>
 <main id="main">
+<!-- Fascia temporanea: incontro soggiorni studio 2027. Si nasconde da sola dal 23 ottobre 2026; dopo quella data si può eliminare questo blocco. -->
+<aside aria-label="Avviso in evidenza" class="avviso-fascia" data-scade="2026-10-23T00:00:00+02:00" hidden>
+<style>
+.avviso-fascia{background:#fff2c9;border-bottom:1px solid #ecd9a0;color:var(--blue-dark)}
+.avviso-fascia-inner{display:flex;align-items:center;gap:14px 20px;padding:14px 0;font-size:.9rem;line-height:1.45}
+.avviso-fascia-testo{flex:1;text-wrap:pretty}
+.avviso-fascia-testo .nowrap{white-space:nowrap}
+.avviso-fascia-testo strong{display:block;text-wrap:balance;font-family:var(--serif);font-size:1.06rem}
+.avviso-fascia-link{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--blue-dark);color:#fff;font-size:.8rem;font-weight:700;white-space:nowrap}
+.avviso-fascia-link:hover{background:var(--blue)}
+.avviso-fascia-chiudi{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--blue-dark);font-size:1.5rem;line-height:1;cursor:pointer}
+.avviso-fascia-chiudi:hover{background:rgba(16,39,70,.08)}
+@media(max-width:620px){.avviso-fascia-inner{flex-wrap:wrap;position:relative;padding-right:44px}.avviso-fascia-testo{flex-basis:100%}.avviso-fascia-chiudi{position:absolute;top:6px;right:-8px}}
+</style>
+<div class="container avviso-fascia-inner">
+<p class="avviso-fascia-testo"><strong>Soggiorni studio in Inghilterra 2027</strong>Incontro informativo per i genitori: <span class="nowrap">giovedì 22 ottobre, ore 17:00</span>, <span class="nowrap">in Collegio (via Treppo 11)</span>.</p>
+<a class="avviso-fascia-link" href="/documenti-files/soggiorni-studio-2027-incontro.pdf" rel="noopener" target="_blank">Leggi l’invito <span aria-hidden="true">↗</span></a>
+<button aria-label="Chiudi l’avviso" class="avviso-fascia-chiudi" type="button">×</button>
+</div>
+<script>
+(function(){
+  var fascia=document.currentScript.closest('.avviso-fascia');
+  var chiave='avviso-chiuso:soggiorni-studio-2027';
+  var chiuso=false;
+  try{chiuso=localStorage.getItem(chiave)==='1';}catch(e){}
+  if(chiuso||Date.now()>=Date.parse(fascia.dataset.scade)){fascia.remove();return;}
+  fascia.hidden=false;
+  fascia.querySelector('.avviso-fascia-chiudi').addEventListener('click',function(){
+    try{localStorage.setItem(chiave,'1');}catch(e){}
+    fascia.remove();
+  });
+})();
+</script>
+</aside>
 <section class="hero">
 <div class="container hero-grid">
 <div class="hero-copy">
