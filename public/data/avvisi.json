@@ -1,6 +1,6 @@
 {
-  "version": 8,
-  "updatedAt": "2026-10-12T19:50:00.000Z",
+  "version": 9,
+  "updatedAt": "2026-10-12T21:55:00.000Z",
   "items": [
     {
       "id": "soggiorni-studio-2027-incontro",
@@ -9,7 +9,8 @@
       "date": "2026-10-12",
       "audience": "secondaria",
       "file": "/documenti-files/soggiorni-studio-2027-incontro.pdf",
-      "active": true
+      "active": true,
+      "until": "2026-10-22"
     },
     {
       "id": "inizio-scuola-2026-2027",
