@@ -1,7 +1,16 @@
 {
-  "version": 7,
-  "updatedAt": "2026-09-09T18:15:54.649Z",
+  "version": 8,
+  "updatedAt": "2026-10-12T19:50:00.000Z",
   "items": [
+    {
+      "id": "soggiorni-studio-2027-incontro",
+      "title": "Soggiorni studio 2027 — incontro informativo giovedì 22 ottobre",
+      "description": "Incontro per i genitori sui soggiorni studio estivi in Inghilterra 2027 (in famiglia, college o residence): giovedì 22 ottobre alle 17:00 in Collegio, via Treppo 11. È gradita la conferma di partecipazione.",
+      "date": "2026-10-12",
+      "audience": "secondaria",
+      "file": "/documenti-files/soggiorni-studio-2027-incontro.pdf",
+      "active": true
+    },
     {
       "id": "inizio-scuola-2026-2027",
       "title": "Inizio scuola — anno scolastico 2026/27",
