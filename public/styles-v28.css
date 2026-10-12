@@ -660,6 +660,11 @@ html{color-scheme:light}
 .notice-date span{margin-top:7px;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .notice-copy h3{margin:8px 0 6px;font-family:var(--serif);font-size:clamp(1.25rem,2vw,1.55rem);line-height:1.2;color:var(--blue-dark)}
 .notice-copy p{color:var(--muted);max-width:68ch}
+.notice-group{display:grid;gap:18px}
+.notice-group+.notice-group{margin-top:clamp(36px,5vw,52px)}
+.notice-group-title{font-family:var(--sans);font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.notice-group-archive .notice-group-title{color:var(--muted)}
+.notice-group-archive .notice-card{border-left-color:var(--line);box-shadow:none}
 @media(max-width:760px){
   .notice-card{grid-template-columns:auto 1fr;padding:20px;gap:16px}
   .notice-card .doc-actions{grid-column:1/-1;width:100%}
