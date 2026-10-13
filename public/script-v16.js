@@ -239,8 +239,8 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       const cardAudience = card.dataset.audience;
       card.hidden = !(audience === 'all' || cardAudience === audience || cardAudience === 'comune');
     });
-    document.querySelectorAll('[data-notice-group]').forEach(group => {
-      group.hidden = !group.querySelector('[data-notice]:not([hidden])');
+    document.querySelectorAll('[data-notice-section]').forEach(section => {
+      section.hidden = !section.querySelector('[data-notice]:not([hidden])');
     });
     sections.forEach(section => {
       section.hidden = !section.querySelector('[data-document]:not([hidden])');
@@ -268,8 +268,9 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
 
 // v16 — avvisi alimentati dall'archivio condiviso con il pannello di gestione
 (() => {
-  const list = document.querySelector('[data-public-notice-list]');
-  if (!list) return;
+  const featuredList = document.querySelector('[data-notice-list="featured"]');
+  const archiveList = document.querySelector('[data-notice-list="archive"]');
+  if (!featuredList || !archiveList) return;
 
   const escapeHtml = value => String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const dateParts = value => {
@@ -285,22 +286,19 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       ? '<span class="doc-audience doc-audience-secondaria">Secondaria</span>'
       : '<span class="doc-audience doc-audience-primaria">Primaria</span><span class="doc-audience doc-audience-secondaria">Secondaria</span>';
 
-  // In evidenza: avvisi con "until" non ancora superato, oppure senza "until" e pubblicati da meno di 45 giorni.
-  // Tutti gli altri finiscono nell'archivio sotto.
+  // In evidenza (in alto nella pagina): avvisi con "until" non ancora superato, oppure senza "until"
+  // e pubblicati da meno di 45 giorni. Tutti gli altri vanno nell'archivio in fondo alla pagina.
   const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
   const featuredSince = new Date(Date.now() - 45 * 864e5).toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
   const isFeatured = notice => notice.until ? today <= notice.until : notice.date >= featuredSince;
   const card = notice => {
     const date = dateParts(notice.date);
-    return `<article class="notice-card" data-notice data-audience="${escapeHtml(notice.audience)}">
+    return `<article class="doc-item notice-item" data-notice data-audience="${escapeHtml(notice.audience)}">
           <div class="notice-date" aria-label="Pubblicato il ${escapeHtml(notice.date)}"><strong>${date.day}</strong><span>${date.month}</span></div>
-          <div class="notice-copy"><div class="doc-labels">${labels(notice.audience)}</div><h3>${escapeHtml(notice.title)}</h3><p>${escapeHtml(notice.description || '')}</p></div>
+          <div class="doc-copy"><div class="doc-labels">${labels(notice.audience)}</div><h3>${escapeHtml(notice.title)}</h3><p>${escapeHtml(notice.description || '')}</p></div>
           <div class="doc-actions"><a class="doc-open" href="${escapeHtml(notice.file)}" target="_blank" rel="noopener">Apri PDF <span aria-hidden="true">↗</span></a><a class="doc-download" href="${escapeHtml(notice.file)}" download>Scarica <span aria-hidden="true">↓</span></a></div>
         </article>`;
   };
-  const group = (title, notices, extraClass) => notices.length
-    ? `<div class="notice-group${extraClass}" data-notice-group><h3 class="notice-group-title">${title}</h3>${notices.map(card).join('')}</div>`
-    : '';
 
   fetch('/data/avvisi.json', { cache: 'no-store' })
     .then(response => {
@@ -311,8 +309,8 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       const notices = (Array.isArray(data.items) ? data.items : [])
         .filter(notice => notice.active)
         .sort((a, b) => b.date.localeCompare(a.date));
-      list.innerHTML = group('In evidenza', notices.filter(isFeatured), '')
-        + group('Archivio', notices.filter(notice => !isFeatured(notice)), ' notice-group-archive');
+      featuredList.innerHTML = notices.filter(isFeatured).map(card).join('');
+      archiveList.innerHTML = notices.filter(notice => !isFeatured(notice)).map(card).join('');
       window.dispatchEvent(new CustomEvent('notices:updated'));
     })
     .catch(() => {

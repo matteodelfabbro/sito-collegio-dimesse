@@ -660,11 +660,6 @@ html{color-scheme:light}
 .notice-date span{margin-top:7px;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .notice-copy h3{margin:8px 0 6px;font-family:var(--serif);font-size:clamp(1.25rem,2vw,1.55rem);line-height:1.2;color:var(--blue-dark)}
 .notice-copy p{color:var(--muted);max-width:68ch}
-.notice-group{display:grid;gap:18px}
-.notice-group+.notice-group{margin-top:clamp(36px,5vw,52px)}
-.notice-group-title{font-family:var(--sans);font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
-.notice-group-archive .notice-group-title{color:var(--muted)}
-.notice-group-archive .notice-card{border-left-color:var(--line);box-shadow:none}
 @media(max-width:760px){
   .notice-card{grid-template-columns:auto 1fr;padding:20px;gap:16px}
   .notice-card .doc-actions{grid-column:1/-1;width:100%}
@@ -1017,3 +1012,17 @@ h1,h2{text-wrap:balance}
 .school-inline-list{display:grid;gap:5px;margin-top:7px}
 .school-inline-list .school-inline{width:fit-content}
 @media(max-width:390px){.school-inline{white-space:normal}}
+
+/* Avvisi: in evidenza sopra i documenti, archivio in fondo; schede come quelle dei documenti */
+[data-notice-section][hidden]{display:none}
+.notice-featured{padding:56px 0 0}
+.notice-featured .document-section,.notice-archive .document-section{margin-bottom:0}
+.notice-archive{padding-top:0}
+.document-library:has(+ .notice-archive:not([hidden])){padding-bottom:0}
+.notice-item .notice-date{display:grid;place-items:center;align-content:center;width:56px;height:60px;min-width:0;padding:0;border-radius:12px;background:var(--blue-pale);color:var(--blue-dark);line-height:1}
+.notice-item .notice-date strong{font-family:var(--serif);font-size:1.35rem}
+.notice-item .notice-date span{margin-top:5px;font-size:.56rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.notice-featured .notice-item{border-left:4px solid var(--blue)}
+.notice-archive .notice-item .notice-date{background:var(--cream);color:var(--muted)}
+@media(max-width:950px){.notice-item .doc-actions{grid-column:2}}
+@media(max-width:620px){.notice-featured{padding-top:40px}.notice-item .notice-date{align-self:start}.notice-item .notice-date{width:42px;height:49px;border-radius:10px}.notice-item .notice-date strong{font-size:1.1rem}.notice-item .notice-date span{font-size:.5rem}.notice-item .doc-actions{grid-column:1/-1}}
