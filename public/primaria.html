@@ -23,7 +23,7 @@
 <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180"/>
 <link href="/site.webmanifest?v=3" rel="manifest"/>
 <link as="image" href="/assets/collegio/primaria-aula.webp" rel="preload"/>
-<link href="/styles-v28.css?v=64" rel="stylesheet"/>
+<link href="/styles-v28.css?v=68" rel="stylesheet"/>
 <meta content="it_IT" property="og:locale"/>
 <meta content="Collegio Dimesse" property="og:site_name"/>
 <meta content="summary_large_image" name="twitter:card"/>
@@ -61,6 +61,27 @@
 </div>
 </header>
 <main id="main">
+<!-- Banner Scuola aperta 2026-27 (grafica dei volantini v4). Si spegne da solo dopo il 16 gennaio 2027; dopo quella data si può eliminare questo blocco. -->
+<section aria-label="Scuola aperta 2026-2027" class="so-banner so-ridotto" data-scadenza="2027-01-17" hidden>
+<div class="container">
+<a class="so-link" href="/contatti#visita">
+<picture>
+<source media="(max-width: 700px)" srcset="/assets/scuola-aperta/telefono-800.webp"/>
+<source media="(max-width: 1200px)" srcset="/assets/scuola-aperta/banner-1200.webp"/>
+<img alt="Scuola aperta, venite a conoscerci. Sabato 14 e 28 novembre 2026 e sabato 16 gennaio 2027, dalle 9:00 alle 12:00, Via Petrarca 11, Udine. Su prenotazione." decoding="async" height="720" loading="lazy" src="/assets/scuola-aperta/banner-1920.webp" width="1920"/>
+</picture>
+<span class="so-cta">Prenota la visita <span aria-hidden="true">→</span></span>
+</a>
+</div>
+<script>
+(function(){
+  var s=document.currentScript.parentNode;
+  var oggi=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Rome'});
+  if(oggi>=s.dataset.scadenza){s.remove();return;}
+  s.hidden=false;
+})();
+</script>
+</section>
 <section class="page-hero">
 <div class="container page-hero-grid">
 <div>
