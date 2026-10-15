@@ -95,30 +95,23 @@
 })();
 </script>
 </aside>
-<!-- Banner Scuola aperta 2026-27. Si spegne da solo dopo il 16 gennaio 2027; dopo quella data si può eliminare questo blocco. -->
-<section aria-labelledby="so-titolo" class="so-banner so-compatto" data-scadenza="2027-01-17" hidden>
+<!-- Banner Scuola aperta 2026-27 (grafica dei volantini v4). Si spegne da solo dopo il 16 gennaio 2027; dopo quella data si può eliminare questo blocco. -->
+<section aria-label="Scuola aperta 2026-2027" class="so-banner so-ridotto" data-scadenza="2027-01-17" hidden>
 <div class="container">
-<div class="so-pannello">
-<div>
-<span class="eyebrow">Scuola aperta 2026–2027</span>
-<h2 id="so-titolo"><span>Venite a conoscerci</span><span class="so-l2">tre sabati per visitare la scuola</span></h2>
-<p class="so-testo">Presentazione del progetto educativo, incontri con gli insegnanti e visita della scuola.</p>
-<p class="so-testo so-orario"><strong>Dalle 9:00 alle 12:00, su prenotazione.</strong></p>
-<a class="btn btn-primary" href="/contatti#visita">Prenota la visita</a>
-</div>
-<ol aria-label="Date della scuola aperta" class="so-date">
-<li class="so-data" data-giorno="2026-11-14"><small>Sabato</small><strong>14</strong><span>novembre <i>2026</i></span></li>
-<li class="so-data" data-giorno="2026-11-28"><small>Sabato</small><strong>28</strong><span>novembre <i>2026</i></span></li>
-<li class="so-data" data-giorno="2027-01-16"><small>Sabato</small><strong>16</strong><span>gennaio <i>2027</i></span></li>
-</ol>
-</div>
+<a class="so-link" href="/contatti#visita">
+<picture>
+<source media="(max-width: 700px)" srcset="/assets/scuola-aperta/telefono-800.webp"/>
+<source media="(max-width: 1200px)" srcset="/assets/scuola-aperta/banner-1200.webp"/>
+<img alt="Scuola aperta, venite a conoscerci. Sabato 14 e 28 novembre 2026 e sabato 16 gennaio 2027, dalle 9:00 alle 12:00, Via Petrarca 11, Udine. Su prenotazione." decoding="async" height="720" loading="lazy" src="/assets/scuola-aperta/banner-1920.webp" width="1920"/>
+</picture>
+<span class="so-cta">Prenota la visita <span aria-hidden="true">→</span></span>
+</a>
 </div>
 <script>
 (function(){
   var s=document.currentScript.parentNode;
   var oggi=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Rome'});
   if(oggi>=s.dataset.scadenza){s.remove();return;}
-  s.querySelectorAll('[data-giorno]').forEach(function(d){if(d.dataset.giorno<oggi)d.classList.add('is-passata');});
   s.hidden=false;
 })();
 </script>
