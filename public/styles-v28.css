@@ -1026,3 +1026,41 @@ h1,h2{text-wrap:balance}
 .notice-archive .notice-item .notice-date{background:var(--cream);color:var(--muted)}
 @media(max-width:950px){.notice-item .doc-actions{grid-column:2}}
 @media(max-width:620px){.notice-featured{padding-top:40px}.notice-item .notice-date{align-self:start}.notice-item .notice-date{width:42px;height:49px;border-radius:10px}.notice-item .notice-date strong{font-size:1.1rem}.notice-item .notice-date span{font-size:.5rem}.notice-item .doc-actions{grid-column:1/-1}}
+
+/* Banner Scuola aperta 2026-27 (si spegne da solo dopo il 16 gennaio 2027) */
+.so-banner{padding:44px 0 8px}
+.so-banner.so-compatto{padding:22px 0 0}
+.so-pannello{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;padding:44px 48px;border-radius:26px;background:linear-gradient(135deg,var(--blue-deep),var(--blue-dark));color:#fff;box-shadow:var(--shadow)}
+.so-pannello .eyebrow{color:#f0c575}
+.so-pannello h2{color:#fff;font-size:clamp(2rem,3.4vw,3rem);line-height:1.08}
+.so-pannello h2 span{display:block;text-wrap:balance}
+.so-pannello h2 .so-l2{margin-top:6px;color:#bcd3f0;font-style:italic;font-weight:500;font-size:.62em;letter-spacing:-.01em}
+.so-testo{max-width:44ch;margin-top:18px;color:#d3deec;text-wrap:pretty}
+.so-testo strong{color:#fff}
+.so-testo .nowrap{white-space:nowrap}
+.so-pannello .btn{margin-top:26px;border-color:var(--sun);background:var(--sun);color:var(--blue-deep)}
+.so-pannello .btn:hover{background:#fff;border-color:#fff}
+.so-date{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0;padding:0;list-style:none}
+.so-data{display:flex;flex-direction:column;align-items:flex-start;padding:16px 18px 18px;border-top:6px solid var(--sun);border-radius:16px;background:#fff;color:var(--blue-dark)}
+.so-data:nth-child(2){border-top-color:#7fa8d9}.so-data:nth-child(3){border-top-color:var(--coral)}
+.so-data small{color:var(--blue);font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.so-data strong{margin-top:2px;font-family:var(--serif);font-size:3.3rem;font-weight:700;line-height:1;letter-spacing:-.03em}
+.so-data span{margin-top:3px;font-family:var(--serif);font-style:italic;color:var(--blue);font-size:1.05rem;line-height:1.2}
+.so-data.is-passata{opacity:.45}
+.so-data.is-passata strong{text-decoration:line-through;text-decoration-thickness:3px}
+.so-compatto .so-pannello{grid-template-columns:minmax(0,1fr) auto;gap:28px;padding:24px 32px;border-radius:20px}
+.so-compatto .eyebrow{margin-bottom:6px}
+.so-compatto h2{font-size:clamp(1.45rem,2.3vw,1.9rem)}
+.so-compatto h2 .so-l2{display:none}
+.so-compatto .so-testo{margin-top:8px;max-width:none;font-size:.9rem}
+.so-compatto .btn{margin-top:14px;min-height:44px}
+.so-compatto .so-date{gap:10px}
+.so-compatto .so-data{padding:10px 14px 12px;border-top-width:5px;border-radius:13px}
+.so-compatto .so-data strong{font-size:2.1rem}
+.so-compatto .so-data span{font-size:.85rem}
+@media(max-width:950px){.so-pannello,.so-compatto .so-pannello{grid-template-columns:1fr;gap:26px;padding:34px 28px}.so-compatto .so-pannello{padding:24px 22px}}
+@media(max-width:620px){.so-banner{padding:28px 0 0}.so-date{gap:8px}.so-data{padding:12px 11px 14px;border-top-width:5px}.so-data small{font-size:.58rem;letter-spacing:.1em}.so-data strong{font-size:2.35rem}.so-data span{font-size:.8rem}.so-compatto .so-data strong{font-size:1.9rem}.so-pannello .btn{width:100%}}
+.so-data span i{display:block;margin-top:1px;font-family:var(--sans);font-style:normal;font-size:.72rem;font-weight:600;letter-spacing:.04em;color:var(--muted)}
+.so-testo.so-orario{margin-top:10px}
+@media(max-width:620px){.so-data span{font-size:.95rem}}
+.so-testo{text-wrap:balance}

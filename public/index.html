@@ -23,7 +23,7 @@
 <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180"/>
 <link href="/site.webmanifest?v=3" rel="manifest"/>
 <link as="image" href="/assets/collegio/cortile-hero-1800.webp" imagesizes="(max-width: 850px) 100vw, 50vw" imagesrcset="/assets/collegio/cortile-hero-1200.webp 1200w, /assets/collegio/cortile-hero-1800.webp 1800w, /assets/collegio/cortile-hero-2800.webp 2800w" rel="preload"/>
-<link href="/styles-v28.css?v=65" rel="stylesheet"/>
+<link href="/styles-v28.css?v=68" rel="stylesheet"/>
 <script type="application/ld+json">{
   "@context":"https://schema.org",
   "@type":"EducationalOrganization",
@@ -123,6 +123,34 @@
 <figcaption class="hero-caption">Nel cuore di Udine, dal 1656</figcaption>
 </figure>
 </div>
+</section>
+<!-- Banner Scuola aperta 2026-27. Si spegne da solo dopo il 16 gennaio 2027; dopo quella data si può eliminare questo blocco. -->
+<section aria-labelledby="so-titolo" class="so-banner" data-scadenza="2027-01-17" hidden>
+<div class="container">
+<div class="so-pannello">
+<div>
+<span class="eyebrow">Scuola aperta 2026–2027</span>
+<h2 id="so-titolo"><span>Venite a conoscerci</span><span class="so-l2">tre sabati per visitare la scuola</span></h2>
+<p class="so-testo">Presentazione del progetto educativo, incontri con gli insegnanti e visita della scuola.</p>
+<p class="so-testo so-orario"><strong>Dalle 9:00 alle 12:00, su prenotazione.</strong></p>
+<a class="btn btn-primary" href="/contatti#visita">Prenota la visita</a>
+</div>
+<ol aria-label="Date della scuola aperta" class="so-date">
+<li class="so-data" data-giorno="2026-11-14"><small>Sabato</small><strong>14</strong><span>novembre <i>2026</i></span></li>
+<li class="so-data" data-giorno="2026-11-28"><small>Sabato</small><strong>28</strong><span>novembre <i>2026</i></span></li>
+<li class="so-data" data-giorno="2027-01-16"><small>Sabato</small><strong>16</strong><span>gennaio <i>2027</i></span></li>
+</ol>
+</div>
+</div>
+<script>
+(function(){
+  var s=document.currentScript.parentNode;
+  var oggi=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Rome'});
+  if(oggi>=s.dataset.scadenza){s.remove();return;}
+  s.querySelectorAll('[data-giorno]').forEach(function(d){if(d.dataset.giorno<oggi)d.classList.add('is-passata');});
+  s.hidden=false;
+})();
+</script>
 </section>
 <section class="section" id="percorsi">
 <div class="container">
