@@ -1,7 +1,47 @@
 {
-  "version": 1,
-  "updatedAt": "2026-09-14T12:09:09.000Z",
+  "version": 2,
+  "updatedAt": "2026-10-16T10:10:00.000Z",
   "items": [
+    {
+      "id": "orario-primaria-2026-2027",
+      "title": "Orario delle lezioni — Primaria 2026–2027",
+      "description": "Orario settimanale delle classi dalla 1ª alla 5ª, con pre-accoglienza, pausa 13–14 e attività del pomeriggio.",
+      "audience": "primaria",
+      "category": "orari",
+      "meta": "Primaria • 1 pagina • 418 KB",
+      "file": "/documenti-files/orario-primaria-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "piano-annuale-attivita-primaria-2026-2027",
+      "title": "Piano annuale delle attività — Primaria 2026–2027",
+      "description": "Calendario dell’anno: elezioni dei rappresentanti, consigli di classe, ricevimenti, scrutini, sospensioni e vacanze.",
+      "audience": "primaria",
+      "category": "orari",
+      "meta": "Primaria • 1 pagina • 255 KB",
+      "file": "/documenti-files/piano-annuale-attivita-primaria-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "orario-secondaria-2026-2027",
+      "title": "Orario delle lezioni — Secondaria 2026–2027",
+      "description": "Orario settimanale delle classi 1ªA, 1ªB, 2ªA, 2ªB, 3ªA e 3ªB, dal lunedì al venerdì.",
+      "audience": "secondaria",
+      "category": "orari",
+      "meta": "Secondaria • 1 pagina • 199 KB",
+      "file": "/documenti-files/orario-secondaria-2026-2027.pdf",
+      "active": true
+    },
+    {
+      "id": "piano-annuale-attivita-secondaria-2026-2027",
+      "title": "Piano annuale delle attività — Secondaria 2026–2027",
+      "description": "Calendario dell’anno: elezioni dei rappresentanti, consigli di classe, ricevimenti per classi, sospensioni, vacanze ed esami di licenza.",
+      "audience": "secondaria",
+      "category": "orari",
+      "meta": "Secondaria • 1 pagina • 332 KB",
+      "file": "/documenti-files/piano-annuale-attivita-secondaria-2026-2027.pdf",
+      "active": true
+    },
     {
       "id": "libri-testo-prime-2026-2027",
       "title": "Libri di testo — classi prime 2026–2027",

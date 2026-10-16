@@ -28,6 +28,7 @@
     document: { singular: 'documento', plural: 'Documenti', title: 'Titolo del documento', placeholder: 'Es. Regolamento interno' }
   };
   const categoryLabels = {
+    orari: 'Orari e calendario',
     libri: 'Libri di testo',
     regolamenti: 'Regolamenti e documenti',
     benessere: 'Benessere e inclusione',

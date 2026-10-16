@@ -1,47 +1,7 @@
 {
-  "version": 11,
-  "updatedAt": "2026-10-16T09:50:00.000Z",
+  "version": 12,
+  "updatedAt": "2026-10-16T10:10:00.000Z",
   "items": [
-    {
-      "id": "piano-annuale-attivita-primaria-2026-2027",
-      "title": "Piano annuale delle attività — Primaria 2026/27",
-      "description": "Calendario dell’anno per i genitori: elezioni dei rappresentanti, consigli di classe, ricevimenti, scrutini, sospensioni e vacanze di Natale e Pasqua, fino alla conclusione del 9 giugno.",
-      "date": "2026-10-16",
-      "audience": "primaria",
-      "file": "/documenti-files/piano-annuale-attivita-primaria-2026-2027.pdf",
-      "active": true,
-      "until": "2027-06-30"
-    },
-    {
-      "id": "orario-primaria-2026-2027",
-      "title": "Orario delle lezioni — Primaria 2026/27",
-      "description": "Orario settimanale delle classi dalla 1ª alla 5ª, dal lunedì al venerdì, con pre-accoglienza, pausa 13–14 e attività del pomeriggio.",
-      "date": "2026-10-16",
-      "audience": "primaria",
-      "file": "/documenti-files/orario-primaria-2026-2027.pdf",
-      "active": true,
-      "until": "2027-06-30"
-    },
-    {
-      "id": "piano-annuale-attivita-secondaria-2026-2027",
-      "title": "Piano annuale delle attività — Secondaria 2026/27",
-      "description": "Calendario dell’anno per i genitori: elezioni dei rappresentanti, consigli di classe, ricevimenti per classi, sospensioni, vacanze di Natale e Pasqua ed esami di licenza.",
-      "date": "2026-10-16",
-      "audience": "secondaria",
-      "file": "/documenti-files/piano-annuale-attivita-secondaria-2026-2027.pdf",
-      "active": true,
-      "until": "2027-06-30"
-    },
-    {
-      "id": "orario-secondaria-2026-2027",
-      "title": "Orario delle lezioni — Secondaria 2026/27",
-      "description": "Orario settimanale delle classi 1ªA, 1ªB, 2ªA, 2ªB, 3ªA e 3ªB, dal lunedì al venerdì.",
-      "date": "2026-10-16",
-      "audience": "secondaria",
-      "file": "/documenti-files/orario-secondaria-2026-2027.pdf",
-      "active": true,
-      "until": "2027-06-30"
-    },
     {
       "id": "soggiorni-studio-2027-incontro",
       "title": "Soggiorni studio 2027 — incontro informativo giovedì 22 ottobre",
