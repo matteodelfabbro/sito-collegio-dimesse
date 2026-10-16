@@ -631,6 +631,9 @@ html{color-scheme:light}
 .equipment-gallery figure{overflow:hidden;margin:0;border:1px solid var(--line);border-radius:14px;background:var(--paper-alt)}
 .equipment-gallery img{width:100%;aspect-ratio:4/3;object-fit:cover}
 .equipment-gallery figcaption{padding:10px 11px;color:var(--blue-deep);font-size:.8rem;font-weight:700}
+.equipment-gallery-compact{grid-template-columns:repeat(2,minmax(0,1fr))}
+.equipment-gallery-compact figure:last-child{grid-column:1/-1}
+.equipment-gallery-compact figure:last-child img{aspect-ratio:16/9}
 @media(max-width:900px){.shared-learning-grid{grid-template-columns:1fr}.shared-learning-card>img{height:280px}}
 @media(max-width:620px){.shared-learning-card>img{height:230px}.shared-learning-copy{padding:20px}.equipment-gallery{grid-template-columns:1fr 1fr}.equipment-gallery figure:last-child{grid-column:1/-1}.equipment-gallery figure:last-child img{aspect-ratio:16/9}}
 
