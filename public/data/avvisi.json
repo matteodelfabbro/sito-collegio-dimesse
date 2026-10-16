@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "updatedAt": "2026-10-16T09:50:00.000Z",
   "items": [
     {
@@ -9,7 +9,8 @@
       "date": "2026-10-16",
       "audience": "primaria",
       "file": "/documenti-files/piano-annuale-attivita-primaria-2026-2027.pdf",
-      "active": true
+      "active": true,
+      "until": "2027-06-30"
     },
     {
       "id": "orario-primaria-2026-2027",
@@ -18,7 +19,8 @@
       "date": "2026-10-16",
       "audience": "primaria",
       "file": "/documenti-files/orario-primaria-2026-2027.pdf",
-      "active": true
+      "active": true,
+      "until": "2027-06-30"
     },
     {
       "id": "piano-annuale-attivita-secondaria-2026-2027",
@@ -27,7 +29,8 @@
       "date": "2026-10-16",
       "audience": "secondaria",
       "file": "/documenti-files/piano-annuale-attivita-secondaria-2026-2027.pdf",
-      "active": true
+      "active": true,
+      "until": "2027-06-30"
     },
     {
       "id": "orario-secondaria-2026-2027",
@@ -36,7 +39,8 @@
       "date": "2026-10-16",
       "audience": "secondaria",
       "file": "/documenti-files/orario-secondaria-2026-2027.pdf",
-      "active": true
+      "active": true,
+      "until": "2027-06-30"
     },
     {
       "id": "soggiorni-studio-2027-incontro",
