@@ -23,7 +23,7 @@
 <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180"/>
 <link href="/site.webmanifest?v=3" rel="manifest"/>
 <link as="image" href="/assets/collegio/primaria-aula.webp" rel="preload"/>
-<link href="/styles-v28.css?v=71" rel="stylesheet"/>
+<link href="/styles-v28.css?v=72" rel="stylesheet"/>
 <meta content="it_IT" property="og:locale"/>
 <meta content="Collegio Dimesse" property="og:site_name"/>
 <meta content="summary_large_image" name="twitter:card"/>
@@ -74,11 +74,11 @@
 <li><small>Sabato</small><strong>28</strong><span>novembre</span></li>
 <li><small>Sabato</small><strong>16</strong><span>gennaio</span></li>
 </ol>
-<p class="so-hero-orario"><strong>Dalle 9:00 alle 12:00, su prenotazione.</strong> Per conoscere insegnanti, progetto educativo e ambienti.</p>
+<p class="so-hero-orario"><strong>Dalle 9:00 alle 12:00</strong>Su prenotazione, scrivendo a:</p>
+<ul class="so-hero-contatti"><li><span>Primaria · Linda D’Andrea</span><a href="mailto:dandrea@collegiodimesse.org?subject=Scuola%20aperta%202026-2027%3A%20prenotazione">dandrea@collegiodimesse.org</a></li></ul>
 </div>
 <div class="actions">
-<a class="btn btn-primary" data-so-off href="/contatti#primaria">Richiedi informazioni</a>
-<a class="btn btn-primary" data-so-on href="/contatti#primaria" hidden>Prenota la visita</a>
+<a class="btn btn-primary" href="/contatti#primaria">Richiedi informazioni</a>
 <a class="btn btn-ghost" href="#servizi">Orari e servizi</a>
 </div>
 <script>
@@ -86,8 +86,6 @@
   var b=document.querySelector('.so-hero');
   var oggi=new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Rome'});
   if(!b||oggi>=b.dataset.scadenza){if(b)b.remove();return;}
-  document.querySelectorAll('[data-so-on]').forEach(function(e){e.hidden=false;});
-  document.querySelectorAll('[data-so-off]').forEach(function(e){e.hidden=true;});
   b.hidden=false;
 })();
 </script>

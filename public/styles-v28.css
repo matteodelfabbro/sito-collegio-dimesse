@@ -1032,7 +1032,7 @@ h1,h2{text-wrap:balance}
 
 /* Scuola aperta nella prima schermata di home, Primaria e Secondaria (si spegne da sola dopo il 16 gennaio 2027) */
 .so-hero{max-width:560px;margin-top:26px;padding:20px 22px 22px;border:1px solid #d9e4f2;border-radius:18px;background:#fff;box-shadow:0 12px 32px rgba(16,39,70,.08)}
-.so-hero[hidden],.actions .btn[hidden]{display:none}
+.so-hero[hidden]{display:none}
 .so-hero-label{display:block;color:var(--blue);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .so-hero-date{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 0;padding:0;list-style:none}
 .so-hero-date li{display:grid;grid-template-columns:auto auto;grid-template-areas:"g g" "n m";align-items:baseline;justify-content:start;column-gap:7px;padding:10px 14px 11px;border-radius:12px;background:var(--blue-pale)}
@@ -1041,6 +1041,11 @@ h1,h2{text-wrap:balance}
 .so-hero-date span{grid-area:m;font-family:var(--serif);font-style:italic;color:var(--blue);font-size:1.1rem}
 .so-hero-orario{margin-top:12px;color:var(--muted);font-size:.9rem;line-height:1.5;text-wrap:balance}
 .so-hero-orario strong{display:block;color:var(--blue-dark)}
+.so-hero-contatti{display:grid;gap:8px;margin:12px 0 0;padding:12px 0 0;border-top:1px solid #e3eaf3;list-style:none}
+.so-hero-contatti li{display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline;font-size:.9rem;line-height:1.45}
+.so-hero-contatti span{color:var(--muted)}
+.so-hero-contatti a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+.so-hero-contatti a:hover{text-decoration:underline}
 .so-hero+.actions{margin-top:22px}
 @media(max-width:620px){
   .so-hero{padding:16px 16px 18px}
