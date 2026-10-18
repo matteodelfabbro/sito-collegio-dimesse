@@ -149,7 +149,7 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
     })
     .then(data => {
       const documents = (Array.isArray(data.items) ? data.items : []).filter(document => document.active);
-      ['libri', 'regolamenti', 'benessere', 'privacy'].forEach(category => {
+      ['orari', 'libri', 'regolamenti', 'benessere', 'privacy'].forEach(category => {
         const section = document.querySelector(`[data-document-section]#${category}`);
         if (!section) return;
         const items = documents

@@ -113,7 +113,7 @@ function validatePayload_(kind, payload, requirePdf) {
   if (!cleanText_(payload.title || '', 120)) throw new Error('Inserisci il titolo.');
   if (!['comune', 'primaria', 'secondaria'].includes(payload.audience)) throw new Error('Destinatari non validi.');
   if (kind === 'notice' && !isValidDate_(payload.date)) throw new Error('Data non valida.');
-  if (kind === 'document' && !['libri', 'regolamenti', 'benessere', 'privacy'].includes(payload.category)) throw new Error('Categoria non valida.');
+  if (kind === 'document' && !['orari', 'libri', 'regolamenti', 'benessere', 'privacy'].includes(payload.category)) throw new Error('Categoria non valida.');
   if (requirePdf && !payload.pdfBase64) throw new Error('PDF mancante.');
   if (requirePdf) {
     let bytes;
