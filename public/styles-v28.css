@@ -1030,17 +1030,7 @@ h1,h2{text-wrap:balance}
 @media(max-width:950px){.notice-item .doc-actions{grid-column:2}}
 @media(max-width:620px){.notice-featured{padding-top:40px}.notice-item .notice-date{align-self:start}.notice-item .notice-date{width:42px;height:49px;border-radius:10px}.notice-item .notice-date strong{font-size:1.1rem}.notice-item .notice-date span{font-size:.5rem}.notice-item .doc-actions{grid-column:1/-1}}
 
-/* Banner Scuola aperta 2026-27 (grafica dei volantini, si spegne da solo dopo il 16 gennaio 2027) */
-.so-banner{padding:44px 0 8px}
-.so-link{display:block;overflow:hidden;border-radius:26px;background:#fff;box-shadow:var(--shadow);transition:transform .2s}
-.so-link:hover{transform:translateY(-2px)}
-.so-link img{width:100%;height:auto}
-.so-cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:0 20px;background:var(--blue-deep);color:#fff;font-size:.9rem;font-weight:700;letter-spacing:.02em}
-.so-link:hover .so-cta{background:var(--blue-dark)}
-.so-banner.so-ridotto{padding:22px 0 0}
-.so-ridotto .so-link{max-width:880px;margin-inline:auto;border-radius:20px}
-@media(max-width:700px){.so-banner,.so-banner.so-ridotto{padding:28px 0 0}.so-link,.so-ridotto .so-link{border-radius:20px}}
-/* Scuola aperta nella prima schermata della home (si spegne da sola dopo il 16 gennaio 2027) */
+/* Scuola aperta nella prima schermata di home, Primaria e Secondaria (si spegne da sola dopo il 16 gennaio 2027) */
 .so-hero{max-width:560px;margin-top:26px;padding:20px 22px 22px;border:1px solid #d9e4f2;border-radius:18px;background:#fff;box-shadow:0 12px 32px rgba(16,39,70,.08)}
 .so-hero-label{display:block;color:var(--blue);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .so-hero-date{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 0;padding:0;list-style:none}
