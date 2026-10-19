@@ -1059,3 +1059,43 @@ h1,h2{text-wrap:balance}
 h1,h2,h3{text-wrap:balance}
 .hero-copy .lead,.section-head p,.path-body p,.home-contact p,.convitto-copy p,.identity-copy p{text-wrap:pretty}
 .nowrap{white-space:nowrap}
+
+/* Revisione tipografica 2026-10: testo più leggibile da desktop.
+   Tutte le dimensioni sono in rem, quindi alzare la base scala l'intero sito in modo proporzionale;
+   telefono e tablet restano a 16px. Le microscritte hanno inoltre una soglia minima. */
+@media(min-width:1100px){html{font-size:106.25%}}
+@media(min-width:1360px){html{font-size:112.5%}}
+.notice-item .notice-date span{font-size:.64rem}
+.doc-icon span{font-size:.7rem}
+.so-hero-date small{font-size:.7rem}
+.document-summary span,.teacher-table thead th,.teacher-substitute,.tag{font-size:.75rem}
+.doc-meta,.hero-caption{font-size:.8rem}
+.secondary-pathway-card .tag,figcaption .tag{font-size:.72rem}
+.so-hero-label{font-size:.75rem}
+.brand small{font-size:.78rem}
+@media(max-width:620px){
+  .notice-item .notice-date{width:46px}
+  .notice-item .notice-date span{font-size:.66rem;letter-spacing:.02em}
+  .so-hero-date small{font-size:.66rem;letter-spacing:.06em}
+  .hero-copy .eyebrow{font-size:.72rem}
+  .hero-caption{font-size:.75rem}
+}
+/* Header: voci di menu e nome sempre su una riga */
+.brand strong,.nav-links a{white-space:nowrap}
+.brand{flex:none}
+@media(min-width:851px) and (max-width:1239px){.header-cta{display:none}}
+@media(min-width:1360px){.nav-links{gap:21px}}
+@media(min-width:1360px){.site-header:not(.is-compact) .brand strong{font-size:1.62rem}}
+/* Header tra 851 e 960px: menu compatto perché resti su una riga */
+@media(min-width:851px) and (max-width:960px){.nav-links{gap:12px}.nav-links a,.site-header:not(.is-compact) .nav-links a{font-size:.8rem}.brand strong{font-size:1.4rem}.brand{gap:14px}}
+/* Slogan in home: non oltre la colonna sugli schermi molto larghi */
+@media(min-width:1360px){.hero-copy h1{font-size:clamp(2.7rem,5.15vw,4.2rem)}}
+/* Contrasto (WCAG AA) */
+:root{--muted:#5d6779}
+.family-tool-index{color:#8a6420}
+.family-tool-primary .family-tool-index{color:#f5d58f}
+.social-instagram{background:linear-gradient(135deg,#c8501f 0%,#d62976 40%,#c13584 70%,#833ab4 100%)}
+.social-facebook{background:#1468d6}
+/* Aree di tocco più comode su telefono */
+.filter-button,.document-category-nav a{min-height:44px}
+@media(max-width:620px){.footer-col a{margin:0;padding:9px 0}}
