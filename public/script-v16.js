@@ -242,6 +242,15 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
     document.querySelectorAll('[data-notice-section]').forEach(section => {
       section.hidden = !section.querySelector('[data-notice]:not([hidden])');
     });
+    // Riquadro "Avvisi" in alto: quanti sono in evidenza, altrimenti rimanda all'archivio
+    const noticeTile = document.querySelector('[data-notice-tile]');
+    if (noticeTile) {
+      const featured = document.querySelectorAll('#avvisi [data-notice]:not([hidden])').length;
+      noticeTile.setAttribute('href', featured ? '#avvisi' : '#archivio-avvisi');
+      noticeTile.querySelector('[data-notice-tile-text]').textContent = featured
+        ? `${featured} ${featured === 1 ? 'avviso in evidenza' : 'avvisi in evidenza'}`
+        : 'Archivio delle comunicazioni';
+    }
     sections.forEach(section => {
       section.hidden = !section.querySelector('[data-document]:not([hidden])');
     });
