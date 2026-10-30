@@ -1099,11 +1099,3 @@ h1,h2,h3{text-wrap:balance}
 /* Aree di tocco più comode su telefono */
 .filter-button,.document-category-nav a{min-height:44px}
 @media(max-width:620px){.footer-col a{margin:0;padding:9px 0}}
-/* Area famiglie: riquadri iniziali nello stesso ordine della pagina, con icona al posto dei numeri */
-.family-tool{justify-content:flex-start}
-.family-tool-icon{display:grid;place-items:center;width:42px;height:42px;margin-bottom:18px;border-radius:12px;background:var(--blue-pale);color:var(--blue)}
-.family-tool-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.family-tool-primary .family-tool-icon{background:rgba(255,255,255,.16);color:#fff}
-.family-tool strong{color:var(--blue-dark)}
-.family-tool-primary strong{color:#fff}
-@media(max-width:620px){.family-tool{display:grid;grid-template-columns:42px 1fr;column-gap:14px;align-content:center;min-height:0;padding:18px 20px}.family-tool-icon{grid-row:span 2;margin:0}.family-tool small{margin-top:2px}}
