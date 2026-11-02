@@ -1041,6 +1041,8 @@ h1,h2{text-wrap:balance}
 .so-hero-date span{grid-area:m;font-family:var(--serif);font-style:italic;color:var(--blue);font-size:1.1rem}
 .so-hero-orario{margin-top:12px;color:var(--muted);font-size:.9rem;line-height:1.5;text-wrap:balance}
 .so-hero-orario strong{display:block;color:var(--blue-dark)}
+/* "Su prenotazione" in evidenza (arancione, testo bianco con contrasto AA) */
+.so-prenota{display:inline-block;margin:6px 4px 0 0;padding:3px 11px;border-radius:999px;background:#d4691f;color:#fff;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
 .so-hero-contatti{display:grid;gap:8px;margin:12px 0 0;padding:12px 0 0;border-top:1px solid #e3eaf3;list-style:none}
 .so-hero-contatti li{display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline;font-size:.9rem;line-height:1.45}
 .so-hero-contatti span{color:var(--muted)}
