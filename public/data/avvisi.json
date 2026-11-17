@@ -1,7 +1,27 @@
 {
-  "version": 12,
-  "updatedAt": "2026-10-16T10:10:00.000Z",
+  "version": 13,
+  "updatedAt": "2026-11-17T09:00:00.000Z",
   "items": [
+    {
+      "id": "ricevimento-generale-dicembre-2026",
+      "title": "Ricevimento generale dei genitori — dicembre 2026",
+      "description": "Avviso n. 1: gli insegnanti saranno a scuola dalle 16:30 alle 19:00 per il ricevimento generale dei genitori. Mercoledì 2 dicembre classi 1ªA e 1ªB, giovedì 3 dicembre classi 2ªA e 2ªB, mercoledì 9 dicembre classi 3ªA e 3ªB.",
+      "date": "2026-11-17",
+      "audience": "secondaria",
+      "file": "/documenti-files/ricevimento-generale-dicembre-2026.pdf",
+      "active": true,
+      "until": "2026-12-09"
+    },
+    {
+      "id": "ponte-immacolata-2026",
+      "title": "Sospensione delle lezioni — 7 e 8 dicembre",
+      "description": "Avviso n. 2: attività scolastica sospesa lunedì 7 dicembre (ponte da calendario regionale) e martedì 8 dicembre (festa dell’Immacolata).",
+      "date": "2026-11-17",
+      "audience": "secondaria",
+      "file": "/documenti-files/ponte-immacolata-2026.pdf",
+      "active": true,
+      "until": "2026-12-08"
+    },
     {
       "id": "soggiorni-studio-2027-incontro",
       "title": "Soggiorni studio 2027 — incontro informativo giovedì 22 ottobre",
