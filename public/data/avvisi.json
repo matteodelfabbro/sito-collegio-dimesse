@@ -1,6 +1,6 @@
 {
-  "version": 14,
-  "updatedAt": "2026-11-23T17:00:00.000Z",
+  "version": 15,
+  "updatedAt": "2026-11-23T16:50:15.862Z",
   "items": [
     {
       "id": "vacanze-natale-2026-27",
@@ -50,6 +50,16 @@
       "audience": "comune",
       "file": "/documenti-files/inizio-scuola-2026-2027.pdf",
       "active": true
+    },
+    {
+      "id": "2026-11-23-prova-tecnica-da-eliminare",
+      "title": "PROVA TECNICA - da eliminare",
+      "description": "Avviso di prova, verrà eliminato subito.",
+      "audience": "primaria",
+      "file": "/documenti-files/avvisi/2026-11-23-prova-tecnica-da-eliminare.pdf",
+      "active": true,
+      "date": "2026-11-23",
+      "until": "2026-11-30"
     }
   ]
 }
