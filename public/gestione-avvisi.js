@@ -37,6 +37,27 @@
   const publicOrigin = config.publicOrigin || 'https://www.collegiodimesse.org';
 
   const dateField = form?.querySelector('[name="date"]');
+  const featuredToggle = form?.querySelector('[data-featured-toggle]');
+  const untilWrap = form?.querySelector('[data-featured-until]');
+  const untilField = form?.querySelector('[name="until"]');
+
+  // Stessa regola della pagina pubblica: in evidenza finché la data "until" (compresa) non è passata, ora di Roma.
+  const romeToday = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+  const isFeatured = item => Boolean(item.until) && romeToday() <= item.until;
+
+  function syncFeatured() {
+    if (!featuredToggle || !untilWrap || !untilField) return;
+    const on = kind === 'notice' && featuredToggle.checked;
+    untilWrap.hidden = !on;
+    untilField.required = on;
+    untilField.disabled = !on;
+    untilField.min = dateField?.value || '';
+  }
+  featuredToggle?.addEventListener('change', () => {
+    syncFeatured();
+    if (featuredToggle.checked) untilField.focus();
+  });
+  dateField?.addEventListener('change', syncFeatured);
 
   function showLoginStatus(message) {
     if (!loginStatus) return;
@@ -168,10 +189,10 @@
       article.dataset.id = item.id;
       article.dataset.kind = itemKind;
       const detail = itemKind === 'notice'
-        ? `Pubblicato il ${formatDate(item.date)}`
+        ? `Pubblicato il ${formatDate(item.date)}${item.until ? ` · in evidenza fino al ${formatDate(item.until)}` : ''}`
         : `${categoryLabels[item.category] || 'Documenti'}${item.meta ? ` · ${item.meta}` : ''}`;
       article.innerHTML = `<div class="admin-notice-pdf" aria-hidden="true">PDF</div>
-        <div class="admin-notice-copy"><div><span class="admin-state ${item.active ? 'is-live' : 'is-hidden'}">${item.active ? 'Pubblicato' : 'Nascosto'}</span><span class="admin-audience">${itemKind === 'notice' ? 'Avviso' : 'Documento'}</span><span class="admin-audience">${escapeHtml(audienceLabel(item.audience))}</span></div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(detail)}</p></div>
+        <div class="admin-notice-copy"><div><span class="admin-state ${item.active ? 'is-live' : 'is-hidden'}">${item.active ? 'Pubblicato' : 'Nascosto'}</span>${itemKind === 'notice' && item.active ? (isFeatured(item) ? '<span class="admin-state is-featured">In evidenza</span>' : '<span class="admin-state is-archived">In archivio</span>') : ''}<span class="admin-audience">${itemKind === 'notice' ? 'Avviso' : 'Documento'}</span><span class="admin-audience">${escapeHtml(audienceLabel(item.audience))}</span></div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(detail)}</p></div>
         <div class="admin-notice-actions"><button type="button" data-action="copy">Copia link</button><button type="button" data-action="edit">Modifica</button><button type="button" data-action="replace">Sostituisci PDF</button><button type="button" data-action="hide">${item.active ? 'Nascondi' : 'Ripubblica'}</button><button class="is-danger" type="button" data-action="delete">Elimina</button></div>`;
       list.append(article);
     });
@@ -198,6 +219,7 @@
     form.elements.date.required = kind === 'notice';
     input.required = mode !== 'update';
     dropzone.hidden = mode === 'update';
+    syncFeatured();
     setSubmitLabel();
     render();
   }
@@ -318,7 +340,11 @@
     form.elements.title.value = item.title;
     form.elements.description.value = item.description || '';
     form.elements.audience.value = item.audience;
-    if (kind === 'notice') form.elements.date.value = item.date;
+    if (kind === 'notice') {
+      form.elements.date.value = item.date;
+      featuredToggle.checked = Boolean(item.until);
+      untilField.value = item.until || '';
+    }
     if (kind === 'document') {
       form.elements.category.value = item.category;
       form.elements.meta.value = item.meta || '';
@@ -350,10 +376,15 @@
     const file = input.files[0];
     const needsPdf = mode === 'publish' || mode === 'replace';
     if (needsPdf && !file) { showStatus('Prima scegli il PDF da pubblicare.', true); dropzone.focus(); return; }
+    const featured = kind === 'notice' && Boolean(featuredToggle?.checked);
+    const until = featured ? String(untilField.value || '') : '';
+    if (featured && until < String(dateField.value)) { showStatus('La data “in evidenza fino al” non può essere prima della data di pubblicazione.', true); untilField.focus(); return; }
+    if (featured && until < romeToday() && !confirm('La data “in evidenza fino al” è già passata: l’avviso andrà subito nell’archivio. Continuare?')) return;
     const data = new FormData(form);
     const operationKind = kind;
     const verb = mode === 'publish' ? 'Pubblicare' : mode === 'replace' ? 'Sostituire il PDF di' : 'Salvare le modifiche a';
-    if (!confirm(`${verb} “${String(data.get('title')).trim()}” per ${audienceLabel(String(data.get('audience')))}?`)) return;
+    const featureNote = kind !== 'notice' ? '' : (featured ? `\nIn evidenza fino al ${formatDate(until)}, poi in archivio.` : '\nNon in evidenza: andrà direttamente nell’archivio.');
+    if (!confirm(`${verb} “${String(data.get('title')).trim()}” per ${audienceLabel(String(data.get('audience')))}?${featureNote}`)) return;
     let publisherWindow;
     try {
       publisherWindow = openPublisherWindow();
@@ -364,6 +395,8 @@
         description: String(data.get('description')).trim(),
         audience: String(data.get('audience')),
         date: String(data.get('date') || ''),
+        featured: featured,
+        until: until,
         category: String(data.get('category') || ''),
         meta: String(data.get('meta') || ''),
         fileName: file?.name || ''

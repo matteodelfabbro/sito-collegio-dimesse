@@ -102,8 +102,12 @@ function updateItem_(kind, item, payload) {
   item.title = cleanText_(payload.title, 120);
   item.description = cleanText_(payload.description || '', 240);
   item.audience = payload.audience;
-  if (kind === 'notice') item.date = payload.date;
-  else {
+  if (kind === 'notice') {
+    item.date = payload.date;
+    // "until" presente = in evidenza fino a quella data compresa; assente = direttamente in archivio.
+    if (isFeaturedRequest_(payload)) item.until = payload.until;
+    else delete item.until;
+  } else {
     item.category = payload.category;
     item.meta = cleanText_(payload.meta || '', 120);
   }
@@ -113,6 +117,10 @@ function validatePayload_(kind, payload, requirePdf) {
   if (!cleanText_(payload.title || '', 120)) throw new Error('Inserisci il titolo.');
   if (!['comune', 'primaria', 'secondaria'].includes(payload.audience)) throw new Error('Destinatari non validi.');
   if (kind === 'notice' && !isValidDate_(payload.date)) throw new Error('Data non valida.');
+  if (kind === 'notice' && isFeaturedRequest_(payload)) {
+    if (!isValidDate_(payload.until)) throw new Error('Indica fino a quando l’avviso resta in evidenza.');
+    if (payload.until < payload.date) throw new Error('La data di fine evidenza non può precedere la data di pubblicazione.');
+  }
   if (kind === 'document' && !['orari', 'libri', 'regolamenti', 'benessere', 'privacy'].includes(payload.category)) throw new Error('Categoria non valida.');
   if (requirePdf && !payload.pdfBase64) throw new Error('PDF mancante.');
   if (requirePdf) {
@@ -122,6 +130,10 @@ function validatePayload_(kind, payload, requirePdf) {
     if (!bytes.length || bytes.length > 20 * 1024 * 1024) throw new Error(bytes.length ? 'Il PDF supera 20 MB.' : 'Il PDF è vuoto.');
     if (bytes.length < 5 || bytes[0] !== 37 || bytes[1] !== 80 || bytes[2] !== 68 || bytes[3] !== 70 || bytes[4] !== 45) throw new Error('Il file caricato non è un PDF valido.');
   }
+}
+
+function isFeaturedRequest_(payload) {
+  return payload.featured === true || payload.featured === 'true';
 }
 
 function isValidDate_(value) {

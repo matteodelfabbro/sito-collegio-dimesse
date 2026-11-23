@@ -10,7 +10,7 @@
   <link href="/favicon.ico?v=3" rel="icon" sizes="any">
   <link href="/apple-touch-icon-v3.png?v=3" rel="apple-touch-icon" sizes="180x180">
   <link href="/styles-v28.css?v=80" rel="stylesheet">
-  <link href="/gestione-avvisi.css?v=5" rel="stylesheet">
+  <link href="/gestione-avvisi.css?v=6" rel="stylesheet">
 </head>
 <body class="notice-admin-page">
   <a class="skip-link" href="#main">Vai al contenuto</a>
@@ -77,9 +77,9 @@
               </label>
 
               <label class="admin-field">
-                <span>Destinatari</span>
+                <span>Categoria (a chi è rivolto)</span>
                 <select name="audience" required>
-                  <option value="comune">Primaria e Secondaria</option>
+                  <option value="comune">Comune · Primaria e Secondaria</option>
                   <option value="primaria">Solo Primaria</option>
                   <option value="secondaria">Solo Secondaria</option>
                 </select>
@@ -100,6 +100,18 @@
                   <option value="privacy">Privacy e segnalazioni</option>
                 </select>
               </label>
+
+              <div class="admin-field admin-field-wide admin-featured" data-notice-field>
+                <label class="admin-check">
+                  <input type="checkbox" name="featured" value="1" data-featured-toggle>
+                  <span><strong>Metti in evidenza</strong><small>L’avviso compare in alto nell’Area famiglie, nella sezione “Avvisi in evidenza”. Se non spunti, va direttamente nell’archivio.</small></span>
+                </label>
+                <label class="admin-field" data-featured-until hidden>
+                  <span>In evidenza fino al <small>compreso</small></span>
+                  <input type="date" name="until">
+                  <small class="admin-field-help">Dal giorno dopo l’avviso passa da solo nell’archivio: non serve fare altro.</small>
+                </label>
+              </div>
 
               <label class="admin-field admin-field-wide">
                 <span>Breve descrizione <small>facoltativa</small></span>
@@ -128,7 +140,7 @@
           <h2>Prima di salvare</h2>
           <ol>
             <li><strong>Controlla il titolo</strong><span>Deve essere breve e comprensibile.</span></li>
-            <li><strong>Scegli destinazione e categoria</strong><span>Il contenuto apparirà nella sezione corretta.</span></li>
+            <li><strong>Scegli categoria ed evidenza</strong><span>Primaria, Secondaria o comune; per gli avvisi, se metterli in evidenza e fino a quando.</span></li>
             <li><strong>Conferma</strong><span>Il sito si aggiornerà automaticamente.</span></li>
           </ol>
           <div class="admin-help-note"><strong>Il collegamento viene mostrato dopo la pubblicazione.</strong><span>Potrai copiarlo subito e inviarlo alle famiglie o ai colleghi.</span></div>
@@ -155,6 +167,6 @@
 
   <footer class="admin-footer"><div class="container"><span>Collegio Dimesse · Area riservata</span><a href="/documenti">Vedi l’Area famiglie sul sito <span aria-hidden="true">↗</span></a></div></footer>
   <script src="/avvisi-config.js?v=4"></script>
-  <script src="/gestione-avvisi.js?v=10"></script>
+  <script src="/gestione-avvisi.js?v=11"></script>
 </body>
 </html>
