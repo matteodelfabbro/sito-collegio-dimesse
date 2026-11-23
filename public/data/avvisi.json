@@ -1,7 +1,17 @@
 {
-  "version": 13,
-  "updatedAt": "2026-11-17T09:00:00.000Z",
+  "version": 14,
+  "updatedAt": "2026-11-23T17:00:00.000Z",
   "items": [
+    {
+      "id": "vacanze-natale-2026-27",
+      "title": "Messa di Natale e vacanze natalizie 2026/27",
+      "description": "Avviso n. 3: venerdì 18 dicembre alle 10:00 Messa di Natale nella nostra chiesa; dopo la Messa, verso le 11:00, tutti liberi di andare a casa. Vacanze da sabato 19 dicembre 2026 a mercoledì 6 gennaio 2027 compresi; rientro a scuola giovedì 7 gennaio 2027.",
+      "date": "2026-11-23",
+      "audience": "secondaria",
+      "file": "/documenti-files/vacanze-natale-2026-27.pdf",
+      "active": true,
+      "until": "2027-01-07"
+    },
     {
       "id": "ricevimento-generale-dicembre-2026",
       "title": "Ricevimento generale dei genitori — dicembre 2026",
