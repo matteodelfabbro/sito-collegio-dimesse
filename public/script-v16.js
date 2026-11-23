@@ -286,11 +286,11 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       ? '<span class="doc-audience doc-audience-secondaria">Secondaria</span>'
       : '<span class="doc-audience doc-audience-primaria">Primaria</span><span class="doc-audience doc-audience-secondaria">Secondaria</span>';
 
-  // In evidenza (in alto nella pagina): avvisi con "until" non ancora superato, oppure senza "until"
-  // e pubblicati da meno di 45 giorni. Tutti gli altri vanno nell'archivio in fondo alla pagina.
+  // In evidenza (in alto nella pagina): solo gli avvisi con "until" non ancora superato (data compresa,
+  // ora di Roma). Senza "until" o a data passata vanno nell'archivio in fondo alla pagina.
+  // La sezione "Avvisi in evidenza" resta nascosta quando non contiene avvisi visibili.
   const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
-  const featuredSince = new Date(Date.now() - 45 * 864e5).toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
-  const isFeatured = notice => notice.until ? today <= notice.until : notice.date >= featuredSince;
+  const isFeatured = notice => Boolean(notice.until) && today <= notice.until;
   const card = notice => {
     const date = dateParts(notice.date);
     return `<article class="doc-item notice-item" data-notice data-audience="${escapeHtml(notice.audience)}">
@@ -312,6 +312,11 @@ document.querySelectorAll('[data-carousel]').forEach(shell => {
       featuredList.innerHTML = notices.filter(isFeatured).map(card).join('');
       archiveList.innerHTML = notices.filter(notice => !isFeatured(notice)).map(card).join('');
       window.dispatchEvent(new CustomEvent('notices:updated'));
+      // I link "Avvisi" puntano a #avvisi: se non c'è nulla in evidenza, porta all'archivio.
+      const featuredSection = featuredList.closest('[data-notice-section]');
+      if (location.hash === '#avvisi' && featuredSection?.hidden) {
+        document.getElementById('archivio-avvisi')?.scrollIntoView();
+      }
     })
     .catch(() => {
       // Mantiene l'avviso presente nell'HTML come ripiego in caso di rete assente.
